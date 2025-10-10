@@ -1,0 +1,119 @@
+# ═══════════════════════════════════════════════════════════════════════
+# EXAMPLE MONSTER CARD - Fully Annotated
+# ═══════════════════════════════════════════════════════════════════════
+
+name: Goblin Berserker
+rank: 1
+category: monster
+
+# ────────────────────────────────────────────────────────────────────────
+# COMBAT STATS
+# ────────────────────────────────────────────────────────────────────────
+
+# How many bouts players must win to defeat this monster
+health: 3
+
+# Armor value (added to monster's attack roll)
+armor: 2
+
+# Base attack value (before abilities)
+attack: 4
+
+# Overkill threshold: Player must exceed monster's total by this much
+# to deal 1 additional damage
+overkill: 2
+
+# Example: Monster rolls total of 8
+#   Player rolls 9: Wins, deals 1 damage (8+1)
+#   Player rolls 11: Wins, deals 2 damage (8+2+1 from exceeding OK threshold)
+
+# ────────────────────────────────────────────────────────────────────────
+# DICE POOL
+# ────────────────────────────────────────────────────────────────────────
+
+# Which dice the monster rolls (minion, chief, or boss)
+dice:
+  - skull     # Minion die side 1
+  - skull     # Minion die side 2
+  - circle    # Minion die side 3
+
+# Dice types:
+#   minion: Weakest (used for rank 1-2 monsters)
+#   chief: Medium (used for rank 2-3 monsters)
+#   boss: Strongest (used for bosses)
+
+# ────────────────────────────────────────────────────────────────────────
+# ABILITIES
+# ────────────────────────────────────────────────────────────────────────
+# Monster abilities work like equipment for players
+
+abilities:
+  - name: Reckless Strike
+    attribute: skull
+    skulls_needed: 1
+    effect: "+2"
+    description: "The goblin attacks wildly, dealing extra damage"
+
+    # Overcharge effect (if monster rolls 2+ skulls)
+    overcharge:
+      skulls_needed: 2
+      effect: "+4, player loses 1 armor even if they win"
+      description: "Devastating attack that damages equipment"
+
+# ────────────────────────────────────────────────────────────────────────
+# LOOT
+# ────────────────────────────────────────────────────────────────────────
+
+# What the player receives for defeating this monster
+loot:
+  gold: 4         # Gold reward
+  tokens: 0       # Token reward (if any)
+  hob: []         # Hearts of the Boss (if any—usually only on special monsters)
+
+# Loot guidelines by rank:
+#   Rank 1: 3-6 gold
+#   Rank 2: 8-15 gold
+#   Rank 3: 15-25 gold
+
+# ────────────────────────────────────────────────────────────────────────
+# BALANCE METRICS
+# ────────────────────────────────────────────────────────────────────────
+
+difficulty:
+  rating: medium        # easy, medium, hard
+  expected_win_rate: 65 # Expected % for level 1 hero with starter equipment
+
+  # Calculated from simulations
+  actual_win_rate: 68   # Warrior (Iron Sword + Leather Armor)
+
+  avg_bouts: 4.2
+  avg_damage_dealt_to_player: 2.2
+
+# ────────────────────────────────────────────────────────────────────────
+# DESIGN NOTES
+# ────────────────────────────────────────────────────────────────────────
+
+flavor_text: |
+  "Small but vicious, goblins rely on overwhelming numbers
+   and reckless tactics to bring down their prey."
+
+design_intent: |
+  Goblin Berserker is a "standard" rank 1 monster:
+  - Moderate stats (3 health, 2 armor)
+  - Consistent threat (2 skulls on die = frequent ability activation)
+  - Punishing overcharge (armor destruction)
+
+strategy_notes: |
+  Players should:
+  - Bring armor (goblin's overcharge destroys it)
+  - Aim for overkill (OK 2 means you can 2-shot it)
+  - Use armor-break weapons if available
+
+tactics: |
+  The goblin's Reckless Strike activates often (40% per roll).
+  When it overcharges (16% chance), it can swing the fight heavily.
+  Early armor loss makes subsequent bouts much harder.
+
+designer: Pietro
+created_date: 2025-10-10
+balance_status: tested

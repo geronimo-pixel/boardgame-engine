@@ -1,0 +1,185 @@
+# ═══════════════════════════════════════════════════════════════════════
+# EXAMPLE SPELL CARD - Fully Annotated
+# ═══════════════════════════════════════════════════════════════════════
+
+name: Fireball
+category: spell
+
+# ────────────────────────────────────────────────────────────────────────
+# IMPORTANT: Spells have NO RANK
+# ────────────────────────────────────────────────────────────────────────
+# Unlike equipment and monsters, spells are drawn from a single deck
+# throughout the entire game (all 3 stages).
+
+# ────────────────────────────────────────────────────────────────────────
+# COST
+# ────────────────────────────────────────────────────────────────────────
+
+cost: 6
+cost_type: gold
+
+# Spell costs typically range from 3-10 gold depending on power
+
+# ────────────────────────────────────────────────────────────────────────
+# USAGE PHASE
+# ────────────────────────────────────────────────────────────────────────
+
+# When can this spell be played?
+# Use phase numbers: 1=Starting, 2=Planning, 3=Hunting, 4=Shopping, 5=Ending
+
+usable_phases:
+  - 3  # Hunting phase (during combat)
+
+# Examples:
+#   [2]: Only during planning (e.g., "Scrying" to see shop cards)
+#   [3]: Only during hunting (e.g., "Fireball" for combat damage)
+#   [4]: Only during shopping (e.g., "Discount" to reduce costs)
+#   [2, 3]: Either planning or hunting
+#   [1, 2, 3, 4, 5]: Any phase
+
+# ────────────────────────────────────────────────────────────────────────
+# EFFECT
+# ────────────────────────────────────────────────────────────────────────
+
+effect: |
+  Deal 5 damage directly to a monster, ignoring armor.
+  This damage is dealt before combat begins.
+
+# Effect description should be clear and unambiguous:
+#   ✓ "Deal 5 damage directly to a monster, ignoring armor"
+#   ✗ "Blast the enemy" (too vague)
+
+# ────────────────────────────────────────────────────────────────────────
+# TARGETING
+# ────────────────────────────────────────────────────────────────────────
+
+target: single_monster  # Who/what can this spell target?
+
+# Target options:
+#   single_monster: One specific monster
+#   all_monsters: All monsters on the table
+#   single_player: One other player
+#   self: Only yourself
+#   any_player: Self or another player
+#   boss: Only the current boss
+
+# ────────────────────────────────────────────────────────────────────────
+# RESTRICTIONS
+# ────────────────────────────────────────────────────────────────────────
+
+restrictions:
+  - once_per_combat  # Can only be used once during a fight
+
+# Common spell restrictions:
+#   once_per_combat: Use only once in a single fight
+#   once_per_turn: Use only once per turn (can save for later turns)
+#   once_per_stage: Use only once per stage
+#   requires_level_3: Must be level 3+ to use
+#   cannot_target_bosses: Doesn't work on bosses
+
+# ────────────────────────────────────────────────────────────────────────
+# MECHANICS EXPLANATION
+# ────────────────────────────────────────────────────────────────────────
+
+# How this spell changes combat:
+
+mechanics:
+  activation: |
+    1. Player declares they're using Fireball (during Hunting phase)
+    2. Player chooses a monster target
+    3. Deal 5 damage immediately (ignoring armor)
+    4. Combat proceeds normally
+
+  damage_type: direct
+  # direct: Ignores armor, dealt instantly
+  # combat: Added to your attack roll
+  # overtime: Applied over multiple bouts
+
+  interaction_notes: |
+    - Fireball damage is dealt BEFORE combat begins
+    - If a monster has 3 health and you Fireball (5 damage), it dies instantly
+    - If a monster has 6 health, Fireball reduces it to 1 health, then combat begins
+    - Armor does NOT reduce Fireball damage (it's direct)
+
+# ────────────────────────────────────────────────────────────────────────
+# STRATEGIC VALUE
+# ────────────────────────────────────────────────────────────────────────
+
+strategic_value:
+  primary_use: "Instantly defeat low-health monsters or soften tough ones"
+
+  best_against:
+    - "High-armor monsters (since Fireball ignores armor)"
+    - "Monsters with 5 or less health (instant kill)"
+    - "Bosses (reduce HoB requirements by 1)"
+
+  combos_with:
+    - "Overkill weapons (soften monster, then overkill in combat)"
+    - "Other damage spells (stack direct damage)"
+
+  countered_by:
+    - "Spell-immune monsters (rare)"
+    - "Reflect spells (bounces back to you)"
+
+# ────────────────────────────────────────────────────────────────────────
+# BALANCE METRICS
+# ────────────────────────────────────────────────────────────────────────
+
+balance:
+  damage_per_gold: 0.83  # (5 damage / 6 gold)
+  # Compare to weapon DPG: ~0.60 avg
+  # Spell is more efficient BUT one-time use
+
+  equivalent_weapon_cost: 8  # "A weapon with 5 damage would cost ~8G"
+
+  value_rating: high
+  # Ignoring armor is very valuable against rank 2-3 monsters
+
+# ────────────────────────────────────────────────────────────────────────
+# DESIGN NOTES
+# ────────────────────────────────────────────────────────────────────────
+
+flavor_text: |
+  "A searing sphere of flame erupts from the caster's palm,
+   consuming everything in its path."
+
+design_intent: |
+  Fireball is a straightforward damage spell:
+  - Clear effect (deal 5 damage)
+  - Useful in many situations (any monster)
+  - Counter to armor (ignores it)
+  - Strategic timing (before or during combat?)
+
+  It's a "toolbox" spell—always useful but not game-breaking.
+
+usage_tips: |
+  - Save for tough fights (don't waste on easy monsters)
+  - Best used to finish off a monster you've already damaged
+  - Excellent against high-armor targets (armor is irrelevant)
+  - Can be used to "snipe" a monster another player softened up
+
+balance_notes: |
+  Tested in 50 games:
+  - Used in 76% of games where drawn
+  - Avg value: ~8G (based on combat it skipped/simplified)
+  - Not overpowered (limited to 1 use per combat)
+  - Players reported it "feels good" to use
+
+designer: Pietro
+created_date: 2025-10-10
+balance_status: tested
+
+# ────────────────────────────────────────────────────────────────────────
+# QUICK REFERENCE TEMPLATE FOR SPELLS
+# ────────────────────────────────────────────────────────────────────────
+
+# name: [Your Spell Name]
+# category: spell
+# cost: [number]
+# cost_type: [gold or tokens]
+# usable_phases: [[list of phase numbers]]
+# effect: "[Clear description of what it does]"
+# target: [who/what can be targeted]
+# restrictions: [[list of restrictions]]
+# flavor_text: "[your flavor text]"
+# design_notes: "[why you designed it this way]"

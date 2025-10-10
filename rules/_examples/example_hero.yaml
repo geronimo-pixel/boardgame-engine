@@ -1,0 +1,132 @@
+# ═══════════════════════════════════════════════════════════════════════
+# EXAMPLE HERO CARD - Fully Annotated
+# ═══════════════════════════════════════════════════════════════════════
+# This file shows the complete structure of a hero card.
+# Every field is explained so you understand what it does.
+
+# ────────────────────────────────────────────────────────────────────────
+# BASIC INFORMATION
+# ────────────────────────────────────────────────────────────────────────
+
+# The hero's name (shown to players)
+name: Warrior
+
+# Brief description of the hero's playstyle
+description: "A stalwart fighter with high HP and consistent damage output"
+
+# ────────────────────────────────────────────────────────────────────────
+# STARTING STATS
+# ────────────────────────────────────────────────────────────────────────
+
+# Maximum health points (all heroes start with 5)
+max_health: 5
+
+# Starting gold (all heroes start with 4G)
+starting_gold: 4
+
+# ────────────────────────────────────────────────────────────────────────
+# DICE POOL
+# ────────────────────────────────────────────────────────────────────────
+# The hero's personal dice that they roll in combat.
+# Format: List the attributes on the die (5 sides total)
+
+hero_dice:
+  # Warrior's die has 2 cubes, 1 circle, 1 triangle, 1 skull
+  - cube        # Side 1
+  - cube        # Side 2
+  - circle      # Side 3
+  - triangle    # Side 4
+  - skull       # Side 5
+
+# Note: Different heroes have different dice distributions
+# Example alternatives:
+#   Mage might have: [circle, circle, circle, triangle, skull]
+#   Rogue might have: [skull, skull, circle, triangle, triangle]
+
+# ────────────────────────────────────────────────────────────────────────
+# STARTING EQUIPMENT
+# ────────────────────────────────────────────────────────────────────────
+# Equipment the hero begins the game with (before purchasing anything)
+
+starting_equipment:
+  weapons:
+    - Iron Sword      # 1-handed weapon (can equip 1 more)
+  armors:
+    - Leather Armor   # Light armor
+  charms: []          # No starting charms
+
+# Equipment rules:
+#   - Max 2 weapons (unless one is 2-handed, then only 1)
+#   - Max 2 armors (must be different types: heavy/light/magical)
+#   - Max 2 charms (must be different types)
+
+# ────────────────────────────────────────────────────────────────────────
+# CLASS ABILITIES
+# ────────────────────────────────────────────────────────────────────────
+# Each hero has 12 unique class abilities they can level up into.
+# Players draw 3 per level-up and choose 1.
+
+class_ability_deck_size: 12
+
+# Where to find this hero's class abilities
+# (stored in a separate file for organization)
+class_ability_source: heroes/warrior_abilities.yaml
+
+# ────────────────────────────────────────────────────────────────────────
+# FINAL EQUIPMENT
+# ────────────────────────────────────────────────────────────────────────
+# Special equipment only this hero can buy (after reaching level 6)
+
+final_equipment:
+  name: "Champion's Greatsword"
+  cost: 20
+  cost_type: gold
+
+  # This will be defined in detail in the equipment file
+  # Just reference it here
+  source: equipment/final/warrior_final.yaml
+
+# ────────────────────────────────────────────────────────────────────────
+# FLAVOR & DESIGN NOTES
+# ────────────────────────────────────────────────────────────────────────
+# These fields don't affect gameplay—they're for documentation
+
+flavor_text: |
+  "Forged in countless battles, the Warrior stands as an
+   unbreakable bulwark against the darkness."
+
+playstyle: |
+  Consistent and reliable. The Warrior excels at:
+  - Sustained combat (high HP)
+  - Predictable damage (cube-based activations)
+  - Equipment flexibility (balanced attribute distribution)
+
+design_notes: |
+  The Warrior is designed as the "baseline" hero:
+  - Balanced dice (no extreme specialization)
+  - Straightforward abilities (no complex combos)
+  - New player friendly
+
+strategy_tips: |
+  - Focus on cube-based weapons early
+  - Invest in armor to maximize survivability
+  - Level up steadily (balanced power curve)
+
+# ────────────────────────────────────────────────────────────────────────
+# METADATA
+# ────────────────────────────────────────────────────────────────────────
+
+# Who designed this hero
+designer: Pietro
+
+# When it was last updated
+last_updated: 2025-10-10
+
+# Current balance status
+balance_status: tested  # Options: draft, testing, tested, needs_buff, needs_nerf
+
+# Playtesting notes
+playtest_notes: |
+  - Win rate vs. rank 1 monsters: 62% (acceptable)
+  - Player feedback: "Feels solid and fair"
+  - No changes needed currently

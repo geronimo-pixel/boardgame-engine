@@ -1,0 +1,259 @@
+# ═══════════════════════════════════════════════════════════════════════
+# EXAMPLE WEAPON CARD - Fully Annotated
+# ═══════════════════════════════════════════════════════════════════════
+# This file shows the complete structure of a weapon card.
+# Every field is explained with comments.
+
+# ────────────────────────────────────────────────────────────────────────
+# BASIC INFORMATION
+# ────────────────────────────────────────────────────────────────────────
+
+# The weapon's name (shown to players)
+name: Iron Sword
+
+# Which stage/rank this appears in (1, 2, or 3)
+rank: 1
+
+# Card category (always "weapon" for weapons)
+category: weapon
+
+# ────────────────────────────────────────────────────────────────────────
+# COST
+# ────────────────────────────────────────────────────────────────────────
+
+# How much it costs to purchase
+cost: 5
+
+# What currency type (gold or tokens)
+cost_type: gold
+
+# Cost guidelines by rank:
+#   Rank 1: 4-10 gold
+#   Rank 2: 10-20 gold
+#   Rank 3: 20-35 gold
+
+# ────────────────────────────────────────────────────────────────────────
+# EQUIPMENT SLOTS
+# ────────────────────────────────────────────────────────────────────────
+
+# How many weapon slots this uses (1 or 2)
+hands: 1
+
+# Explanation:
+#   1 = One-handed (can equip another weapon or shield)
+#   2 = Two-handed (uses both weapon slots)
+
+# ────────────────────────────────────────────────────────────────────────
+# COMBAT ATTRIBUTES
+# ────────────────────────────────────────────────────────────────────────
+# This is the MOST IMPORTANT section—it defines how the weapon works!
+
+attributes:
+
+  # ┌─────────────────────────────────────────────────────────────────────
+  # │ BASE ACTIVATION
+  # └─────────────────────────────────────────────────────────────────────
+  # The minimum dice requirement to use this weapon
+
+  base:
+    # Which attribute is needed (cube, circle, triangle, or skull)
+    cubes: 1
+
+    # What effect happens when you roll enough of this attribute
+    effect: "+3"
+
+    # How to read this:
+    # "If you roll 1 or more cubes, this weapon adds +3 to your attack"
+
+  # ┌─────────────────────────────────────────────────────────────────────
+  # │ OVERCHARGE (OPTIONAL)
+  # └─────────────────────────────────────────────────────────────────────
+  # Enhanced effect if you roll even more of the required attribute
+
+  overcharge:
+    # How many attributes needed for overcharge
+    cubes: 2
+
+    # Enhanced effect
+    effect: "+5"
+
+    # How to read this:
+    # "If you roll 2 or more cubes, the weapon adds +5 instead of +3"
+
+    # Note: Overcharge REPLACES base effect, doesn't add to it!
+    # Wrong interpretation: "1 cube = +3, 2 cubes = +3 +5 = +8"
+    # Correct interpretation: "1 cube = +3, 2 cubes = +5"
+
+  # ┌─────────────────────────────────────────────────────────────────────
+  # │ FALLBACK (OPTIONAL)
+  # └─────────────────────────────────────────────────────────────────────
+  # What happens if you don't roll the required attribute at all
+  # (Not used in Iron Sword, but here's how it would work:)
+
+  # fallback:
+  #   cubes: 0           # When you roll ZERO cubes
+  #   effect: "+1"       # Minimal effect (better than nothing)
+
+# ────────────────────────────────────────────────────────────────────────
+# SPECIAL EFFECTS (OPTIONAL)
+# ────────────────────────────────────────────────────────────────────────
+
+# Does this weapon have special effects beyond damage?
+special_effects: []
+
+# Examples of special effects:
+#   - armor_break: "Ignores enemy armor"
+#   - lifesteal: "Heal 1 HP when you win a bout"
+#   - burn: "Target takes 1 damage per turn for 2 turns"
+#   - stun: "Enemy skips next turn"
+
+# Iron Sword is a basic weapon with no special effects
+
+# ────────────────────────────────────────────────────────────────────────
+# RESTRICTIONS (OPTIONAL)
+# ────────────────────────────────────────────────────────────────────────
+
+# Are there limits on when/how this weapon can be used?
+restrictions: []
+
+# Examples of restrictions:
+#   - once_per_combat: "Can only activate once, then must recharge"
+#   - ranged_only: "Cannot be used in melee duels"
+#   - requires_full_hp: "Only works if you're at max health"
+#   - final_stage_only: "Can only be equipped in stage 3"
+
+# Iron Sword has no restrictions (straightforward weapon)
+
+# ────────────────────────────────────────────────────────────────────────
+# ACTIVATION PROBABILITY CALCULATOR (HELPER INFO)
+# ────────────────────────────────────────────────────────────────────────
+# This section helps you understand how likely this weapon is to activate
+
+# For Warrior (who has 2 cubes on their 5-sided hero die):
+activation_probability:
+  hero: Warrior
+  dice_count: 1  # Rolling 1 die
+
+  # Probability calculations:
+  base_activation:   # Need 1+ cubes
+    expected: 40%    # (2 cubes / 5 sides = 40% per die)
+
+  overcharge_activation:  # Need 2+ cubes
+    expected: 0%     # (Impossible with 1 die—need to roll 2 dice)
+
+  # With 2 dice:
+  with_2_dice:
+    base_activation: 64%        # Much more likely
+    overcharge_activation: 16%  # Now possible!
+
+  # With 3 dice (after leveling up):
+  with_3_dice:
+    base_activation: 78%
+    overcharge_activation: 35%
+
+# This helps you design: "Is this weapon too reliant on lucky rolls?"
+
+# ────────────────────────────────────────────────────────────────────────
+# BALANCE METRICS
+# ────────────────────────────────────────────────────────────────────────
+
+# Calculated efficiency metrics (auto-computed by balance tools)
+balance_metrics:
+  # Damage per gold spent
+  dpg: 0.60  # (3 damage / 5 gold)
+
+  # Expected damage per bout (accounting for activation chance)
+  expected_damage: 1.2  # (40% chance × 3 damage)
+
+  # Power rating (⭐-⭐⭐⭐⭐⭐)
+  power_rating: 3  # ⭐⭐⭐ (balanced)
+
+  # Compared to rank 1 average
+  relative_power: baseline  # "This is the standard all others are compared to"
+
+# ────────────────────────────────────────────────────────────────────────
+# FLAVOR & DESIGN NOTES
+# ────────────────────────────────────────────────────────────────────────
+
+flavor_text: |
+  "A reliable blade, forged with care and tempered in fire.
+   Not flashy, but it gets the job done."
+
+design_intent: |
+  Iron Sword is the BASELINE weapon:
+  - Moderate cost (5G)
+  - Consistent activation (40% with 1 die)
+  - No special effects (easy to understand)
+  - Straightforward overcharge (+3 → +5)
+
+  All other rank 1 weapons are balanced against this standard.
+
+strategy_notes: |
+  Best for:
+  - Early game purchases
+  - Heroes with cube-heavy dice (Warrior, Paladin)
+  - Players who value consistency over burst damage
+
+  Pairs well with:
+  - Shield (cube-based armor)
+  - Any 1-handed secondary weapon
+  - Cube-generating abilities
+
+design_notes: |
+  Balance testing (100 simulations):
+  - Win rate vs. rank 1 monsters: 68%
+  - Average bout count: 4.2
+  - Activation rate: 38% (close to expected 40%)
+  - Player feedback: "Feels fair and reliable"
+
+# ────────────────────────────────────────────────────────────────────────
+# MULTIPLE ATTRIBUTE VARIANTS
+# ────────────────────────────────────────────────────────────────────────
+# Most equipment has 3 copies with different attributes
+
+# This Iron Sword uses CUBES, but you might also create:
+#   - Iron Sword (Circle) → Same stats, needs circles instead
+#   - Iron Sword (Triangle) → Same stats, needs triangles instead
+#   - Iron Sword (Skull) → Same stats, needs skulls instead
+
+# Why? So different heroes can use the same weapon type!
+# Warrior (cube-heavy) uses cube version
+# Mage (circle-heavy) uses circle version
+
+variants:
+  cube: "rules/equipment/weapons_rank1.yaml#iron_sword_cube"
+  circle: "rules/equipment/weapons_rank1.yaml#iron_sword_circle"
+  triangle: "rules/equipment/weapons_rank1.yaml#iron_sword_triangle"
+
+# ────────────────────────────────────────────────────────────────────────
+# METADATA
+# ────────────────────────────────────────────────────────────────────────
+
+designer: Pietro
+created_date: 2025-10-10
+last_updated: 2025-10-10
+balance_status: tested  # draft, testing, tested, needs_buff, needs_nerf
+version: 1.0
+
+# ────────────────────────────────────────────────────────────────────────
+# QUICK REFERENCE TEMPLATE
+# ────────────────────────────────────────────────────────────────────────
+# Use this template when creating your own weapons:
+
+# name: [Your Weapon Name]
+# rank: [1, 2, or 3]
+# category: weapon
+# cost: [number]
+# cost_type: [gold or tokens]
+# hands: [1 or 2]
+# attributes:
+#   base:
+#     [attribute]: [number]
+#     effect: "[effect description]"
+#   overcharge:
+#     [attribute]: [number]
+#     effect: "[enhanced effect]"
+# special_effects: []
+# restrictions: []
+# flavor_text: "[your flavor text]"
+# design_notes: "[why you designed it this way]"

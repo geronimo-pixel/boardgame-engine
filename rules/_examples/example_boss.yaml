@@ -1,0 +1,218 @@
+# ═══════════════════════════════════════════════════════════════════════
+# EXAMPLE BOSS CARD - Fully Annotated
+# ═══════════════════════════════════════════════════════════════════════
+
+name: Ancient Drake
+rank: 1  # Stage 1 boss
+category: boss
+
+# ────────────────────────────────────────────────────────────────────────
+# BOSS MECHANICS
+# ────────────────────────────────────────────────────────────────────────
+
+# Unlike regular monsters, bosses have "Hearts of the Boss" (HoB)
+# Players must defeat the boss MULTIPLE TIMES to collect all hearts
+
+hearts_of_boss:
+  count: 4  # Must defeat this boss 4 times total
+
+  # Each heart has a victory point value (based on position + stage)
+  values:
+    - 1  # First heart (easiest to get)
+    - 2  # Second heart
+    - 2  # Third heart
+    - 3  # Fourth heart (hardest to get)
+
+  # Total VP from this boss: 1+2+2+3 = 8 VP
+
+# ────────────────────────────────────────────────────────────────────────
+# COMBAT STATS
+# ────────────────────────────────────────────────────────────────────────
+
+health: 5  # Bouts needed per defeat
+armor: 4   # Higher than regular monsters
+attack: 6  # Base attack value
+overkill: 3  # Harder to overkill
+
+# Bosses can only be fought ONCE PER TURN
+# But abilities can be used on them unlimited times per turn
+
+# ────────────────────────────────────────────────────────────────────────
+# DICE POOL
+# ────────────────────────────────────────────────────────────────────────
+
+dice:
+  - boss  # Boss dice are stronger than minion/chief dice
+  - boss
+  - chief
+
+# Boss dice have more powerful attribute distributions
+
+# ────────────────────────────────────────────────────────────────────────
+# ABILITIES
+# ────────────────────────────────────────────────────────────────────────
+
+abilities:
+  - name: Dragon's Breath
+    attribute: skull
+    skulls_needed: 1
+    effect: "+4"
+    description: "Searing flames add massive damage"
+
+    overcharge:
+      skulls_needed: 2
+      effect: "+8, player loses all armor"
+      description: "Devastating attack that melts equipment"
+
+  - name: Scaled Hide
+    attribute: triangle
+    triangles_needed: 1
+    effect: "+2 armor"
+    description: "Hardened scales deflect attacks"
+
+# Bosses often have 2+ abilities (more complex than regular monsters)
+
+# ────────────────────────────────────────────────────────────────────────
+# STAGE RULE
+# ────────────────────────────────────────────────────────────────────────
+
+# IMPORTANT: Each boss has a special rule that affects the ENTIRE STAGE
+
+stage_rule:
+  name: "Ancient Fear"
+  effect: |
+    During the Planning Phase, if 2+ players choose the same monster,
+    they MUST duel for it (cannot cooperate).
+
+  duration: "Until this boss is defeated"
+
+# Stage rules fundamentally change how the stage plays:
+#   - Economic rules (costs, gold gain)
+#   - Combat rules (damage, armor)
+#   - Strategic rules (cooperation, targeting)
+
+# These rules take precedence over normal game rules!
+
+# ────────────────────────────────────────────────────────────────────────
+# DEFEAT CONDITIONS
+# ────────────────────────────────────────────────────────────────────────
+
+# Stage ends when the boss is fully defeated (all HoB collected)
+
+defeat_triggers:
+  stage_ends: true  # Stage immediately ends on defeat
+
+  on_defeat:
+    - "All current shop/monster cards are discarded"
+    - "New cards of next rank are drawn"
+    - "Boss rule ends"
+    - "Players keep their equipment and gold"
+
+# ────────────────────────────────────────────────────────────────────────
+# LOOT (PER DEFEAT)
+# ────────────────────────────────────────────────────────────────────────
+
+# Each time a player defeats the boss (gets a HoB):
+loot_per_defeat:
+  gold: 10  # Significant reward
+  tokens: 2  # Special currency
+  hob: 1  # Collect one heart
+
+# If players cooperate, they must agree how to split the HoB
+
+# ────────────────────────────────────────────────────────────────────────
+# BALANCE METRICS
+# ────────────────────────────────────────────────────────────────────────
+
+difficulty:
+  rating: high  # Bosses are significantly harder than regular monsters
+
+  # Expected performance for average level 2-3 player
+  expected_win_rate: 45  # Should feel challenging!
+
+  avg_bouts: 6.5
+  avg_damage_dealt: 3.2  # Players take significant damage
+
+  # Stage 1 boss should be beatable but tough
+  # Stage 2 boss should require good equipment
+  # Stage 3 boss should be a climactic challenge
+
+# ────────────────────────────────────────────────────────────────────────
+# STRATEGIC NOTES
+# ────────────────────────────────────────────────────────────────────────
+
+strategy:
+  optimal_approach: |
+    - Fight 2-3 rank 1 monsters first (gear up, level up)
+    - Bring armor (boss's overcharge destroys it)
+    - Consider cooperation (split HoB, share risk)
+    - Save spells for boss fights
+
+  cooperation_incentive: |
+    Fighting the boss solo is risky but gives you exclusive HoB.
+    Cooperating is safer but you must split rewards.
+    The stage rule (Ancient Fear) makes cooperation harder!
+
+  timing: |
+    Early boss attempts = risky but denies VP to others
+    Late boss attempts = safer but others may claim HoB first
+
+# ────────────────────────────────────────────────────────────────────────
+# DESIGN NOTES
+# ────────────────────────────────────────────────────────────────────────
+
+flavor_text: |
+  "An ancient wyrm, slumbering in the depths. Its scaled hide
+   has turned aside countless blades, and its breath has reduced
+   kingdoms to ash. Only the bravest dare disturb its rest."
+
+design_intent: |
+  Ancient Drake is the Stage 1 boss:
+  - Challenging but not impossible (45% win rate)
+  - Multiple defeats required (4 HoB = engagement)
+  - Stage rule creates PvP tension (forced duels)
+  - Rewards aggression (first to defeat gets choice of HoB)
+
+  The boss should feel like a milestone, not a roadblock.
+
+stage_rule_rationale: |
+  "Ancient Fear" forces competition:
+  - Players can't all gang up on the same monster
+  - Creates strategic choices (duel or pick different monster?)
+  - Thematically: The drake's presence makes adventurers paranoid
+
+  This increases PvP interaction without forcing full PvP combat.
+
+balance_notes: |
+  Tested in 25 full games:
+  - Boss defeated on avg turn 6 (out of ~8 turns in stage 1)
+  - 78% of games had 2+ players defeat boss (good distribution)
+  - Stage rule triggered 3.2 times per game (meaningful impact)
+  - Player feedback: "Felt epic but fair"
+
+designer: Pietro
+created_date: 2025-10-10
+balance_status: tested
+
+# ────────────────────────────────────────────────────────────────────────
+# BOSS DESIGN GUIDELINES
+# ────────────────────────────────────────────────────────────────────────
+
+# Stage 1 Bosses:
+#   - 4-5 HoB
+#   - Health: 4-6 bouts
+#   - Win rate: 40-50%
+#   - Stage rule: Light impact (introduces mechanic)
+
+# Stage 2 Bosses:
+#   - 5-6 HoB
+#   - Health: 6-8 bouts
+#   - Win rate: 30-40%
+#   - Stage rule: Moderate impact (strategic choice)
+
+# Stage 3 Bosses:
+#   - 6-8 HoB
+#   - Health: 8-10 bouts
+#   - Win rate: 25-35%
+#   - Stage rule: High impact (game-changing)
+#   - Loss condition possible (collective failure)

@@ -1,0 +1,100 @@
+# ═══════════════════════════════════════════════════════════════════════
+# EXAMPLE ARMOR CARD - Fully Annotated
+# ═══════════════════════════════════════════════════════════════════════
+
+name: Leather Armor
+rank: 1
+category: armor
+
+# ────────────────────────────────────────────────────────────────────────
+# ARMOR TYPE
+# ────────────────────────────────────────────────────────────────────────
+
+armor_type: light
+
+# Armor types: light, heavy, magical
+# Rule: You can equip max 2 armors, but they must be DIFFERENT types
+# Example: Leather Armor (light) + Chain Mail (heavy) ✓
+#          Leather Armor (light) + Studded Leather (light) ✗
+
+# ────────────────────────────────────────────────────────────────────────
+# COST
+# ────────────────────────────────────────────────────────────────────────
+
+cost: 4
+cost_type: gold
+
+# ────────────────────────────────────────────────────────────────────────
+# ARMOR MECHANICS
+# ────────────────────────────────────────────────────────────────────────
+
+# Most armor provides a PASSIVE bonus (no dice activation needed)
+armor_bonus: 1
+
+# This +1 is added to your total every bout, automatically
+# No attributes required! (Unlike weapons which need dice matches)
+
+# ────────────────────────────────────────────────────────────────────────
+# SPECIAL EFFECTS (OPTIONAL)
+# ────────────────────────────────────────────────────────────────────────
+
+# Some armor has effects that trigger on specific conditions
+
+special_effects:
+  - trigger: on_armor_break
+    effect: "Heal 1 HP"
+    description: "When this armor breaks, regain 1 health"
+
+# Common armor triggers:
+#   on_armor_break: When this armor is destroyed
+#   on_hit: Every time you take damage
+#   start_of_combat: Beginning of each fight
+#   if_full_hp: Only while at maximum health
+
+# ────────────────────────────────────────────────────────────────────────
+# ATTRIBUTE ACTIVATION (OPTIONAL)
+# ────────────────────────────────────────────────────────────────────────
+
+# MOST armor is passive, but some armor CAN require dice activation
+# (Leather Armor doesn't, but here's how it would work:)
+
+# attributes:
+#   base:
+#     circles: 1        # Need 1 circle to activate bonus
+#     effect: "+2"      # Bonus armor
+#
+# With this structure, the armor would give:
+#   - No circles: +0 armor
+#   - 1+ circles: +2 armor
+
+# Passive armor (like Leather Armor) is simpler and more consistent
+
+# ────────────────────────────────────────────────────────────────────────
+# BALANCE NOTES
+# ────────────────────────────────────────────────────────────────────────
+
+balance:
+  armor_per_gold: 0.25  # (1 armor / 4 gold)
+  # Lower than weapon DPG because armor:
+  #   - Works every bout (no activation requirement)
+  #   - Prevents damage (which is arguably more valuable than dealing it)
+
+  survival_value: high
+  # Armor keeps you alive, which is worth more than raw damage
+
+  typical_lifespan: 2.5  # Average bouts before armor breaks
+
+design_notes: |
+  Leather Armor is the "baseline" armor:
+  - Low cost (4G - affordable early)
+  - Passive effect (no dice requirement = reliable)
+  - Small bonus (+1 is meaningful but not game-warping)
+  - Light type (can stack with heavy/magical)
+  - Heal on break (softens the blow of losing armor)
+
+flavor_text: |
+  "Supple and sturdy, this armor bends with the wearer's
+   movements while turning aside glancing blows."
+
+designer: Pietro
+balance_status: tested
