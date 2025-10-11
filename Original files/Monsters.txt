@@ -59,6 +59,7 @@ OC explode, deal 1 damage dies
 	2G + 1T
 	
 
+	Jackal
 	1
 	2
 	1
@@ -80,6 +81,7 @@ OC explode, deal 1 damage dies
 	4G
 	
 
+	Ibex
 	1
 	6
 	1
@@ -121,6 +123,7 @@ OC = +1Ar
 	4G + 1T
 	
 
+	Mamba
 	2
 	2
 	1
@@ -132,6 +135,7 @@ OC =  +2Att
 	4G
 	
 
+	Tamarin
 	2
 	1
 	2
@@ -143,6 +147,7 @@ OC = +2Ar
 	2G + 1T
 	
 
+	Lynx
 	2
 	3
 	1
@@ -154,6 +159,7 @@ OC = +2 Att
 	3G
 	
 
+	Viper
 	2
 	2
 	3
@@ -175,6 +181,7 @@ OC= +1Att
 
 
 
+	Orca
 	2
 	3
 	3
@@ -199,6 +206,7 @@ OC = + 3Ar
 	4G
 	
 
+	Badger
 	3
 	2
 	1
@@ -210,6 +218,7 @@ OC = +2Att
 	4G
 	
 
+	Gazelle
 	3
 	4
 	3
@@ -221,6 +230,7 @@ OC = +3Att
 	4G
 	
 
+	Wombat
 	3
 	0
 	3
@@ -231,6 +241,7 @@ OC = +3Att
 	3G
 	
 
+	Puma
 	3
 	1
 	1
@@ -242,6 +253,7 @@ OC= +1Att
 	4G + 1 T
 	
 
+	Bison
 	3
 	1
 	4
@@ -253,6 +265,7 @@ OC = +2Ar
 	3G
 	
 
+	Kestrel
 	3
 	2
 	2
@@ -264,6 +277,7 @@ OC = +2 Att
 	4G + 1 HoB (blue)
 	
 
+	Caribou
 	4
 	0
 	2
@@ -275,6 +289,7 @@ OC bout is null retry
 	5G
 	
 
+	Okapi
 	4
 	2
 	3
@@ -286,6 +301,7 @@ OC= +1Att
 	5G + 1 T
 	
 
+	Raccoon
 	4
 	3
 	3
@@ -297,6 +313,7 @@ OC = +1Ar
 	8G
 	
 
+	Marten
 	4
 	4
 	4
@@ -308,6 +325,7 @@ OC = +2Ar
 	6G + 1 T
 	
 
+	Jaguar
 	4
 	6
 	1
@@ -320,6 +338,7 @@ no G loses 1 Health combat continues
 	8G
 	
 
+	Python
 	4
 	5
 	2
@@ -330,6 +349,7 @@ no G loses 1 Health combat continues
 	4G
 	
 
+	Otter
 	4
 	3
 	3

@@ -187,7 +187,8 @@ def load_monsters(path: Path = DEFAULT_MONSTER_PATH) -> List[Monster]:
         if rank is None:
             raise ValueError(f"Encountered monster data '{line}' before any rank declaration.")
 
-        if not NAME_PATTERN.match(line):
+        lower_line = line.lower()
+        if not NAME_PATTERN.match(line) or any(ch.isdigit() for ch in line) or "=" in line or "+" in line or lower_line.startswith("oc"):
             idx += 1
             continue
 
@@ -211,9 +212,27 @@ def load_monsters(path: Path = DEFAULT_MONSTER_PATH) -> List[Monster]:
             idx += 1
             if not value:
                 continue
-            if LOOT_PATTERN.match(value) or "HoB" in value or value.endswith("Tk"):
+
+            is_loot_candidate = bool(
+                LOOT_PATTERN.match(value) or "HoB" in value or value.endswith("Tk")
+            )
+
+            if loot_line is None and is_loot_candidate:
                 loot_line = value
+
+                # Loot lines in the source sometimes spill over with notes such
+                # as "(blue)" on the following line. Consume those continuations
+                # so they are not interpreted as monster names.
+                while idx < len(raw_lines):
+                    peek = raw_lines[idx]
+                    if peek.startswith("("):
+                        loot_line = f"{loot_line} {peek}"
+                        idx += 1
+                        continue
+                    break
+
                 break
+
             ability_lines.append(value)
 
         if loot_line is None:
