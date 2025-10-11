@@ -115,7 +115,6 @@ def load_hero_dice(config: Optional[Mapping[str, object]] = None) -> List[HeroDi
                 raise DiceConfigError(
                     f"Hero '{hero_name}' has a face entry that is not a list."
                 )
-                # continue loop even though exception raised
             expanded_faces.append(_expand_faces(face, attributes))
 
         _validate_face_count(f"hero:{hero_name}", expanded_faces)

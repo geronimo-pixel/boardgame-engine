@@ -350,13 +350,15 @@ def simulate_hunter_triangle_bow_vs_monster(
 
         skulls, monster_attack, bonus_text = _roll_monster_skulls(monster, dice_tables, rng)
 
-        if hunter_attack >= monster_attack:
+        # Hunter does NOT have tie-breaker ability (unlike Warrior)
+        # Must beat monster to win
+        if hunter_attack > monster_attack:
             outcome = "Hunter wins bout"
-            if hunter_attack == monster_attack:
-                outcome += " (tie-breaker)"
             monster_health -= 1
         else:
             outcome = "Monster wins bout"
+            if hunter_attack == monster_attack:
+                outcome += " (tie)"
             hunter_health -= 1
 
         bouts.append(
@@ -448,6 +450,7 @@ def simulate_warrior_vs_monster(
 
     warrior_health = 5
     monster_health = monster.health
+    monster_armor = monster.armor  # Track monster armor (breaks on first loss)
     bouts: List[BoutLog] = []
     bout_number = 1
 
@@ -461,15 +464,23 @@ def simulate_warrior_vs_monster(
 
         skulls, monster_attack, bonus_text = _roll_monster_skulls(monster, dice_tables, rng)
 
-        if hero_attack > monster_attack or hero_attack == monster_attack:
+        # Warrior CA#2: Always wins ties
+        if hero_attack >= monster_attack:
             outcome = "Warrior wins bout"
             if hero_attack == monster_attack:
-                outcome += " (tie-breaker)"
-            monster_health -= 1
+                outcome += " (tie-breaker: CA#2)"
+            # Monster loses armor first, then health
+            if monster_armor > 0:
+                monster_armor = 0
+                outcome += " - monster armor broken"
+            else:
+                monster_health -= 1
         else:
             outcome = "Monster wins bout"
+            # Hero loses armor first, then health
             if hero_armor > 0:
                 hero_armor = 0
+                outcome += " - hero armor broken"
             else:
                 warrior_health -= 1
 

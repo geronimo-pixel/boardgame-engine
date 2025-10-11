@@ -66,12 +66,13 @@ class Monster:
 
         if self.skull_mapping:
             # Prefer an exact match; otherwise fall back to the highest defined
-            # value that does not exceed the current skull count.
+            # key that does not exceed the current skull count.
             if skull_count in self.skull_mapping:
                 bonus = self.skull_mapping[skull_count]
             else:
-                candidates = [value for key, value in self.skull_mapping.items() if key <= skull_count]
-                bonus = max(candidates) if candidates else 0
+                # Find the highest key that's <= skull_count, then look up its bonus
+                candidates = [key for key in self.skull_mapping if key <= skull_count]
+                bonus = self.skull_mapping[max(candidates)] if candidates else 0
         else:
             bonus = 0
 
@@ -158,7 +159,19 @@ def _finalise_entry(name: str, rank: int, block: List[str]) -> Monster:
 
 
 def load_monsters(path: Path = DEFAULT_MONSTER_PATH) -> List[Monster]:
-    """Parse the monster specification text file into Monster objects."""
+    """
+    Parse the monster specification text file into Monster objects.
+
+    Format in source file:
+        Health
+        Armor
+        Attack
+        Overkill
+        Dice
+        Ability lines (optional, multiple)
+        Loot
+        MonsterName  (name comes LAST)
+    """
     if not path.exists():
         raise FileNotFoundError(f"Monster specification not found: {path}")
 
@@ -168,78 +181,46 @@ def load_monsters(path: Path = DEFAULT_MONSTER_PATH) -> List[Monster]:
     idx = 0
     headers = {"Name", "Health", "Armor", "Attack", "Overkill", "Dice", "Ability", "Loot"}
 
+    # Accumulator for current monster data block
+    current_block: List[str] = []
+
     while idx < len(raw_lines):
         line = raw_lines[idx]
+        idx += 1
+
         if not line:
-            idx += 1
             continue
         if line.upper().startswith("RANK"):
             try:
                 rank = int(line.split()[1])
             except (IndexError, ValueError) as exc:
                 raise ValueError(f"Unable to parse rank from line '{line}'") from exc
-            idx += 1
             continue
         if line in headers or line.startswith("Att="):
-            idx += 1
             continue
 
         if rank is None:
             raise ValueError(f"Encountered monster data '{line}' before any rank declaration.")
 
         lower_line = line.lower()
-        if not NAME_PATTERN.match(line) or any(ch.isdigit() for ch in line) or "=" in line or "+" in line or lower_line.startswith("oc"):
-            idx += 1
-            continue
+        # Check if this line is a monster name
+        is_name = (NAME_PATTERN.match(line) and
+                   not any(ch.isdigit() for ch in line) and
+                   "=" not in line and
+                   "+" not in line and
+                   not lower_line.startswith("oc"))
 
-        name = line
-        idx += 1
+        # Check if line looks like OC ability (should be part of data, not a name)
+        is_oc_ability = lower_line.startswith("oc")
 
-        # Read the five stat lines (health, armor, attack, overkill, dice).
-        block: List[str] = []
-        while len(block) < 5 and idx < len(raw_lines):
-            value = raw_lines[idx]
-            idx += 1
-            if value:
-                block.append(value)
-        if len(block) < 5:
-            break  # Incomplete tail; exit parsing gracefully.
-
-        ability_lines: List[str] = []
-        loot_line: Optional[str] = None
-        while idx < len(raw_lines):
-            value = raw_lines[idx]
-            idx += 1
-            if not value:
-                continue
-
-            is_loot_candidate = bool(
-                LOOT_PATTERN.match(value) or "HoB" in value or value.endswith("Tk")
-            )
-
-            if loot_line is None and is_loot_candidate:
-                loot_line = value
-
-                # Loot lines in the source sometimes spill over with notes such
-                # as "(blue)" on the following line. Consume those continuations
-                # so they are not interpreted as monster names.
-                while idx < len(raw_lines):
-                    peek = raw_lines[idx]
-                    if peek.startswith("("):
-                        loot_line = f"{loot_line} {peek}"
-                        idx += 1
-                        continue
-                    break
-
-                break
-
-            ability_lines.append(value)
-
-        if loot_line is None:
-            raise ValueError(f"Missing loot line while parsing monster '{name}'.")
-
-        monster_block = block + ability_lines + [loot_line]
-        monsters.append(_finalise_entry(name=name, rank=rank, block=monster_block))
+        if is_name and len(current_block) >= 6:
+            # We've accumulated enough data (5 stats + at least 1 loot), this is the name
+            monster = _finalise_entry(name=line, rank=rank, block=current_block)
+            monsters.append(monster)
+            current_block = []
+        elif is_oc_ability or not is_name:
+            # Continue accumulating data (stats, abilities, loot)
+            current_block.append(line)
 
     return monsters
 
