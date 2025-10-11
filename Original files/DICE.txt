@@ -1,0 +1,122 @@
+﻿DICE
+Hero 
+
+
+Hero dice is stronger than Class dice, it has 6 faces each with a different combination of attributes based on which Hero they belong to.
+
+
+1. Warrior  : squares primary, triangles secondary, circles tertiary
+2. Sentinel : squares primary, circles secondary, triangles tertiary
+3. Mage     : circles primary, triangles secondary, squares tertiary
+4. Shaman : circles primary, squares secondary, triangles tertiary
+5. Thief      : triangles primary, circles secondary, squares tertiary
+6. Hunter   : triangles primary, squares secondary, circles tertiary
+7. Mercenary has unique dice
+
+
+Faces’s attributes for everybody but mercenary:
+
+
+1. 2 primary + 1 secondary
+2. 1 primary + 2 secondary
+3. 1 primary + 1 secondary
+4. 2 primary 
+5. 1 primary 
+6. 1 tertiary 
+
+
+Mercenary's dice faces’s attributes:
+
+
+1. 2 squares 
+2. 2 circles
+3. 2 triangles
+4. 1 square + 1 circle
+5. 1 circle + 1 triangle
+6. 1 triangle + 1 square
+
+
+
+
+
+
+CLASS
+
+
+Class dice is weaker than Hero dice, it has 6 faces each with a different combination of attributes based on which Hero they belong to.
+
+
+1. Warrior  : squares primary, triangles secondary, circles tertiary
+2. Sentinel : squares primary, circles secondary, triangles tertiary
+3. Mage     : circles primary, triangles secondary, squares tertiary
+4. Shaman : circles primary, squares secondary, triangles tertiary
+5. Thief      : triangles primary, circles secondary, squares tertiary
+6. Hunter   : triangles primary, squares secondary, circles tertiary
+7. Mercenary has unique dice
+
+
+Faces’s attributes for everybody but mercenary:
+
+
+1. 2 primary 
+2. 2 primary 
+3. 1 primary + 1 secondary
+4. 1 secondary
+5. 1 secondary
+6. 1 tertiary 
+
+
+Mercenary's dice faces’s attributes:
+
+
+1. 2 squares 
+2. 2 circles
+3. 2 triangles
+4. 1 square 
+5. 1 circle 
+6. 1 triangle 
+
+
+
+
+
+
+
+
+MONSTER
+
+
+Monster dice are divided into 3 categories: Minion (m), Chief (c) and Boss (b). Each dice category is increasingly powerful, their attributes is the Skull.
+
+
+MINION
+
+
+1. 2 skulls
+2. 1 skull
+3. 1 skull
+4. 1 skull
+5. 1 skull
+6. 0 skull
+
+
+CHIEF
+
+
+1. 3 skull
+2. 2 skull
+3. 2 skull
+4. 1 skull
+5. 1 skull
+6. 1 skull
+
+
+BOSS
+
+
+1. 4 skull
+2. 3 skull
+3. 3 skull
+4. 2 skull
+5. 2 skull
+6. 2 skull

@@ -1,0 +1,127 @@
+﻿ABILITIES
+
+
+WARRIOR red
+
+
+Hero : Use any attribute for your weapons (cd 2 p 3)
+1. Class : Gain + 1/2/3 A during duels (cd 0 p 1-5)
+2. Class : Always wins ties  (cd 0 p 1-5)
+3. Class : Gain +1 A for every Health you’re missing  (cd 0 p 1-5)
+4. Class : On “Late start” gain + 2/3/4 while hunting (cd 0 p 3)
+5. Class : Duel with no CA, choose one of yours to use (cd 2 p 3-4)
+6. Class : Reroll your dice up to 3 times during a duel (cd 3 p 3-4)
+7. Class : On Victory gain + 1/1/2 G (cd 0 p 3-4)
+8. Class : On Victory gain + 1 random token (cd 2 p 3-4)
+9. Class : Gain + 1/2/3 a against Armor
+10. Class : 2 Handed weapons gain + 2 A (cd 0 p 1-5)
+11. Class : Gain + 1/2/3 Armor during a duel (cd 1 p 3-4)
+12. Class : On Armor break (enemy) gain + 1/2/3 on the next attack (cd 1 p 3-4)
+
+
+SENTINEL orange
+
+
+Hero : Cancel any detrimental effect directed to you (cd 2) or others (cd 3) (p 1-5)
+1. Class : Gain + 1/2/3 Armor (cd 0 p 1-5)
+2. Class : On Armor Win gain + 2/3/4 A on the next A (cd 0 p 1-5)
+3. Class : On Armor Break (self) and Combat Lose deal 1 damage to the winner, doesn't work on bosses (cd 2 p 3-4)
+4. Class : Regenerate your Armor (cd 3 p 3-4)
+5. Class : If your Armor is greater than the opponent’s Gain + 1/2/3 A for the fight (cd 2 p 3-4)
+6. Class : On Armor Break gain + 1/1/2 A (cd 2 p 3-4)
+7. Class : On Armor Win gain + 1/2/3 G (cd 0 p 3-4)
+8. Class : Win a fight with Armor On, gain + 2/3/4 G (cd 0 p 3-4)
+9. Class : Shields grant you + 1/1/2 Armor (cd 0 p 3-4)
+10. Class : On Armor Win heal 1 (cd 2 p 3-4)
+11. Class : On Armor Win gain + 1/2/3 Armor (cd 2 p 3-4)
+12. Class : Negate the effect of a detrimental spell directed to you (cd 2 p 1-5)
+
+
+MAGE blue
+
+
+Hero: At the start of the turn, if you have no spells, draw one
+1. Class: Discard a spell, gain + 1/2/3 A for one attack (cd 0 p 3-4)
+2. Class: Discard a spell, gain + 1/2/3 Armor for one turn (cd 0 p 3-4)
+3. Class: Draw 3 spells, choose one to keep, discard others (cd 3 p 1-5)
+4. Class: Discard a spell, draw another (cd 1 p 1-5)
+5. Class: Discard a spell, Heal 1 (cd 1 p 1-5)
+6. Class: Discard a spell, deal 1 damage to a player (cd 3 p 3-4) 
+7. Class: Every time you use a spell gain + 1/2/3 g (cd 0 p 1-5)
+8. Class: Every time you discard a spell gain +1 g (cd 0 p 1-5)
+9. Class: Draw a spell (cd 3 p 1-5)
+10. Class: Discard a spell, gain a Blank die for the next 2 rolls (cd 1 p 3-4)
+11. Class: When a player draws a spell, look what it is, you can exchange with one of your own (cd 3 p1-5)
+12. Class: On combat win draw a spell (cd 0 p 1-5)
+
+
+SHAMAN purple
+
+
+Hero: Copy any CA in the game (cd 2) or HA (cd 3, 2 per stage) (1-5), same rules apply
+1. Class: Force another player to Coop with you,they get no loot (they must use their best roll but don't have to use abilities)(cd 3 p 3)
+2. Class: Change your Action (cd 1) or someone else’s (cd 3) (p 2-3)
+3. Class: Heal 1 self (cd 2) or others (cd 3) (p1-5)
+4. Class: When you lose 1 Health gain + 1/2/3 A for the whole next turn (cd 1 p 1-5)
+5. Class: Reroll one dice of yours (cd 1 p 3-4)
+6. Class: Reroll one dice of another player (cd 1 p 3-4)
+7. Class: Pay 1 Health gain + 4/5/6 G (cd 1 p 1-5)
+8. Class: Pay 1 Health gain double loot on next kill (cd 1 p 3)
+9. Class: Pay 1 Health, a player or a monster of your choice loses 1 Health (cd 3 p 1-5)
+10. Class: Killing a monster or winning a duel heal you by 1 (cd 2 p 3-4)
+11. Class: Pay 1 Health, gain a blank die for the next 2 rolls (cd1 p 3-4)
+12.  Class: Pay 1 Health, heal 2 on the next turn’s same phase as now (cd 2 p 1-5)
+
+
+THIEF yellow
+
+
+Hero : Duel to duel steal HoB (cd 3, 2 per stage 3-4)
+1. Class: Duel to steal 1+1/2/3 G (cd 2 p 3-4)
+2. Class: Duel to steal half loot 
+3. Class: Duel to steal a monster loot, the monster now heals 3 when killed (cd 3 p 3)
+4. Class: After a player wins against a monster duel to deal 1 damage to them (cd 3 p 3)
+5. Class: On duel win gain 1/2/3 G (cd 0 p 3-4)
+6. Class: Gain +1 Token from Loot (cd 2 p 3)
+7. Class: Steal an Equipment from shop for 1 turn (cd 3 p 1-5)
+8. Class: Daggers gain +1 A (cd 0 p 1-5)
+9. Class: Duel to steal a spell (cd 2 p 3-4)
+10. Class: Break a player’s Armor during a duel (cd 3 p 3-4)
+11. Class: Gain a blank die for a duel (cd 2 p 3-4)
+12. Class: Wielding 2 of the same weapons gives you a Blank die (cd 2 p 1-5)
+
+
+HUNTER green
+
+
+Hero : HoBs grant + 1 A up to 4
+1. Class: Gain + 1/2/3 A against monsters
+2. Class: Declare ur Action (p 2), u gain + 2/3/4 A against them
+3. Class: Pay 1 health to keep fighting a monster after you lost, the fight resumes as you didn’t lose the last bout 
+4. Class: Choose and declare a monster, nobody but you can fight it this turn (cd 3 p 2)
+5. Class: Break a monster’s Armor (cd 3 p 3)
+6. Class: Gain + 1/2/3 against monster’s Armor (cd 0 p 3)
+7. Class: On monster kill gain + 1/2/3 G (cd 0 p 3)
+8. Class: On Boss damage gain + 7/8/10 G (cd 0 p 3)
+9. Class: Killing a monster heals you by 2 Health (cd 2 p 3)
+10. Class: Treat a duel as it was a Hunt (all  Hunt effects can apply) (cd 3 p 3-4)
+11. Class: Reroll up to 2 dice during a Hunt (cd 2 p 3)
+12. Class: Gain a Blank dice for a Hunt (cd 2 p 3)
+
+
+MERCENARY  grey
+
+
+Hero : Pay 6 G to deal 1 damage to a monster or to a player (cd 2) or double for a Boss (cd 3, 2 per stage) (1-5)
+1. Class: Pay 2 G, roll a d6, gain result minus 1/1/0 in G (cd 2 p 1-5)
+2. Class: Pay up to 4 G, bet on the outcome of a fight, if you get it right get double your money back (cd 2 p 3-4)
+3. Class: Pay 2 G, gain + 2/2/3 A for the next or current fight (cd 0 p 3-4)
+4. Class: Pay 2 G, gain + 2/3/4 Armor (cd 0 p 3-4)
+5. Class: Pay 2 G, copy any Ca (cd 2 p 1-5) same rules apply
+6. Class: Pay 2G, negate the effect of a CA for 1 turn (cd 1 p 1-5)
+7. Class: At the end of the turn gain 1 G for every time you’ve spent money (cd 1 p 5)
+8. Class: You can discard spells and equipment to get half or their cost back (cd 0 p 1-5)
+9. Class: Every 7 G you spend gain 1 Health (cd 0 p 1-5)
+10. Class: Pay 2 G, draw a spell (cd 1 p 1-5)
+11. Class: Pay 2 G Heal 1 (cd 1 p 1-5)
+12. Class: Every 4 G you spend gain 1 back (cd 0 p 1-5)

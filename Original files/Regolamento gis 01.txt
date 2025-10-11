@@ -1,0 +1,312 @@
+﻿THE GAME
+
+
+The game of “ “ it’s a pvp/pve asymmetrical game for 2 to 4 players. You will play as one of the 7 available playable characters to defeat monsters, accumulate wealth and eventually defeat the final boss and end the game.
+During the game, players will either cooperate or compete with each other, betrayal and companionship go hand in hand;
+The way the game is formulated may create the arisal of situations uncovered in this rulebook, especially regarding the interaction between card’s effects. On those occasions the player who owns the game has the last word to decide what can be done or not. Generally, to decide, we suggest to follow this rule of thumb: if something it’s too overbearing it cannot be done, the opposite goes if it’s too underwhelming. Visit the QandA section of our website to see if there already is an official answer to your plight or to ask for one.
+
+
+TO WIN THE GAME
+
+
+The player who has the most victory points at the end of the game is the victor. There are 3 main ways to accumulate them:
+
+
+* Slay bosses, each boss has multiple “Hearth of the Boss” (“HoB”)
+which are awarded to the player who inflicts damage upon them, they have different victory point values based on their color, which in turn is determined by the stage number of the boss and the position of the hearth in the boss health pool. Some monsters may also have HoBs as a reward.
+* Be the richest player at the end of the game, the richest players gains one victory point for each “Gold” they have more than the second richest player
+* Be the first or second player to achieve 6 “Class Ability”, throughout the game your character grows in power, reaching 6 abilities means you have reached the apex of your power.The first 2 players who achieve this are awarded victory points
+
+
+
+
+In the case of a draw of victory points, the player with the most “HoB” wins, in case of another draw the player with the most number of most valuable “HoB” wins, if it’s another draw the game is won by 2 players.
+The players can also lose the game starting from stage 3.
+
+
+GOLDEN RULE
+
+
+At any point during the game players can choose to hinder or help each other by using their Abilities, Equipment and Spells (if permitted by the rules).
+Players can threaten to use a harmful effect unless paid or help others even if there is nothing to gain. Any kind of deal or conflict is allowed (rules permitting) between players. For example a Player A can choose to help Player B who is fighting a Monster by using one of his Class Abilities under payment, or help the Monster instead if the payment is not satisfactory.
+This is a game where friends and foes are one and the same.
+
+
+COMPONENTS
+
+
+* 7 Hero cards
+* 4 player boards
+* 4 voting cards
+* 84 class ability cards
+* 100 spell cards
+* 135 equipment cards
+* 12 bosses cards
+* 90 monster cards
+* 1 monster board
+* 7*7 pd+15 md+4 bd+3 d6
+* 3 shops boards
+* 1 cards organizer 
+
+
+SETTING UP
+
+
+Shuffle the Hero cards and randomly give each player one, give 4 G to each player, one of their respective Hero dice, 1 Voting card and their Hero deck.  
+Fill the health pool meter of each character and have each player choose 2 Class abilities following the level up rules (see page n). 
+
+
+Set up the shops boards following the shop rules (see page n), set the monsters following the monsters rules (see page n), once all players have chosen their starting abilities you are ready to play.
+
+
+STAGES
+
+
+The game is divided into three stages 1/2/3, each stage is then divided into turns.
+During each stage the shop and the monster cards on the table must be of the same number of the stage.
+Each stage ends when the boss of that stage is defeated, to defeat a boss all of his
+HoB must be taken by players, meaning the boss must be defeated either in
+combat or through abilities a number of times equal to the number of his hearths, a 
+boss can be fought only once per turn, but any number of abilities can be used on 
+them each turn. 
+When a boss is defeated all players move to the next stage meaning all the cards currently in game (not owned by players) must be discarded to be replaced by the cards of the next stage. When the third and last boss is defeated the game ends and players count victory points to decide the winner.
+Each stage ends during the Ending phase of the turn in which the boss is defeated.
+
+
+TURNS
+
+
+Each Stage is then divided into turns. On each turn players will perform actions such as hunting monsters, activate abilities and spells and buy supplies at the shop. Each turn has multiple phases where players are allowed to perform different actions; some cards' abilities, for example, may be used only during specific phases.
+The phases are : Starting phase (1), Planning phase (2), Hunting phase (3), Shopping phase (4) and Ending phase (5). On some game cards, phases may be called by their number instead of their name.
+
+
+PLAYING THE GAME
+
+
+Once everything is set up on the table (see pages n) and players have chosen their starting abilities (see page n), the game can start.
+Every turn players will go through the different phases in order, the same goes for the first turn.
+
+
+1. Starting Phase: on this phase nothing much happens, the turn starts and some effects may take place at this time, if nothing happens players just move onto the next phase.
+2. Planning Phase: during this phase players choose which monster they wanna fight, they can discuss with each other to plan their moves, note that everything said during this time, like at any point of the game, is not binding, players can go back on their word and trick others as they like. This phase ends with the reveal of the Voting cards (see page n).
+3. Hunting Phase: after the reveal of the Voting cards this phase starts, players who have chosen the same monster must decide whether to duel for the right to fight it (see page n) or to Coop (see page n) against it. If more than 2 players have chosen the same monster a bidding starts where the 2 players who bid the highest amount of G win, once a player has bid other players cannot bid the same amount and can only bid more or desist, the money goes to the player or players who lost the bid in equal parts, the 2 winning players then decide to duel or to coop for the monster, the losing side can choose another monster to fight. Once these instances are resolved players fight against the monsters following the combat rules (see page n), to speed up the game players can choose to fight monsters without the supervision of other players (no cheats allowed !!). This phase ends when all players have resolved their hunting whether they won or lost, if a player died during this phase (see page n) they don’t participate in the next phases for this turn.
+4. Shopping phase: this phase is used for players to buy equipment, or spells and to level up, 2 players interested on the same item must either duel for it or find an arrangement in G or other valuables, this phase ends after all players have nothing more to buy. Every time a card is bought, draw a new one from the corresponding pile to substitute it. In this phase players can also exchange and or sell items between each other.
+5. Ending phase: this phase concludes the turn, at this time some effect may take place, if nothing happens conclude the turn and start a new one.
+
+
+VOTING CARDS
+
+
+Each player is dealt a voting card, they are used to declare which monster they will attempt to Hunt. Voting cards have numbers corresponding to each monster on the table from 1 to a maximum of 6. Use the voting token to select the preferred monster and keep the Voting card hidden till everybody reveals them.
+
+
+
+
+HEROES
+
+
+Heroes are the characters each player plays as. There are 7 Heroes: Warrior, Sentinel, Mage, Shaman, Thief, Hunter and Mercenary. 
+Each Hero has: a Health meter of 5, a Hero Ability (HA), 6 Equipment slots and a personal deck of cards (Hero deck).
+The Health meter is filled at the start of the game (max of 5).
+The HA is listed on the Hero card and is a powerful ability that defines the archetype of the Hero (see page n).
+Equipment slots are divided into: 2 Weapon slots, 2 Armor slots and 2 Charm slots (see page n), players can hold up to 2 unused equipment outside of these slots.
+Inside each character’s Hero deck there are:  12 Class Ability cards (see page n), 2 starting Equipment cards (see page n) and 4 Final Equipment cards.
+
+
+COMBAT
+
+
+Combat in this game is divided into 2 categories: between players (Duels or Clashes) and between players and monsters (Hunting and Coop), these 2 categories have slightly different rules, but are the same at the core.
+
+
+Duels : a duel happens to decide which player gets the right to do something or as the effect of some cards. Differently from hunting, duels are not fights to the death, players fight for only one bout. In the case of a draw, nothing happens and a new bout takes place until the winner is decided. Losing a duel has no penalty other than the loss of the right to choose or what is specified on the card that triggered the duel.
+
+
+Clashes : once per stage a player can invoke a Clash, clashes follow the same rules of duels but they are instead fights to the death. A player can invoke a clash to transform a duel into a clash, still following any effect that would've or could’ve taken place during the duel, they can do so before the duel happens or after losing the duel although this way they keep fighting in the same condition they were in during the duel. The losing party loses a life and cannot perform any action during the Hunting or Shopping (based on when the clash takes place) phase of that turn.
+
+
+Hunting: to Hunt is to fight monsters, players fight them until the monster is dead or the players lose. The penalty for losing is one life, if a player reaches 0 Health they die and cannot perform any action on the next phases of that turn.
+
+
+Coop: to coop means 2 players decide to hunt a monster together. They will both roll dice, sum their Attack rolls, and compare it against the monster’s Attack roll. The 2 player’s Armor is summed together and broken together in case of the loss of a Bout. Players must decide before the fight how to split Loot, but can duel, or find an arrangement, after the fight to decide who gets the HoB if it was a Boss Hunt (if a normal monster has an HoB as Loot they must decide before the fight who gets it). In case of a loss both players lose 1 Health.
+
+
+Bout is the name of a single exchange of blows between fighting parties, a duel features only 1 bout, other fights generally more.
+
+
+ATTRIBUTES AND FIGHTING
+
+
+There are 2 important variables, for players, when fighting: equipment and attributes.
+Equipment is activated through attributes. Each piece of equipment has a main attribute it uses to be activated, but can have secondary or even tertiary attributes that it uses. 
+There are usually 3 Variations of each equipment card, one for each attribute, they have the same effect but use different attributes to be activated. Equipment uses its effect to transform attributes rolled through dice into a numerical value or a beneficial effect for the player using it; for example the card “Sword” transforms an attribute into a +1 to the attack Roll, or 2 of the same attribute into a +2 to the Attack Roll.
+When fighting, use the Attributes present on the dice to activate Equipment, any unused Attributes is “discarded” and has no effect. 
+Players can choose how to most efficiently use the Attributes they rolled, they can use all of them to activate Equipment or purposely use just a fraction of them if they want.
+
+
+There are 4 attributes in the game, 3 for players 1 for monsters: cubes, circles, triangles for players and skulls for Monsters; each Hero’s or Monster’s dice has a different set of attributes. Attributes are used to activate equipment or abilities during a fight, each equipment card has a different attribute that they use to function, it’s up to the players to find the right set of it following the attributes on their dice.
+
+
+When a fight takes place, depending on which kind, the rules might differ a little but at the core they’re the same. In a duel, players fight only one Bout, meaning they roll their dice, account for equipment and effects, the player with the highest score is the winner. During a clash or while hunting, the fight keeps going. After the first bout, the losing side loses their armor, (if they have any, if not they just lose), then the dice are rolled again, and again until the winner is decided.
+
+
+An average fight goes like this: both parties roll their dice (another player rolls for monsters), they then use the attributes on those dice to activate their equipment transforming the rolled attributes into a number, or abilities for monsters, (equipment and abilities can be activated multiple times if they possess the attributes for it, unless written otherwise on the card), equipment and abilities transform attributes into a numerical value, any other effects or bonuses are accounted for and then the side with the highest result wins. In duels, the fight ends here, in other kinds of fights, the fight keeps going, the losing side loses their armor and the fight continues until the monster has no more health or a player loses one life. Note that both parties can lose their armor if they win bouts alternatively.
+
+
+Armor is a numerical value that is added to the roll, if it is still intact. Armor is only given by equipment, effect or spells for Players, Heroes have no natural Armor like Monsters do. Some effects like Armor Break or Armor On refer, respectively, to when the armor breaks or if the armor is still on.
+
+
+
+
+
+
+Example of a fight, Player (a) vs Monster (b):
+a has +3 Attack and 3 Armor, b has 3 Health, 2 Armor, 2 Attack, 2 Overkill
+
+
+* Bout 1
+
+
+
+
+
+
+
+
+
+
+
+
+HERO AND CLASS ABILITIES (HA & CA)
+
+
+Each HERO has its own set of abilities that can be used throughout the game. All abilities have some specifics in common: an effect, a cooldown (cd) and a phase limiter.
+
+
+The effect is beneficial to the player using it and is listed in the card description. Effects may vary a lot between each other, and can have a price to pay to be used whether in G, Health or others.
+
+
+The cooldown describes how often an effect can be used. No cooldown listed means that effect can be used any number of times each turn, a number, instead, indicates the amount of turns that must be waited before using the effect again including the current turn in this countdown. For example a cd of 1 means the effect can be used once each turn, cd 2 means the effect can be used once every other turn and so on.
+Some abilities might have multiple cooldowns based on how the ability is used (listed on the card).
+Some abilities might also have a Stage cd, meaning they can only be used a set amount of times each stage, still following the normal cd countdown.
+
+
+The phase limiter describes in which phases an ability can be used, it is a number from 1 to 5 or a range still in between 1 and 5 (example 3-5); a single number indicates the corresponding phase and a range indicates multiple phases in which the ability can be used. 
+
+
+Some abilities also have a Scaling (example 1/2/3), this indicates that the effect of it changes based on the current stage. Scaling is not always an increase in value but is always a beneficial effect.
+
+
+
+
+LEVEL UP
+
+
+To level up means that the player acquires a new Class Ability and an additional dice, it costs 10G to level up and it can only be done during the shopping phase.
+To level up the player draws 3 cards from their Class Ability deck and then chooses one to keep, put the unchosen cards in a temporary discard pile, when the main deck has no more cards, shuffle the discard pile and use it again as main deck. 
+A player can choose to level up multiple times at once, drawing 3 cards for every level up they’re doing, meaning that, for example, a player that level ups twice at once draws 6 cards and then chooses 2 to keep. This is what happens at the start of the game, choosing the starting class abilities is considered leveling up and leveling up twice in a row at that.
+The first 2 players who reach 6 Class Abilities are awarded nVictory points.
+On each level up, a player is also granted an additional dice from their dice pool. After reaching 4 Class dice, on the next level ups, instead of gaining a new dice, substitute a Class dice with a Hero dice. A level 6 player then has 3 Hero dice and 2 Class dice.
+Inside the Level up deck there is also the starting equipment and Final equipment for each Hero. Final equipment is very strong tailored equipment for each Hero that can only be bought during any Shopping phase by the corresponding Hero after reaching 6 CA.
+
+
+
+
+SHOP
+
+
+The shop sells Equipment and Spells throughout the game, cards sold in the shop have a cost in G or Tokens, a Rank (equipment only), a category and an effect.
+Gold (G) is the main currency of the game and is used to buy from the Shop or activate some Abilities. G is gained as Loot from Monsters or through some effects.
+Tokens are a secondary currency in the game and are more valuable and rare than G. It is gained as Loot or through some effects.
+Everything sold in the shop has 2 prices: one in G and one in Tokens.
+The cards displayed in the shop must always have the same Rank as the current stage, when a stage ends, substitute all cards in the shop and the equipment decks with ones of the next Rank. Remember that a stage ends after the ending phase of the turn in which the boss is defeated, so the substitution of cards happens on the next turn’s starting phase as the very first action. Spells have no rank and are always drawn from the same deck.
+The shop always displays 6 weapons, 4 armors, 4 charms and 6 spells. Players can choose to all pay one G to discard any amount of cards from the shop and substitute them, the majority or half of players must agree on this action but everybody must agree on what to discard.
+During the shop phase players can also buy/sell/exchange Equipment and Spell between each other.
+
+
+
+
+EQUIPMENT
+
+
+Equipment is divided into categories: weapons, armors and charms. Each character can equip up to 2 Weapons, 2 Armors and 2 Charms. There are some restrictions though: 2 handed weapons use both weapons slots, Armors must be of different types and the same goes for charms; some other restrictions might be specified on the cards.
+Equipment is used during fighting, usually only Weapons and Charms use attributes from dice to work and Armor doesn't, but there are exceptions.
+Each piece of equipment generally has three copies of it, one for each of the three player’s Attributes.
+During a fight, equipment can be activated through dice roll multiple times if the player rolls the attributes needed for it. This activates the Overcharge (OC) ability that adds an effect to the Attack roll. OC abilities might have additional rules specified on the card, a number put beside the OC line on the card means that to OC that specific card, multiple activations of the equipment ability are needed, equal to that number. OC can only be used by reaching and surpassing the highest attribute effect on the card.
+Equipment must be equipped during the Starting phase (1), players can hold up to 2 unused pieces of equipment, if over the limit, equipment must be discarded.
+
+
+SPELLS
+
+
+Spells have no Rank and are drawn from the same deck throughout the whole game.
+Spells have game changing effects that are usually outside the scope of what can normally be done. Spells also have a restriction on when they can be used, that is specified with a number or numbers from 1 to 5 that indicates the phase they can be used in.
+Some spells also have other restrictions written on their card.
+
+
+MONSTERS
+
+
+Monsters, like equipment, have Rank, when a Boss is defeated, on the next turn’s starting phase, substitute the monsters with ones of the next rank. 
+Monsters have multiple indicators on their cards for their stats: Health, Armor, Attack, Overkill, Dice and Loot. Place a number of monsters equal to the number of players+2 on the table.
+
+
+Health indicates the amount of bouts players must win to defeat that monster. Armor is added to the monster’s Attack Roll and protects the monster from the loss of Health if it’s still on (just as players). Attack is the number that is added to the Monster’s Ability roll result when fighting them. 
+
+
+Monster’s Abilities are the equivalent of equipment for players, the result of roll of the monster's dice is used to activate their abilities; like equipment, Monster Abilities can be Overcharged (OC) for additional effects.
+A monster’s Attack roll is then the result of Armor(if it’s on)+Attack+Monster’s Ability, players must surpass this number by one to win the bout.
+
+
+Overkill (OK) is a number that indicates the amount a player must surpass to deal one or  more additional damage to a monster. To deal more than 1 damage to a monster with 2 OKvalue the player’s Attack roll must be equal or higher to monster’s Attack roll+2OK+1. More than one additional damage can be done to a monster by surpassing the Overkill value again, there is no limit to it. Overkill damage can be dealt when the Monster’s Armor is on, following the Overkill rule. Bosses have no Overkill number just like players.
+
+
+Dice is used to indicate how many and which dice the Monster is going to roll. There are 3 kinds of monster dice: Minion, Chief and Boss, each dice is increasingly stronger.
+
+
+Defeated monsters drop Loot to the player who defeated them, Loot can be an amount of G and/or a Token, Token are exchanged during the Shopping phase for equipment or spells. Players who Coop must decide in advance how to split the Loot. Some monsters might also have HoB as Loot.
+
+
+BOSSES
+
+
+Bosses are the ultimate foe of the game, they have a Rank and high stats to go with it. There are 4 Bosses for each rank. At the start of every stage, draw a Boss from the respective deck. Bosses have the same stats indicators as monsters, all but Overkill: Health, Armor, Attack, Dice and Loot.
+Each Boss also has a Rule that will be in effect for the whole duration of the current stage, meaning the rule is active from the start of the stage till the end of the turn in which the Boss is defeated. 3rd Rank Bosses have rules that can lead to the players collectively losing the game.
+Bosses's Rule takes precedence against any other rule or effect of the game. Players who defeat a Boss in Coop can decide who gets the HoB through compensation, negotiation or duel, on a normal Coop players must decide how to split loot before the fight
+
+
+DYING AND HEALING
+
+
+Every player has a maximum of 5 Health and starts the game with the Health meter filled. Whenever a player reaches 0 health, they are dead. Being dead means the player cannot perform any action for the rest of the turn and will start the next turn with 1 health. 
+A player can also choose to Heal, they will recover 2 Health, but cannot participate during the hunting phase of the current turn. A player must declare that they will perform this action during the starting phase (1) of the turn.
+Player’s Health cannot exceed the maximum of 5.
+
+
+
+
+
+
+
+
+
+
+GLOSSARY
+
+
+Armor Break
+Armor On
+Bout
+CA
+Clash
+Duel
+HA
+Heal
+Hunt
+OC
+OK
+Phase
+Stage
+Self
+Turn
+.../.../…

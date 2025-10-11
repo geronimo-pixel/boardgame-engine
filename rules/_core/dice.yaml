@@ -1,0 +1,125 @@
+# Dice symbol definitions for heroes, classes, and monsters.
+hero_dice:
+  faces_templates:
+    standard: &hero_standard_faces
+      - [primary, primary, secondary]
+      - [primary, secondary, secondary]
+      - [primary, secondary]
+      - [primary, primary]
+      - [primary]
+      - [tertiary]
+    mercenary: &hero_mercenary_faces
+      - [square, square]
+      - [circle, circle]
+      - [triangle, triangle]
+      - [square, circle]
+      - [circle, triangle]
+      - [triangle, square]
+  heroes:
+    warrior:
+      attributes:
+        primary: square
+        secondary: triangle
+        tertiary: circle
+      faces: *hero_standard_faces
+    sentinel:
+      attributes:
+        primary: square
+        secondary: circle
+        tertiary: triangle
+      faces: *hero_standard_faces
+    mage:
+      attributes:
+        primary: circle
+        secondary: triangle
+        tertiary: square
+      faces: *hero_standard_faces
+    shaman:
+      attributes:
+        primary: circle
+        secondary: square
+        tertiary: triangle
+      faces: *hero_standard_faces
+    thief:
+      attributes:
+        primary: triangle
+        secondary: circle
+        tertiary: square
+      faces: *hero_standard_faces
+    hunter:
+      attributes:
+        primary: triangle
+        secondary: square
+        tertiary: circle
+      faces: *hero_standard_faces
+    mercenary:
+      attributes:
+        primary: square
+        secondary: circle
+        tertiary: triangle
+      faces: *hero_mercenary_faces
+
+class_dice:
+  faces_templates:
+    standard: &class_standard_faces
+      - [primary, primary]
+      - [primary, primary]
+      - [primary, secondary]
+      - [secondary]
+      - [secondary]
+      - [tertiary]
+    mercenary: &class_mercenary_faces
+      - [square, square]
+      - [circle, circle]
+      - [triangle, triangle]
+      - [square]
+      - [circle]
+      - [triangle]
+  heroes:
+    warrior:
+      attributes:
+        primary: square
+        secondary: triangle
+        tertiary: circle
+      faces: *class_standard_faces
+    sentinel:
+      attributes:
+        primary: square
+        secondary: circle
+        tertiary: triangle
+      faces: *class_standard_faces
+    mage:
+      attributes:
+        primary: circle
+        secondary: triangle
+        tertiary: square
+      faces: *class_standard_faces
+    shaman:
+      attributes:
+        primary: circle
+        secondary: square
+        tertiary: triangle
+      faces: *class_standard_faces
+    thief:
+      attributes:
+        primary: triangle
+        secondary: circle
+        tertiary: square
+      faces: *class_standard_faces
+    hunter:
+      attributes:
+        primary: triangle
+        secondary: square
+        tertiary: circle
+      faces: *class_standard_faces
+    mercenary:
+      attributes:
+        primary: square
+        secondary: circle
+        tertiary: triangle
+      faces: *class_mercenary_faces
+
+monster_dice:
+  minion: [2, 1, 1, 1, 1, 0]
+  chief: [3, 2, 2, 1, 1, 1]
+  boss: [4, 3, 3, 2, 2, 2]

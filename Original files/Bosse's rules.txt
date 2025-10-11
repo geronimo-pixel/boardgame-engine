@@ -1,0 +1,25 @@
+﻿Rank 1
+
+
+1. Every time a monster is killed add 1 G to this boss reward
+2. This boss has 1 more HoB
+3. Players can only use 1 spell per turn
+4. This boss deals one damage to the attacker every time one of his hearths is taken
+
+
+Rank 2
+
+
+1. This boss gains + 1 A for every Charm in the game
+2. This boss can only be fought Coop
+3. Everything cost 1 more G this stage
+4. Monsters have +1 A this stage
+
+
+Rank 3
+
+
+1. Every time a player loses a life in combat add one marker to this boss’s card, at 2+(number of players) markers players lose the game
+2. Every time players buy equipment add one marker to this boss’s card, at 6+(number of players x2) markers players lose the game
+3. Players who die cannot revive this stage, every 3 turns all players lose 1 health on p 5, if all players die the game is lost
+4. Every 3 turns on p 5 all players have to pay 2 G to the Boss, if a player can’t pay they die and are out of the game
