@@ -256,7 +256,7 @@ EQUIPMENT
 Equipment is divided into categories: weapons, armors and charms. Each character can equip up to 2 Weapons, 2 Armors and 2 Charms. There are some restrictions though: 2 handed weapons use both weapons slots, Armors must be of different types and the same goes for charms; some other restrictions might be specified on the cards.
 Equipment is used during fighting, usually only Weapons and Charms use attributes from dice to work and Armor doesn't, but there are exceptions.
 Each piece of equipment generally has three copies of it, one for each of the three player’s Attributes.
-During a fight, equipment can be activated, through dice roll, multiple times, if the player rolls the attributes needed for it. This activates the Overcharge (OC) ability that adds an effect to the Attack roll. OC abilities might have additional rules specified on the card, a number put beside the OC line on the card means that to OC that specific card, multiple activations of the equipment ability are needed, equal to that number. OC can only be used by reaching and surpassing the highest attribute effect on the card.
+During a fight, equipment can be activated, through dice roll, multiple times, if the player rolls the attributes needed for it. This activates the Overcharge (OC) ability that adds an effect to the Attack roll. OC abilities might have additional rules specified on the card, a number put beside the OC line on the card means that to OC that specific card, multiple activations of the equipment ability are needed, equal to that number. OC can only be used by reaching and surpassing the highest attribute effect on the card. Activating an equipment effect doesn't require to activate previously listed effects on the card.
 Equipment must be equipped during the Starting phase (1), players can hold up to 2 unused pieces of equipment, if over the limit, equipment must be discarded.
 
 
@@ -278,7 +278,7 @@ Monsters have multiple indicators on their cards for their stats: Health, Armor,
 Health indicates the amount of bouts players must win to defeat that monster. Armor is added to the monster’s Attack Roll and protects the monster from the loss of Health if it’s still on (just as players). Attack is the number that is added to the Monster’s Ability roll result when fighting them. 
 
 
-Monster’s Abilities are the equivalent of equipment for players, the result of roll of the monster's dice is used to activate their abilities; like equipment, Monster Abilities can be Overcharged (OC) for additional effects.
+Monster’s Abilities are the equivalent of equipment for players, the result of roll of the monster's dice is used to activate their abilities; like equipment, Monster Abilities can be Overcharged (OC) for additional effects.OC can only be used by reaching and surpassing the highest attribute effect on the monster's card. Activating a Monster ability doesn't require to activate previously listed ability on the card.
 A monster’s Attack roll is then the result of Armor(if it’s on)+Attack+Monster’s Ability, players must surpass this number by one to win the bout.
 
 
