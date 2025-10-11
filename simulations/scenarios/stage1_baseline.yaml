@@ -1,0 +1,15 @@
+name: Stage 1 Baseline
+description: >
+  Baseline run that samples six rank-1 monsters per stage, using the warrior
+  with the default sword and shield configuration. Useful for verifying that
+  rank-1 content is ready before expanding to later stages.
+
+hero:
+  class: warrior
+
+stage:
+  fights_per_run: 6
+  monster_rank: 1
+
+iterations: 120
+seed: 314159

@@ -433,6 +433,8 @@ def simulate_warrior_vs_monster(
     seed: Optional[int] = None,
     max_bouts: int = 100,
     log_special_effects: bool = True,
+    dice_tables: Optional[DiceTables] = None,
+    monsters: Optional[Sequence[Monster]] = None,
 ) -> CombatResult:
     """
     Simulate a combat between the Warrior (equipped with the square sword and square
@@ -440,9 +442,9 @@ def simulate_warrior_vs_monster(
     to Class Ability #2.
     """
     rng = random.Random(seed)
-    dice_tables = DiceTables.from_loader()
-    monsters = load_monsters()
-    monster = get_monster_by_name(monster_name, monsters)
+    dice_tables = dice_tables or DiceTables.from_loader()
+    monsters_dataset = monsters or load_monsters()
+    monster = get_monster_by_name(monster_name, monsters_dataset)
 
     warrior_health = 5
     monster_health = monster.health
