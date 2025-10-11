@@ -1,0 +1,123 @@
+﻿SPELLS
+
+
+
+
+Name
+	Number
+	Effect
+	Target
+	Phase
+	Cost
+	
+
+	6
+	Deal 1/1/2 damage to a player
+	Players
+	2
+	4
+	
+
+	6
+	Gain 2 Armor
+	Self 
+	2
+	4
+	
+
+	4
+	Reroll any amount of dice once
+	Self
+	1-5
+	6
+	
+
+	2
+	Instead of a normal turn, players do a tournament. Best of 3. 10/12/15 G reward for the winner.
+	Players
+	1
+	8
+	
+
+	4
+	Choose 5 monsters to put in order as you like on top of the monster deck. Shuffle the monster deck (but first 5 cards) after.
+	Monster deck
+	1
+	6
+	
+
+	8
+	Heal 2
+	Players
+	1-5
+	4
+	
+
+	6
+	Heal 5
+	Players
+	1-5
+	8
+	
+
+	6
+	Add or remove one attribute from a roll
+	Any
+	1-5
+	6
+	
+
+	4
+	Roll a d6. Get a discount, in G,on a shop item, by that amount -2. cannot be negative
+	Shop/CA
+	2-3
+	4
+	
+Battle Focus
+	4
+	After you roll, change exactly one of your dice to your hero's primary attribute for this bout.
+	Self
+	2-3
+	4
+	
+
+	6
+	Switch monster to fight after voting.
+	Self
+	1-2
+	4
+	
+
+	6
+	Reset the cooldown on one CA
+	Players
+	1-5
+	4
+	
+
+	6
+	On Armor break, against a monster, gain a bonus to Attack equal to that monster Overkill value.
+	Self
+	2
+	6
+	
+
+	6
+	Cancel the activation of one spell
+	Any spell
+	1-5
+	6
+	
+Executioner's Sigil
+	4
+	Choose a monster currently in combat: on its next attack, ignore only its overcharge (OC) bonus.
+	Any monster
+	2
+	8
+	
+
+	4
+	Discard up to 3 monster on the table and draw new ones.
+	Any monster
+	1
+	4
