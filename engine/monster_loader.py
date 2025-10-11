@@ -51,8 +51,14 @@ class Monster:
     loot: str
     ability_lines: List[str] = field(default_factory=list)
     skull_mapping: Dict[int, int] = field(default_factory=dict)
-    overcharge_bonus: Optional[int] = None
+    overcharge_attack_bonus: Optional[int] = None
+    overcharge_armor_bonus: Optional[int] = None
     special_effects: List[str] = field(default_factory=list)
+
+    @property
+    def overcharge_bonus(self) -> Optional[int]:
+        """Backward-compatible alias for attack overcharge."""
+        return self.overcharge_attack_bonus
 
     def attack_bonus_for_skulls(self, skull_count: int) -> int:
         """
@@ -77,8 +83,8 @@ class Monster:
             bonus = 0
 
         max_defined = max(self.skull_mapping) if self.skull_mapping else 0
-        if self.overcharge_bonus and skull_count > max_defined >= 0:
-            bonus += self.overcharge_bonus
+        if self.overcharge_attack_bonus and skull_count > max_defined >= 0:
+            bonus += self.overcharge_attack_bonus
 
         return bonus
 
@@ -95,12 +101,14 @@ def _clean_line(raw: str) -> str:
 LOOT_PATTERN = re.compile(r"^\d+\s*G", re.IGNORECASE)
 NAME_PATTERN = re.compile(r"^[A-Za-z\(][A-Za-z\s'\)\-]*$", re.IGNORECASE)
 ABILITY_MAPPING_RE = re.compile(r"(?P<count>\d+)\s*sk.*?\+\s*(?P<bonus>\d+)\s*Att", re.IGNORECASE)
-OVERCHARGE_RE = re.compile(r"OC.*?\+\s*(?P<bonus>\d+)\s*Att", re.IGNORECASE)
+OVERCHARGE_ATTACK_RE = re.compile(r"OC.*?\+\s*(?P<bonus>\d+)\s*Att", re.IGNORECASE)
+OVERCHARGE_ARMOR_RE = re.compile(r"OC.*?\+\s*(?P<bonus>\d+)\s*Ar", re.IGNORECASE)
 
 
-def _parse_ability_lines(lines: Iterable[str]) -> Tuple[Dict[int, int], Optional[int], List[str]]:
+def _parse_ability_lines(lines: Iterable[str]) -> Tuple[Dict[int, int], Optional[int], Optional[int], List[str]]:
     mapping: Dict[int, int] = {}
-    overcharge: Optional[int] = None
+    overcharge_attack: Optional[int] = None
+    overcharge_armor: Optional[int] = None
     specials: List[str] = []
 
     for raw_line in lines:
@@ -111,13 +119,68 @@ def _parse_ability_lines(lines: Iterable[str]) -> Tuple[Dict[int, int], Optional
         if match:
             mapping[int(match.group("count"))] = int(match.group("bonus"))
             continue
-        match = OVERCHARGE_RE.match(line)
+        match = OVERCHARGE_ATTACK_RE.match(line)
         if match:
-            overcharge = int(match.group("bonus"))
+            overcharge_attack = int(match.group("bonus"))
+            continue
+        match = OVERCHARGE_ARMOR_RE.match(line)
+        if match:
+            overcharge_armor = int(match.group("bonus"))
             continue
         specials.append(line)
 
-    return mapping, overcharge, specials
+    return mapping, overcharge_attack, overcharge_armor, specials
+
+
+def _is_dice_line(entry: str) -> bool:
+    candidate = entry.replace(" ", "")
+    if not candidate:
+        return False
+    for segment in candidate.split("+"):
+        if not segment:
+            return False
+        if not segment[:-1].isdigit():
+            return False
+        if segment[-1].lower() not in {"m", "c", "b"}:
+            return False
+    return True
+
+
+def _trim_to_latest_block(block: List[str]) -> List[str]:
+    """
+    Some source sections accidentally accumulate multiple monster stat blocks
+    before a name is encountered (for example, Orca followed by (blue)).  When
+    that happens we only want the most recent contiguous block immediately
+    preceding the name.  This helper slices the provided block to that suffix.
+    """
+    if len(block) < 6:
+        return block
+
+    dice_index: Optional[int] = None
+    for idx in range(len(block) - 1, -1, -1):
+        entry = block[idx]
+        if _is_dice_line(entry):
+            dice_index = idx
+            break
+
+    if dice_index is None:
+        return block
+
+    digit_indices: List[int] = []
+    for idx in range(dice_index - 1, -1, -1):
+        entry = block[idx]
+        if entry.isdigit():
+            digit_indices.append(idx)
+            if len(digit_indices) == 4:
+                break
+        else:
+            digit_indices.clear()
+
+    if len(digit_indices) < 4:
+        return block
+
+    start_idx = sorted(digit_indices)[0]
+    return block[start_idx:]
 
 
 def _finalise_entry(name: str, rank: int, block: List[str]) -> Monster:
@@ -140,7 +203,7 @@ def _finalise_entry(name: str, rank: int, block: List[str]) -> Monster:
     if loot is None:
         raise ValueError(f"Missing loot line for monster '{name}'. Block: {block}")
 
-    mapping, overcharge, specials = _parse_ability_lines(ability_lines)
+    mapping, overcharge_attack, overcharge_armor, specials = _parse_ability_lines(ability_lines)
 
     return Monster(
         name=name,
@@ -153,7 +216,8 @@ def _finalise_entry(name: str, rank: int, block: List[str]) -> Monster:
         loot=loot,
         ability_lines=ability_lines,
         skull_mapping=mapping,
-        overcharge_bonus=overcharge,
+        overcharge_attack_bonus=overcharge_attack,
+        overcharge_armor_bonus=overcharge_armor,
         special_effects=specials,
     )
 
@@ -163,6 +227,7 @@ def load_monsters(path: Path = DEFAULT_MONSTER_PATH) -> List[Monster]:
     Parse the monster specification text file into Monster objects.
 
     Format in source file:
+        MonsterName
         Health
         Armor
         Attack
@@ -170,7 +235,6 @@ def load_monsters(path: Path = DEFAULT_MONSTER_PATH) -> List[Monster]:
         Dice
         Ability lines (optional, multiple)
         Loot
-        MonsterName  (name comes LAST)
     """
     if not path.exists():
         raise FileNotFoundError(f"Monster specification not found: {path}")
@@ -181,7 +245,7 @@ def load_monsters(path: Path = DEFAULT_MONSTER_PATH) -> List[Monster]:
     idx = 0
     headers = {"Name", "Health", "Armor", "Attack", "Overkill", "Dice", "Ability", "Loot"}
 
-    # Accumulator for current monster data block
+    pending_name: Optional[str] = None
     current_block: List[str] = []
 
     while idx < len(raw_lines):
@@ -203,24 +267,30 @@ def load_monsters(path: Path = DEFAULT_MONSTER_PATH) -> List[Monster]:
             raise ValueError(f"Encountered monster data '{line}' before any rank declaration.")
 
         lower_line = line.lower()
-        # Check if this line is a monster name
-        is_name = (NAME_PATTERN.match(line) and
-                   not any(ch.isdigit() for ch in line) and
-                   "=" not in line and
-                   "+" not in line and
-                   not lower_line.startswith("oc"))
+        is_name = (
+            NAME_PATTERN.match(line)
+            and not any(ch.isdigit() for ch in line)
+            and "=" not in line
+            and "+" not in line
+            and not lower_line.startswith("oc")
+        )
 
-        # Check if line looks like OC ability (should be part of data, not a name)
-        is_oc_ability = lower_line.startswith("oc")
+        if is_name:
+            if pending_name is not None and current_block:
+                block = _trim_to_latest_block(current_block)
+                monster = _finalise_entry(name=pending_name, rank=rank, block=block)
+                monsters.append(monster)
+                current_block = []
+            pending_name = line
+            continue
 
-        if is_name and len(current_block) >= 6:
-            # We've accumulated enough data (5 stats + at least 1 loot), this is the name
-            monster = _finalise_entry(name=line, rank=rank, block=current_block)
-            monsters.append(monster)
-            current_block = []
-        elif is_oc_ability or not is_name:
-            # Continue accumulating data (stats, abilities, loot)
-            current_block.append(line)
+        # Otherwise, accumulate data for the current monster block.
+        current_block.append(line)
+
+    if pending_name is not None and current_block:
+        block = _trim_to_latest_block(current_block)
+        monster = _finalise_entry(name=pending_name, rank=rank, block=block)
+        monsters.append(monster)
 
     return monsters
 

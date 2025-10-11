@@ -320,6 +320,8 @@ def simulate_hunter_triangle_bow_vs_monster(
 
     hunter_health = 5
     monster_health = monster.health
+    monster_armor = monster.armor
+    monster_armor_reinforcement = 0
     bouts: List[HunterBoutLog] = []
     bout_number = 1
     ca11_cooldown = 0
@@ -348,13 +350,28 @@ def simulate_hunter_triangle_bow_vs_monster(
 
         hunter_attack, breakdown = _compute_hunter_attack(attribute_pool, stage)
 
-        skulls, monster_attack, bonus_text = _roll_monster_skulls(monster, dice_tables, rng)
+        skulls, monster_attack, bonus_text, armor_bonus = _roll_monster_skulls(monster, dice_tables, rng)
+        if armor_bonus:
+            if monster_armor > 0:
+                monster_armor_reinforcement += armor_bonus
+                bonus_text += f"; armor reinforcement +{armor_bonus} (total {monster_armor_reinforcement})"
+            else:
+                bonus_text += "; armor reinforcement failed (armor already broken)"
 
         # Hunter does NOT have tie-breaker ability (unlike Warrior)
         # Must beat monster to win
         if hunter_attack > monster_attack:
             outcome = "Hunter wins bout"
-            monster_health -= 1
+            if monster_armor > 0:
+                if monster_armor_reinforcement > 0:
+                    monster_armor_reinforcement -= 1
+                    outcome += f" - armor reinforcement absorbs blow ({monster_armor_reinforcement} remaining)"
+                else:
+                    monster_armor = 0
+                    monster_armor_reinforcement = 0
+                    outcome += " - monster armor broken"
+            else:
+                monster_health -= 1
         else:
             outcome = "Monster wins bout"
             if hunter_attack == monster_attack:
@@ -404,7 +421,9 @@ def _roll_hero_attributes(dice_tables: DiceTables, rng: random.Random) -> Tuple[
     return hero_face, class_faces, pool
 
 
-def _roll_monster_skulls(monster: Monster, dice_tables: DiceTables, rng: random.Random) -> Tuple[List[int], int, str]:
+def _roll_monster_skulls(
+    monster: Monster, dice_tables: DiceTables, rng: random.Random
+) -> Tuple[List[int], int, str, int]:
     skulls: List[int] = []
     bonus_notes: List[str] = []
     for count, kind in parse_monster_dice_code(monster.dice_code):
@@ -414,6 +433,8 @@ def _roll_monster_skulls(monster: Monster, dice_tables: DiceTables, rng: random.
 
     total_skulls = sum(skulls)
     bonus = monster.attack_bonus_for_skulls(total_skulls)
+    max_defined = max(monster.skull_mapping) if monster.skull_mapping else 0
+    exceeded_table = total_skulls > max_defined >= 0
     if total_skulls in monster.skull_mapping:
         bonus_notes.append(f"{total_skulls} skull -> +{monster.skull_mapping[total_skulls]} attack")
     elif total_skulls > 0:
@@ -422,11 +443,17 @@ def _roll_monster_skulls(monster: Monster, dice_tables: DiceTables, rng: random.
         if candidates:
             key = max(candidates)
             bonus_notes.append(f"{total_skulls} skulls -> using {key}-skull bonus +{monster.skull_mapping[key]} attack")
-    if monster.overcharge_bonus and total_skulls > max(monster.skull_mapping or {0}):
-        bonus_notes.append(f"overcharge +{monster.overcharge_bonus} attack")
+    if monster.overcharge_attack_bonus and exceeded_table:
+        bonus_notes.append(f"overcharge +{monster.overcharge_attack_bonus} attack")
+
+    armor_bonus = 0
+    if monster.overcharge_armor_bonus and exceeded_table:
+        armor_bonus = monster.overcharge_armor_bonus
+        bonus_notes.append(f"overcharge +{armor_bonus} armor (if armor intact)")
+
     bonus_text = "; ".join(bonus_notes) if bonus_notes else "no ability bonus"
     total_attack = monster.attack + bonus
-    return skulls, total_attack, bonus_text
+    return skulls, total_attack, bonus_text, armor_bonus
 
 
 def simulate_warrior_vs_monster(
@@ -451,6 +478,8 @@ def simulate_warrior_vs_monster(
     warrior_health = 5
     monster_health = monster.health
     monster_armor = monster.armor  # Track monster armor (breaks on first loss)
+    monster_armor_reinforcement = 0  # Extra armor layers granted via OC abilities
+    hero_armor_broken = False  # Equipment armor can't return once broken
     bouts: List[BoutLog] = []
     bout_number = 1
 
@@ -460,9 +489,15 @@ def simulate_warrior_vs_monster(
         shield_choice, remaining_after_shield = choose_best_shield_configuration(remaining_after_sword)
 
         hero_attack = sword_choice.attack + shield_choice.attack
-        hero_armor = shield_choice.armor
+        hero_armor = 0 if hero_armor_broken else shield_choice.armor
 
-        skulls, monster_attack, bonus_text = _roll_monster_skulls(monster, dice_tables, rng)
+        skulls, monster_attack, bonus_text, armor_bonus = _roll_monster_skulls(monster, dice_tables, rng)
+        if armor_bonus:
+            if monster_armor > 0:
+                monster_armor_reinforcement += armor_bonus
+                bonus_text += f"; armor reinforcement +{armor_bonus} (total {monster_armor_reinforcement})"
+            else:
+                bonus_text += "; armor reinforcement failed (armor already broken)"
 
         # Warrior CA#2: Always wins ties
         if hero_attack >= monster_attack:
@@ -471,8 +506,13 @@ def simulate_warrior_vs_monster(
                 outcome += " (tie-breaker: CA#2)"
             # Monster loses armor first, then health
             if monster_armor > 0:
-                monster_armor = 0
-                outcome += " - monster armor broken"
+                if monster_armor_reinforcement > 0:
+                    monster_armor_reinforcement -= 1
+                    outcome += f" - armor reinforcement absorbs blow ({monster_armor_reinforcement} remaining)"
+                else:
+                    monster_armor = 0
+                    monster_armor_reinforcement = 0
+                    outcome += " - monster armor broken"
             else:
                 monster_health -= 1
         else:
@@ -480,6 +520,7 @@ def simulate_warrior_vs_monster(
             # Hero loses armor first, then health
             if hero_armor > 0:
                 hero_armor = 0
+                hero_armor_broken = True
                 outcome += " - hero armor broken"
             else:
                 warrior_health -= 1
