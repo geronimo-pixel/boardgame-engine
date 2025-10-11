@@ -88,9 +88,17 @@ Every turn players will go through the different phases in order, the same goes 
 
 
 1. Starting Phase: on this phase nothing much happens, the turn starts and some effects may take place at this time, if nothing happens players just move onto the next phase.
+
+
 2. Planning Phase: during this phase players choose which monster they wanna fight, they can discuss with each other to plan their moves, note that everything said during this time, like at any point of the game, is not binding, players can go back on their word and trick others as they like. This phase ends with the reveal of the Voting cards (see page n).
+
+
 3. Hunting Phase: after the reveal of the Voting cards this phase starts, players who have chosen the same monster must decide whether to duel for the right to fight it (see page n) or to Coop (see page n) against it. If more than 2 players have chosen the same monster a bidding starts where the 2 players who bid the highest amount of G win, once a player has bid other players cannot bid the same amount and can only bid more or desist, the money goes to the player or players who lost the bid in equal parts, the 2 winning players then decide to duel or to coop for the monster, the losing side can choose another monster to fight. Once these instances are resolved players fight against the monsters following the combat rules (see page n), to speed up the game players can choose to fight monsters without the supervision of other players (no cheats allowed !!). This phase ends when all players have resolved their hunting whether they won or lost, if a player died during this phase (see page n) they don’t participate in the next phases for this turn.
+
+
 4. Shopping phase: this phase is used for players to buy equipment, or spells and to level up, 2 players interested on the same item must either duel for it or find an arrangement in G or other valuables, this phase ends after all players have nothing more to buy. Every time a card is bought, draw a new one from the corresponding pile to substitute it. In this phase players can also exchange and or sell items between each other.
+
+
 5. Ending phase: this phase concludes the turn, at this time some effect may take place, if nothing happens conclude the turn and start a new one.
 
 
@@ -139,7 +147,9 @@ ATTRIBUTES AND FIGHTING
 
 There are 2 important variables, for players, when fighting: equipment and attributes.
 Equipment is activated through attributes. Each piece of equipment has a main attribute it uses to be activated, but can have secondary or even tertiary attributes that it uses. 
-There are usually 3 Variations of each equipment card, one for each attribute, they have the same effect but use different attributes to be activated. Equipment uses its effect to transform attributes rolled through dice into a numerical value or a beneficial effect for the player using it; for example the card “Sword” transforms an attribute into a +1 to the attack Roll, or 2 of the same attribute into a +2 to the Attack Roll.
+
+
+There are usually 3 Variations of each equipment card, one for each attribute, they have the same effect but use different attributes to be activated. Equipment uses its effect to transform attributes rolled through dice into a numerical value or a beneficial effect for the player using it; for example the card “Sword” transforms an attribute into a +1 to the attack Roll, or 2 of different attributes into a +2 to the Attack Roll.
 When fighting, use the Attributes present on the dice to activate Equipment, any unused Attributes is “discarded” and has no effect. 
 Players can choose how to most efficiently use the Attributes they rolled, they can use all of them to activate Equipment or purposely use just a fraction of them if they want.
 
@@ -153,7 +163,7 @@ When a fight takes place, depending on which kind, the rules might differ a litt
 An average fight goes like this: both parties roll their dice (another player rolls for monsters), they then use the attributes on those dice to activate their equipment transforming the rolled attributes into a number, or abilities for monsters, (equipment and abilities can be activated multiple times if they possess the attributes for it, unless written otherwise on the card), equipment and abilities transform attributes into a numerical value, any other effects or bonuses are accounted for and then the side with the highest result wins. In duels, the fight ends here, in other kinds of fights, the fight keeps going, the losing side loses their armor and the fight continues until the monster has no more health or a player loses one life. Note that both parties can lose their armor if they win bouts alternatively.
 
 
-Armor is a numerical value that is added to the roll, if it is still intact. Armor is only given by equipment, effect or spells for Players, Heroes have no natural Armor like Monsters do. Some effects like Armor Break or Armor On refer, respectively, to when the armor breaks or if the armor is still on.
+Armor is a numerical value that is added to the roll, if it is still intact. Armor is only given by equipment, effect or spells for Players, Heroes have no natural Armor like Monsters do. Some effects like Armor Break or Armor On refer, respectively, to when the armor breaks or if the armor is still on. Once the Armor is broken it cannot be regenerated through Equipment, it can only be recovered through spells or abilities. Armor regenerates in between fights.
 
 
 
@@ -203,11 +213,23 @@ LEVEL UP
 
 
 To level up means that the player acquires a new Class Ability and an additional dice, it costs 10G to level up and it can only be done during the shopping phase.
-To level up the player draws 3 cards from their Class Ability deck and then chooses one to keep, put the unchosen cards in a temporary discard pile, when the main deck has no more cards, shuffle the discard pile and use it again as main deck. 
+
+
+To level up the player draws 3 cards from their Hero deck and then chooses one to keep, put the unchosen cards in a temporary discard pile, when the main deck has no more cards, shuffle the discard pile and use it again as main deck. 
+
+
 A player can choose to level up multiple times at once, drawing 3 cards for every level up they’re doing, meaning that, for example, a player that level ups twice at once draws 6 cards and then chooses 2 to keep. This is what happens at the start of the game, choosing the starting class abilities is considered leveling up and leveling up twice in a row at that.
-The first 2 players who reach 6 Class Abilities are awarded nVictory points.
+
+
+The first 2 players who reach 6 Class Abilities are awarded, respectively, 12 for the first and 8 for the second, Victory points.
+
+
 On each level up, a player is also granted an additional dice from their dice pool. After reaching 4 Class dice, on the next level ups, instead of gaining a new dice, substitute a Class dice with a Hero dice. A level 6 player then has 3 Hero dice and 2 Class dice.
-Inside the Level up deck there is also the starting equipment and Final equipment for each Hero. Final equipment is very strong tailored equipment for each Hero that can only be bought during any Shopping phase by the corresponding Hero after reaching 6 CA.
+
+
+Inside the Hero deck there is also the starting equipment and Final equipment for each Hero. Final equipment is very strong tailored equipment for each Hero that can only be bought during any Shopping phase by the corresponding Hero after reaching 6 CA.
+
+
 
 
 
@@ -218,12 +240,14 @@ SHOP
 The shop sells Equipment and Spells throughout the game, cards sold in the shop have a cost in G or Tokens, a Rank (equipment only), a category and an effect.
 Gold (G) is the main currency of the game and is used to buy from the Shop or activate some Abilities. G is gained as Loot from Monsters or through some effects.
 Tokens are a secondary currency in the game and are more valuable and rare than G. It is gained as Loot or through some effects.
+
+
 Everything sold in the shop has 2 prices: one in G and one in Tokens.
 The cards displayed in the shop must always have the same Rank as the current stage, when a stage ends, substitute all cards in the shop and the equipment decks with ones of the next Rank. Remember that a stage ends after the ending phase of the turn in which the boss is defeated, so the substitution of cards happens on the next turn’s starting phase as the very first action. Spells have no rank and are always drawn from the same deck.
+
+
 The shop always displays 6 weapons, 4 armors, 4 charms and 6 spells. Players can choose to all pay one G to discard any amount of cards from the shop and substitute them, the majority or half of players must agree on this action but everybody must agree on what to discard.
 During the shop phase players can also buy/sell/exchange Equipment and Spell between each other.
-
-
 
 
 EQUIPMENT
@@ -232,7 +256,7 @@ EQUIPMENT
 Equipment is divided into categories: weapons, armors and charms. Each character can equip up to 2 Weapons, 2 Armors and 2 Charms. There are some restrictions though: 2 handed weapons use both weapons slots, Armors must be of different types and the same goes for charms; some other restrictions might be specified on the cards.
 Equipment is used during fighting, usually only Weapons and Charms use attributes from dice to work and Armor doesn't, but there are exceptions.
 Each piece of equipment generally has three copies of it, one for each of the three player’s Attributes.
-During a fight, equipment can be activated through dice roll multiple times if the player rolls the attributes needed for it. This activates the Overcharge (OC) ability that adds an effect to the Attack roll. OC abilities might have additional rules specified on the card, a number put beside the OC line on the card means that to OC that specific card, multiple activations of the equipment ability are needed, equal to that number. OC can only be used by reaching and surpassing the highest attribute effect on the card.
+During a fight, equipment can be activated, through dice roll, multiple times, if the player rolls the attributes needed for it. This activates the Overcharge (OC) ability that adds an effect to the Attack roll. OC abilities might have additional rules specified on the card, a number put beside the OC line on the card means that to OC that specific card, multiple activations of the equipment ability are needed, equal to that number. OC can only be used by reaching and surpassing the highest attribute effect on the card.
 Equipment must be equipped during the Starting phase (1), players can hold up to 2 unused pieces of equipment, if over the limit, equipment must be discarded.
 
 
@@ -271,8 +295,16 @@ BOSSES
 
 
 Bosses are the ultimate foe of the game, they have a Rank and high stats to go with it. There are 4 Bosses for each rank. At the start of every stage, draw a Boss from the respective deck. Bosses have the same stats indicators as monsters, all but Overkill: Health, Armor, Attack, Dice and Loot.
+
+
 Each Boss also has a Rule that will be in effect for the whole duration of the current stage, meaning the rule is active from the start of the stage till the end of the turn in which the Boss is defeated. 3rd Rank Bosses have rules that can lead to the players collectively losing the game.
-Bosses's Rule takes precedence against any other rule or effect of the game. Players who defeat a Boss in Coop can decide who gets the HoB through compensation, negotiation or duel, on a normal Coop players must decide how to split loot before the fight
+Bosses's Rule takes precedence against any other rule or effect of the game. Players who defeat a Boss in Coop can decide who gets the HoB through compensation, negotiation or duel, on a normal Coop players must decide how to split loot before the fight.
+
+
+HoBs have 5 colors corresponding to a different Victory points value: blue 2 points, yellow 4 points, orange 7 points, red 10 points, black 15 points. Damage to Bosses is inflicted from top to bottom on their HoB pool. 
+Rank 1 Bosses have 4 HoBs, from top to bottom: 1 blue, 2 yellow, 1 orange.
+Rank 2 Bosses have 5 HoBs, from top to bottom: 1 yellow, 3 orange, 1 red.
+Rank 3 Bosses have 6 HoBs, from top to bottom: 2 orange, 3 red, 1 black.
 
 
 DYING AND HEALING

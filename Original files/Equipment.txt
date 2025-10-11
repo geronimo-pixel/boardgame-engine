@@ -1,0 +1,569 @@
+RANK 1 45 tot 21 weapons 12 armors 12 charms.
+Att=attack, Ar=Armor, ArD=Armor damage, Tk=token, G=gold, Attr=attribute, Sq=squares, Tr=trianles, Cr=circles, p=Primary attribute, s=Secondary attribute, t=tertiary attribute
+
+
+WEAPONS
+
+
+Name
+	Category
+	Type
+	Number of dice
+	Primary Attr
+	Secondary Attr
+	Tertiary Attr
+	Effect
+	Overcharge
+	Flat bonus
+	Cost
+	Sword
+	Weapon
+	1 hand
+	2
+	Sq
+	Cr
+	/
+	1p = +1 Att
+1p+1s= +2 Att
+	+1 Att
+	+1 Att
+	4G, 1 Tk
+	Sword
+	Weapon
+	1 hand
+	2
+	Tr
+	Sq
+	/
+	1p = +1 Att
+1p+1s = +2 Att
+	+1 Att
+	+1 Att
+	4G, 1 Tk
+	Sword
+	Weapon
+	1 hand
+	2
+	Cr
+	Tri
+	/
+	1p = +1 Att
+1p+1s = +2 Att
+	+1 Att
+	+1 Att
+	4G, 1 Tk
+	Spear
+	Weapon
+	2 hand
+	2
+	Sq
+	Tr
+	/
+	1p = +1 Att
+1p+1s= +2 Att
+	+2 ArD
+	+1 ArD
+	4G, 1 Tk
+	Spear
+	Weapon
+	2 hand
+	2
+	Tr
+	Cr
+	/
+	1p = +1 Att
+1p+1s = +2 Att
+	+2 ArD
+	+1 ArD
+	4G, 1 Tk
+	Spear
+	Weapon
+	2 hand
+	2
+	Cr
+	Sq
+	/
+	1p = +1 Att
+1p+1s = +2 Att
+	+2 ArD
+	+1 ArD
+	4G, 1 Tk
+	Bow
+	Weapon
+	2 hand
+	2
+	Sq
+	Cr
+	/
+	1p = +2 Att
+1p+1s= +3 Att
+	+1 Att vs Monsters
+	+ 1 Att
+	4G, 1 Tk
+	Bow
+	Weapon
+	2 hand
+	2
+	Tr
+	Sq
+	/
+	1p = +2 Att
+1p+1s= +3 Att
+	+1 Att vs Monsters
+	+ 1 Att
+	4G, 1 Tk
+	Bow
+	Weapon
+	2 hand
+	2
+	Cr
+	Tri
+	/
+	1p = +2 Att
+1p+1s= +3 Att
+	+1 Att vs Monsters
+	+ 1 Att
+	4G, 1 Tk
+	Orb
+	Weapon
+	1 hand
+	2
+	Sq
+	Tr
+	/
+	1p = +2 Att
+1p+1s= +3 Att
+	+1 ArD
+	+ 1 Att
+	4G, 1 Tk
+	Orb
+	Weapon
+	1 hand
+	2
+	Tr
+	Cr
+	/
+	1p = +2 Att
+1p+1s= +3 Att
+	+1 ArD
+	+ 1 Att
+	4G, 1 Tk
+	Orb
+	Weapon
+	1 hand
+	2
+	Cr
+	Sq
+	/
+	1p = +2 Att
+1p+1s= +3 Att
+	+1 ArD
+	+ 1 Att
+	4G, 1 Tk
+	Grimoire
+	Weapon
+	2 hand
+	2
+	Sq
+	Cr
+	/
+	1p = +2 Att
+1p+1s= +4 Att
+	No OC
+	+1 ArD
+	4G, 1 Tk
+	Grimoire
+	Weapon
+	2 hand
+	2
+	Tr
+	Sq
+	/
+	1p = +2 Att
+1p+1s= +4 Att
+	No OC
+	+1 ArD
+
+
+	4G, 1 Tk
+	Grimoire
+	Weapon
+	2 hand
+	2
+	Cr
+	Tri
+	/
+	1p = +2 Att
+1p+1s= +4 Att
+	No OC
+	+1 ArD
+	4G, 1 Tk
+	Shield
+	Weapon
+	1 hand
+	2
+	Sq
+	Cr
+	/
+	1p = +1 Att
+1p+1s= +2 Att
+	+2 Ar
+	+ 1 Ar
+	4G, 1 Tk
+	Shield
+	Weapon
+	1 hand
+	2
+	Tr
+	Sq
+	/
+	1p = +1 Att
+1p+1s= +2 Att
+	+2 Ar
+	+ 1 Ar
+	4G, 1 Tk
+	Shield
+	Weapon
+	1 hand
+	2
+	Cr
+	Tri
+	/
+	1p = +1 Att
+1p+1s= +2 Att
+	+2 Ar
+	+ 1 Ar
+	4G, 1 Tk
+	Knife
+	Weapon
+	1 hand
+	1
+	Sq
+	/
+	/
+	1p = +1 Att
+	+1 Att
+	/
+	4G, 1 Tk
+	Knife
+	Weapon
+	1 hand
+	1
+	Tr
+	/
+	/
+	1p = +1 Att
+	+1 Att
+	/
+	4G, 1 Tk
+	Knife
+	Weapon
+	1 hand
+	1
+	Cr
+	/
+	/
+	1p = +1 Att
+	+1 Att
+	/
+	4G, 1 Tk
+	
+
+Amors
+
+
+
+
+Name
+	Category
+	Type
+	Number of dice
+	Primary Attr
+	Secondary Attr
+	Tertiary Attr
+	Effect
+	Overcharge
+	Flat bonus
+	Cost
+	Chainmail
+	Armor
+	Chest
+	/
+	/
+	/
+	/
+	/
+	/
+	+2 Ar
+	4G, 1 Tk
+	Chainmail
+	Armor
+	Chest
+	/
+	/
+	/
+	/
+	/
+	/
+	+2 Ar
+	4G, 1 Tk
+	Chainmail
+	Armor
+	Chest
+	/
+	/
+	/
+	/
+	/
+	/
+	+2 Ar
+	4G, 1 Tk
+	Leathervest
+	Armor
+	Chest
+	1
+	Sq
+	/
+	/
+	1p = +1 Ar
+	+1 Ar
+	/
+	4G, 1 Tk
+	Leathervest
+	Armor
+	Chest
+	1
+	Tr
+	/
+	/
+	1p = +1 Ar
+	+1 Ar
+	/
+	4G, 1 Tk
+	Leathervest
+	Armor
+	Chest
+	1
+	Cr
+	/
+	/
+	1p = +1 Ar
+	+1 Ar
+	/
+	4G, 1 Tk
+	Grieves
+	Armor
+	Legs
+	/
+	/
+	/
+	/
+	/
+	/
+	+1 Ar
+	4G, 1 Tk
+	Grieves
+	Armor
+	Legs
+	/
+	/
+	/
+	/
+	/
+	/
+	+1 Ar
+	4G, 1 Tk
+	Grieves
+	Armor
+	Legs
+	/
+	/
+	/
+	/
+	/
+	/
+	+1 Ar
+	4G, 1 Tk
+	Gauntlet
+	Armor
+	Arms
+	/
+	/
+	/
+	/
+	/
+	/
+	+1 Att
+	4G, 1 Tk
+	Gauntlet
+	Armor
+	Arms
+	/
+	/
+	/
+	/
+	/
+	/
+	+1 Att
+	4G, 1 Tk
+	Gauntlet
+	Armor
+	Arms
+	/
+	/
+	/
+	/
+	/
+	/
+	+1 Att
+	4G, 1 Tk
+	
+
+Charms
+
+
+
+
+Name
+	Category
+	Type
+	Number of dice
+	Primary Attr
+	Secondary Attr
+	Tertiary Attr
+	Effect
+	Overcharge
+	Flat bonus
+	Cost
+	Onesie
+	Charm
+	Ring
+	1
+	Sq
+	/
+	/
+	1p = + 1 Att
+	/
+	/
+	4G, 1 Tk
+	Onesie
+	Charm
+	Ring
+	1
+	Cr
+	/
+	/
+	1p = + 1 Att
+	/
+	/
+	4G, 1 Tk
+	Onesie
+	Charm
+	Ring
+	1
+	Tr
+	/
+	/
+	1p = + 1 Att
+	/
+	/
+	4G, 1 Tk
+	Twott
+	Charm
+	Ring
+	1
+	Sq
+	/
+	/
+	1p = + 1 ArD
+	/
+	/
+	4G, 1 Tk
+	Twott
+	Charm
+	Ring
+	1
+	Cr
+	/
+	/
+	1p = + 1 ArD
+	/
+	/
+	4G, 1 Tk
+	Twott
+	Charm
+	Ring
+	1
+	Tr
+	/
+	/
+	1p = + 1 ArD
+	/
+	/
+	4G, 1 Tk
+	Dada
+	Charm
+	Crown
+	1
+	Sq
+	/
+	/
+	1p = + 1 Ar
+	/
+	/
+	4G, 1 Tk
+	Dada
+	Charm
+	Crown
+	1
+	Cr
+	/
+	/
+	1p = + 1 Ar
+	/
+	/
+	4G, 1 Tk
+	Dada
+	Charm
+	Crown
+	1
+	Tr
+	/
+	/
+	1p = + 1 Ar
+	/
+	/
+	4G, 1 Tk
+	Bato
+	Charm
+	Crown
+	1
+	Sq
+	/
+	/
+	1p = + 1G
+	/
+	/
+	4G, 1 Tk
+	Bato
+	Charm
+	Crown
+	1
+	Cr
+	/
+	/
+	1p = + 1G
+	/
+	/
+	4G, 1 Tk
+	Bato
+	Charm
+	Crown
+	1
+	Tr
+	/
+	/
+	1p = + 1G
+	/
+	/
+	4G, 1 Tk

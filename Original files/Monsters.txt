@@ -1,5 +1,5 @@
 ﻿RANK 1
-A=Attack, Ar=Armor
+Att=Attack, Ar=Armor, sk=skull, m=minion dice, c=chief dice, b=boss dice
 Name
 	Health
 	Armor
@@ -15,19 +15,19 @@ Name
 	2
 	2
 	2m
-	1d-2A
-2d-3A
-OC+2A
-	2G
+	1 sk = + 2Att
+2 sk = + 3Att
+OC = +2 Att
+	4G
 	Rat
 	1
 	0
 	1
 	2
 	2m
-	1d-1A
-2d-2A
-OC+1A
+	1 sk = + 2Att
+2sk = + 2Att
+OC=+1Att
 	2G
 	Mush
 	1
@@ -35,7 +35,7 @@ OC+1A
 	0
 	2
 	2m
-	1d-1A
+	1sk=+1Att
 	2G
 	Wolf
 	1
@@ -43,9 +43,9 @@ OC+1A
 	2
 	3
 	2m
-	1d-1A
-2d-3A
-OC+2
+	1sk = +1 Att
+2sk = +3 Att
+OC = +2 Att
 	3G
 	Hedge
 	1
@@ -53,8 +53,8 @@ OC+2
 	1
 	3
 	2m
-	1d-1A
-2d-2A
+	1sk = +1 Att
+2sk = +2Att
 OC explode, deal 1 damage dies
 	2G + 1T
 	
@@ -64,9 +64,9 @@ OC explode, deal 1 damage dies
 	1
 	2
 	1c
-	1d-1A
-2s-2A
-3d-4A
+	1sk = +1 Att
+2sk = +2Att
+3sk = +4Att
 	3G
 	Imp
 	1
@@ -74,9 +74,9 @@ OC explode, deal 1 damage dies
 	2
 	3
 	1c
-	1d-1A
-2d-2A
-3d- escapes drop half G
+	1sk = +1 Att
+2sk = +2Att
+3 sk = escapes drop half G
 	4G
 	
 
@@ -85,9 +85,9 @@ OC explode, deal 1 damage dies
 	1
 	3
 	1c
-	1d-1A
-2d-2A
-3d-4A
+	1sk = +1Att
+2sk = +2Att
+3sk = +4Att
 	5G
 	Skelly
 	2
@@ -95,9 +95,9 @@ OC explode, deal 1 damage dies
 	3
 	3
 	2m
-	1d-1A
-2d-2A
-OC+1A
+	1sk = +1Att
+2sk = +2Att
+OC=+1Att
 	3G
 	Draugr
 	2
@@ -105,9 +105,9 @@ OC+1A
 	2
 	3
 	3m
-	1d-1A
-2d-2A
-OC+2Ar
+	1sk = +1Att
+2sk= +2Att
+OC = +2Ar
 	4G
 	Lavamander
 	2
@@ -115,9 +115,9 @@ OC+2Ar
 	2
 	2
 	1c+1m
-	1d-2A
-2d-3A
-OC+1Ar
+	1sk = + 2Att
+2 sk = + 3Att
+OC = +1Ar
 	4G + 1T
 	
 
@@ -126,9 +126,9 @@ OC+1Ar
 	1
 	1
 	2m
-	1d-1A
-2d-2A
-OC+2A
+	1sk = +1Att
+2sk = +2Att
+OC =  +2Att
 	4G
 	
 
@@ -137,9 +137,9 @@ OC+2A
 	2
 	4
 	1c
-	1d-2A
-2d-3A
-OC+2Ar
+	1sk = + 2Att
+2 sk = + 3Att
+OC = +2Ar
 	2G + 1T
 	
 
@@ -148,9 +148,9 @@ OC+2Ar
 	1
 	2
 	1m
-	1d-2A
-2d-3A
-OC+2A
+	1sk = + 2Att
+2 sk = + 3Att
+OC = +2 Att
 	3G
 	
 
@@ -159,9 +159,9 @@ OC+2A
 	3
 	3
 	3m
-	1d-1A
-2d-2A
-OC+1A
+	1sk = +1 Att
+2sk= +2 Att
+OC= +1Att
 	4G + 1T
 	
 
@@ -180,10 +180,10 @@ OC+1A
 	3
 	3
 	2c
-	1d-3A
-2d-4A
-3d-5A
-OC+2Ar
+	1sk = +3Att
+2sk = +4Att
+3sk = +5Att
+OC = +2Ar
 	3G + 1 HoB
 (blue)
 	
@@ -193,9 +193,9 @@ OC+2Ar
 	2
 	2
 	1m+1c
-	1d-3A
-2d-4A
-OC+3Ar
+	1sk = +3Att
+2sk = +4Att
+OC = + 3Ar
 	4G
 	
 
@@ -204,9 +204,9 @@ OC+3Ar
 	1
 	2
 	3m
-	1d-1A
-2d-2A
-OC+2A
+	1sk = +1Att
+2sk = +2Att
+OC = +2Att
 	4G
 	
 
@@ -215,9 +215,9 @@ OC+2A
 	3
 	3
 	2m
-	1d-1A
-2d-2A
-OC+3A
+	1sk = +1 Att
+2sk =+2 Att
+OC = +3Att
 	4G
 	
 
@@ -226,8 +226,8 @@ OC+3A
 	3
 	3
 	1m
-	1d-1A
-2d-2A
+	1sk = +1 Att
+2sk=+2 Att
 	3G
 	
 
@@ -236,9 +236,9 @@ OC+3A
 	1
 	1
 	4m
-	1d-1A
-2d-2A
-OC+1A
+	1sk = +1 Att
+2sk=+2 Att
+OC= +1Att
 	4G + 1 T
 	
 
@@ -247,9 +247,9 @@ OC+1A
 	4
 	4
 	2m
-	1d-2A
-2d-3A
-OC+2Ar
+	1sk = + 2Att
+2 sk = + 3Att
+OC = +2Ar
 	3G
 	
 
@@ -258,9 +258,9 @@ OC+2Ar
 	2
 	3
 	2c
-	1d-1A
-2d-2A
-OC+2A
+	1sk = +1 Att
+2sk=+2 Att
+OC = +2 Att
 	4G + 1 HoB (blue)
 	
 
@@ -269,8 +269,8 @@ OC+2A
 	2
 	5
 	1c
-	1d-1A
-2d-2A
+	1sk = +1 Att
+2sk=+2 Att
 OC bout is null retry
 	5G
 	
@@ -280,9 +280,9 @@ OC bout is null retry
 	3
 	4
 	2m
-	1d-1A
-2d-2A
-OC+1A
+	1sk = +1 Att
+2sk=+2 Att
+OC= +1Att
 	5G + 1 T
 	
 
@@ -291,9 +291,9 @@ OC+1A
 	3
 	3
 	3m
-	1d-3A
-2d-4A
-OC+1Ar
+	1sk = +3Att
+2sk = +4Att
+OC = +1Ar
 	8G
 	
 
@@ -302,9 +302,9 @@ OC+1Ar
 	4
 	2
 	2c
-	1d-2A
-2d-3A
-OC+2Ar
+	1sk = + 2Att
+2 sk = + 3Att
+OC = +2Ar
 	6G + 1 T
 	
 
@@ -313,8 +313,8 @@ OC+2Ar
 	1
 	3
 	2m
-	1d-1A
-2d-2A
+	1sk = +1 Att
+2sk=+2 Att
 OC attacker loses 1 G,
 no G loses 1 Health combat continues
 	8G
@@ -325,8 +325,8 @@ no G loses 1 Health combat continues
 	2
 	4
 	1m
-	1d-1A
-2d-2A
+	1sk = +1Att
+2sk = +2Att
 	4G
 	
 
@@ -335,7 +335,7 @@ no G loses 1 Health combat continues
 	3
 	2
 	1b+1c
-	1d-3A
-2d-4A
-OC+1A
+	1sk = +3Att
+2sk = +4Att
+OC= +1Att
 	6G + 1 HoB (yellow)
