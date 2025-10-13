@@ -105,6 +105,8 @@ def test_dice_loading():
         print(f"  Hero dice: {len(hero_dice)} heroes")
         print(f"  Class dice: {len(class_dice)} classes")
         print(f"  Monster dice: {len(monster_dice)} categories")
+        blank_die = dice.get("blank_die", [])
+        print(f"  Blank die faces: {len(blank_die)}")
 
         # Verify 7 heroes
         hero_names = [die.hero for die in hero_dice]
@@ -130,6 +132,11 @@ def test_dice_loading():
         for die in class_dice:
             if len(die.faces) != 6:
                 face_errors.append(f"Class {die.hero} has {len(die.faces)} faces (expected 6)")
+
+        if len(blank_die) != 6:
+            face_errors.append(f"Blank die has {len(blank_die)} faces (expected 6)")
+        elif any(face and any(symbol != "blank" for symbol in face) for face in blank_die):
+            face_errors.append("Blank die contains non-blank symbols")
 
         for die in monster_dice:
             if len(die.skull_counts) != 6:

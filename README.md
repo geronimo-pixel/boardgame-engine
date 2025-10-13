@@ -8,21 +8,23 @@ An AI-assisted game design laboratory for balancing and testing your board game 
 
 **First time here?** Follow these steps:
 
-1. **Read the getting started guide**: `GETTING_STARTED.md`
-2. **Explore example cards**: `rules/_examples/`
-3. **Read the learning guides**: `docs/` (6 progressive tutorials)
+1. **Read the getting started guide**: GETTING_STARTED.md
+2. **Explore example cards**: 
+ules/_examples/
+3. **Read the learning guides**: docs/ (6 progressive tutorials)
 
 ---
 
 ## 📂 What's Here
 
-```
+`
 rules/          ← Your game cards (heroes, equipment, monsters, bosses, spells)
 docs/           ← Learning guides (YAML, simulations, balance reports)
+                  ← Loadout workflow & CLI: docs/combat_loadouts.md
 engine/         ← Combat simulation code (coming soon)
 simulations/    ← Test scenarios (coming soon)
 analysis/       ← Balance analysis tools (coming soon)
-```
+`
 
 ---
 
@@ -38,9 +40,10 @@ analysis/       ← Balance analysis tools (coming soon)
 
 ## 📖 Learning Path
 
-1. Read `GETTING_STARTED.md` (10 min)
-2. Browse `rules/_examples/` (20 min) - fully annotated card templates
-3. Follow `docs/04_adding_your_first_card.md` (30 min) - hands-on tutorial
+1. Read GETTING_STARTED.md (10 min)
+2. Browse 
+ules/_examples/ (20 min) - fully annotated card templates
+3. Follow docs/04_adding_your_first_card.md (30 min) - hands-on tutorial
 4. Start creating!
 
 ---
@@ -57,17 +60,19 @@ analysis/       ← Balance analysis tools (coming soon)
 
 ## 🤝 Collaboration
 
-- **Pietro**: Design cards in `rules/`, test with simulations
+- **Pietro**: Design cards in 
+ules/, test with simulations
 - **Giovanni**: Maintain engine code, review changes
 
 ---
 
 ## 📞 Need Help?
 
-- **Technical terms?** → `GLOSSARY.md`
-- **How to create cards?** → `docs/` or `rules/_examples/`
+- **Technical terms?** → GLOSSARY.md
+- **How to create cards?** → docs/ or 
+ules/_examples/
 - **Stuck?** → Ask Giovanni
 
 ---
 
-**Ready to begin?** → Open `GETTING_STARTED.md` 🚀
+**Ready to begin?** → Open GETTING_STARTED.md 🚀

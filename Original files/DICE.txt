@@ -120,3 +120,17 @@ BOSS
 4. 2 skull
 5. 2 skull
 6. 2 skull
+
+BLANK DICE
+
+Blank dice are dice that can be used through some effects. They have 6 faces, 5 are blanks and one has a null symbol. Blank faces can be exchanged for an Attribute of choice and the null face has no value and cannot be used.
+Blank die:
+
+1. Null (no attribute)
+2. Blank (any attribute)
+3. Blank (any attribute)
+4. Blank (any attribute)
+5. Blank (any attribute)
+6. Blank (any attribute)
+
+

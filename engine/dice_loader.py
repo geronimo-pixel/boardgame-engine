@@ -21,9 +21,12 @@ except ModuleNotFoundError as exc:  # pragma: no cover - dependency guard
 ROOT = Path(__file__).resolve().parents[1]
 DICE_PATH = ROOT / "rules" / "_core" / "dice.yaml"
 
-HERO_SYMBOLS = {"square", "triangle", "circle"}
+BLANK_SYMBOL = "blank"
+NULL_SYMBOL = "null"
+HERO_SYMBOLS = {"square", "triangle", "circle", BLANK_SYMBOL}
 MONSTER_SYMBOL = "skull"
 FACES_PER_DIE = 6
+BLANK_DIE_FACES: List[List[str]] = [[BLANK_SYMBOL] for _ in range(5)] + [[NULL_SYMBOL]]
 
 
 @dataclass(frozen=True)
@@ -205,6 +208,7 @@ def load_all_dice(path: Optional[Path] = None) -> Dict[str, object]:
         "hero_dice": load_hero_dice(config),
         "class_dice": load_class_dice(config),
         "monster_dice": load_monster_dice(config),
+        "blank_die": [face[:] for face in BLANK_DIE_FACES],
     }
 
 

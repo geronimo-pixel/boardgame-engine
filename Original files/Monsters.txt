@@ -89,8 +89,20 @@ OC explode, deal 1 damage dies
 	1c
 	1sk = +1Att
 2sk = +2Att
-3sk = +4Att
+	3sk = +4Att
 	5G
+	
+	Sprite
+	1
+	2
+	1
+	2
+	2m
+	1sk = +1 Att
+2sk = +2 Att
+OC = +1 Att
+	3G
+	
 	Skelly
 	2
 	0
@@ -180,10 +192,10 @@ OC= +1Att
 2sk = +4Att
 3sk = +5Att
 OC = +2Ar
-	3G + 1 HoB
-(blue)
-	
+	3G + 1 HoB(blue)
 
+	
+    Fiend
 	3
 	2
 	2
@@ -274,7 +286,7 @@ OC = +2 Att
 	1c
 	1sk = +1 Att
 2sk=+2 Att
-OC bout is null retry
+OC bout is annulled, retry bout
 	5G
 	
 
@@ -348,3 +360,4 @@ no G loses 1 Health combat continues
 2sk = +4Att
 OC= +1Att
 	6G + 1 HoB (yellow)
+

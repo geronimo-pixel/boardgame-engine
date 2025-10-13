@@ -1,0 +1,355 @@
+- number: 1
+  name: Rat
+  health: 1
+  armor: 0
+  attack: 1
+  overkill: 1
+  dice: 2m
+  abilities:
+  - 1 sk = + 2Att
+  - 2sk = + 2Att
+  - OC=+1Att
+  loot: 2G
+- number: 2
+  name: Mush
+  health: 1
+  armor: 3
+  attack: 0
+  overkill: 1
+  dice: 2m
+  abilities:
+  - 1sk=+1Att
+  loot: 2G
+- number: 3
+  name: Wolf
+  health: 1
+  armor: 1
+  attack: 2
+  overkill: 3
+  dice: 2m
+  abilities:
+  - 1sk = +1 Att
+  - 2sk = +3 Att
+  - OC = +2 Att
+  loot: 3G
+- number: 4
+  name: Hedge
+  health: 1
+  armor: 4
+  attack: 0
+  overkill: 3
+  dice: 2m
+  abilities:
+  - 1sk = +1 Att
+  - 2sk = +2Att
+  - OC explode, deal 1 damage dies
+  loot: 2G + 1T
+- number: 5
+  name: Jackal
+  health: 1
+  armor: 2
+  attack: 0
+  overkill: 2
+  dice: 1c
+  abilities:
+  - 1sk = +1 Att
+  - 2sk = +2Att
+  - 3sk = +4Att
+  loot: 3G
+- number: 6
+  name: Imp
+  health: 1
+  armor: 4
+  attack: 2
+  overkill: 2
+  dice: 1c
+  abilities:
+  - 1sk = +1 Att
+  - 2sk = +2Att
+  loot: 3 sk = escapes drop half G
+- number: 7
+  name: Ibex
+  health: 1
+  armor: 6
+  attack: 1
+  overkill: 2
+  dice: 1c
+  abilities:
+  - 1sk = +1Att
+  - 2sk = +2Att
+  - 3sk = +4Att
+  loot: 5G
+- number: 8
+  name: Sprite
+  health: 1
+  armor: 2
+  attack: 1
+  overkill: 2
+  dice: 2m
+  abilities:
+  - 1sk = +1 Att
+  - 2sk = +2 Att
+  - OC = +1 Att
+  loot: 3G
+- number: 9
+  name: Skelly
+  health: 2
+  armor: 0
+  attack: 3
+  overkill: 2
+  dice: 2m
+  abilities:
+  - 1sk = +1Att
+  - 2sk = +2Att
+  - OC=+1Att
+  loot: 3G
+- number: 10
+  name: Draugr
+  health: 2
+  armor: 3
+  attack: 2
+  overkill: 2
+  dice: 3m
+  abilities:
+  - 1sk = +1Att
+  - 2sk= +2Att
+  - OC = +2Ar
+  loot: 4G
+- number: 11
+  name: Lavamander
+  health: 2
+  armor: 4
+  attack: 2
+  overkill: 1
+  dice: 1c+1m
+  abilities:
+  - 1sk = + 2Att
+  - 2 sk = + 3Att
+  - OC = +1Ar
+  loot: 4G + 1T
+- number: 12
+  name: Mamba
+  health: 2
+  armor: 2
+  attack: 0
+  overkill: 1
+  dice: 2m
+  abilities:
+  - 1sk = +1Att
+  - 2sk = +2Att
+  - OC =  +2Att
+  loot: 4G
+- number: 13
+  name: Tamarin
+  health: 2
+  armor: 1
+  attack: 2
+  overkill: 3
+  dice: 1c
+  abilities:
+  - 1sk = + 2Att
+  - 2 sk = + 3Att
+  - OC = +2Ar
+  loot: 2G + 1T
+- number: 14
+  name: Lynx
+  health: 2
+  armor: 3
+  attack: 1
+  overkill: 1
+  dice: 1m
+  abilities:
+  - 1sk = + 2Att
+  - 2 sk = + 3Att
+  - OC = +2 Att
+  loot: 3G
+- number: 15
+  name: Viper
+  health: 2
+  armor: 2
+  attack: 3
+  overkill: 2
+  dice: 3m
+  abilities:
+  - 1sk = +1 Att
+  - 2sk= +2 Att
+  - OC= +1Att
+  loot: 4G + 1T
+- number: 16
+  name: Orca
+  health: 2
+  armor: 3
+  attack: 3
+  overkill: 2
+  dice: 2c
+  abilities:
+  - 1sk = +3Att
+  - 2sk = +4Att
+  - 3sk = +5Att
+  - OC = +2Ar
+  loot: 3G + 1 HoB(blue)
+- number: 17
+  name: Fiend
+  health: 3
+  armor: 2
+  attack: 2
+  overkill: 2
+  dice: 1m+1c
+  abilities:
+  - 1sk = +3Att
+  - 2sk = +4Att
+  - OC = + 3Ar
+  loot: 4G
+- number: 18
+  name: Badger
+  health: 3
+  armor: 2
+  attack: 0
+  overkill: 2
+  dice: 3m
+  abilities:
+  - 1sk = +1Att
+  - 2sk = +2Att
+  - OC = +2Att
+  loot: 4G
+- number: 19
+  name: Gazelle
+  health: 3
+  armor: 3
+  attack: 3
+  overkill: 3
+  dice: 2m
+  abilities:
+  - 1sk = +1 Att
+  - 2sk =+2 Att
+  - OC = +3Att
+  loot: 4G
+- number: 20
+  name: Wombat
+  health: 3
+  armor: 0
+  attack: 2
+  overkill: 3
+  dice: 1m
+  abilities:
+  - 1sk = +1 Att
+  - 2sk=+2 Att
+  loot: 3G
+- number: 21
+  name: Puma
+  health: 3
+  armor: 1
+  attack: 0
+  overkill: 1
+  dice: 4m
+  abilities:
+  - 1sk = +1 Att
+  - 2sk=+2 Att
+  - OC= +1Att
+  loot: 4G + 1 T
+- number: 22
+  name: Bison
+  health: 3
+  armor: 0
+  attack: 4
+  overkill: 4
+  dice: 2m
+  abilities:
+  - 1sk = + 2Att
+  - 2 sk = + 3Att
+  - OC = +2Ar
+  loot: 3G
+- number: 23
+  name: Kestrel
+  health: 3
+  armor: 2
+  attack: 1
+  overkill: 3
+  dice: 2c
+  abilities:
+  - 1sk = +1 Att
+  - 2sk=+2 Att
+  - OC = +2 Att
+  loot: 4G + 1 HoB (blue)
+- number: 24
+  name: Caribou
+  health: 4
+  armor: 0
+  attack: 2
+  overkill: 4
+  dice: 1c
+  abilities:
+  - 1sk = +1 Att
+  - 2sk=+2 Att
+  - OC bout is annulled, retry bout
+  loot: 5G
+- number: 25
+  name: Okapi
+  health: 4
+  armor: 2
+  attack: 3
+  overkill: 3
+  dice: 2m
+  abilities:
+  - 1sk = +1 Att
+  - 2sk=+2 Att
+  - OC= +1Att
+  loot: 5G + 1 T
+- number: 26
+  name: Raccoon
+  health: 4
+  armor: 3
+  attack: 3
+  overkill: 2
+  dice: 3m
+  abilities:
+  - 1sk = +3Att
+  - 2sk = +4Att
+  - OC = +1Ar
+  loot: 8G
+- number: 27
+  name: Marten
+  health: 4
+  armor: 4
+  attack: 3
+  overkill: 2
+  dice: 2c
+  abilities:
+  - 1sk = + 2Att
+  - 2 sk = + 3Att
+  - OC = +2Ar
+  loot: 6G + 1 T
+- number: 28
+  name: Jaguar
+  health: 4
+  armor: 6
+  attack: 0
+  overkill: 3
+  dice: 2m
+  abilities:
+  - 1sk = +1 Att
+  - 2sk=+2 Att
+  loot: OC attacker loses 1 G,
+- number: 29
+  name: Python
+  health: 4
+  armor: 4
+  attack: 2
+  overkill: 4
+  dice: 1m
+  abilities:
+  - 1sk = +1Att
+  - 2sk = +2Att
+  loot: 4G
+- number: 30
+  name: Otter
+  health: 4
+  armor: 2
+  attack: 3
+  overkill: 2
+  dice: 1b+1c
+  abilities:
+  - 1sk = +3Att
+  - 2sk = +4Att
+  - OC= +1Att
+  loot: 6G + 1 HoB (yellow)

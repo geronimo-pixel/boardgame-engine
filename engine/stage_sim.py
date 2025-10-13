@@ -6,11 +6,11 @@ using the square sword and shield loadout against rank-based monster pools.
 from __future__ import annotations
 
 from collections import Counter
-from dataclasses import dataclass, replace
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 import argparse
 import random
-from typing import Dict, List, Optional, Sequence
+from typing import Any, Dict, List, Optional, Sequence
 
 try:
     import yaml  # type: ignore
@@ -19,12 +19,17 @@ except ModuleNotFoundError as exc:  # pragma: no cover - dependency guard
         "Missing dependency 'pyyaml'. Install it with 'pip install pyyaml' before using stage simulations."
     ) from exc
 
-from .combat_sim import DiceTables, simulate_warrior_vs_monster
+from .combat_core import simulate_combat
+from .combat_sim import DiceTables
+from .loadout_helpers import build_loadout
 from .monster_loader import Monster, get_monster_by_name, load_monsters
 
 
 class StageScenarioError(ValueError):
     """Raised when a stage simulation scenario is malformed."""
+
+
+
 
 
 @dataclass(frozen=True)
@@ -55,6 +60,8 @@ class StageScenario:
     seed: Optional[int]
     monsters: Sequence[Monster]
     source_path: Optional[Path] = None
+    loadout: Dict[str, Any] = field(default_factory=dict)
+    players: List[Dict[str, Any]] = field(default_factory=list)
 
 
 @dataclass
@@ -85,7 +92,7 @@ class StageSimulationResult:
     def format_summary(self) -> str:
         lines: List[str] = []
         lines.append(
-            f"{self.scenario.name} — {self.scenario.iterations} runs, "
+            f"{self.scenario.name} ÔÇö {self.scenario.iterations} runs, "
             f"{self.scenario.fights_per_run} fights/run ({self.success_rate * 100:.1f}% clears)"
         )
         lines.append(f"Average monsters cleared: {self.average_monsters_cleared:.2f}")
@@ -194,6 +201,25 @@ def load_stage_scenario(path: Path) -> StageScenario:
         rank=monster_rank,
     )
 
+    loadout_section = stage_section.get("loadout") if isinstance(stage_section, dict) else None
+    loadout_config: Dict[str, Any] = {}
+    if loadout_section is not None:
+        if not isinstance(loadout_section, dict):
+            raise StageScenarioError("Field 'stage.loadout' must be a mapping if provided.")
+        loadout_config = loadout_section
+
+    players_section = stage_section.get("players") if isinstance(stage_section, dict) else None
+    player_configs: List[Dict[str, Any]] = []
+    if players_section is not None:
+        if not isinstance(players_section, list):
+            raise StageScenarioError("Field 'stage.players' must be a list of player descriptors (max 4).")
+        if len(players_section) > 4:
+            raise StageScenarioError("A maximum of 4 players is supported per stage simulation.")
+        for entry in players_section:
+            if not isinstance(entry, dict):
+                raise StageScenarioError("Each entry in 'stage.players' must be a mapping.")
+            player_configs.append(entry)
+
     return StageScenario(
         name=name,
         description=description,
@@ -203,6 +229,8 @@ def load_stage_scenario(path: Path) -> StageScenario:
         seed=seed,
         monsters=tuple(monster_pool),
         source_path=path,
+        loadout=loadout_config,
+        players=player_configs,
     )
 
 
@@ -211,27 +239,36 @@ def simulate_stage(scenario: StageScenario) -> StageSimulationResult:
     dice_tables = DiceTables.from_loader()
     stats = {monster.name: MonsterStageStats(name=monster.name) for monster in scenario.monsters}
 
+    hero_key = scenario.hero_class.lower()
+    loadout_config = scenario.loadout or {}
+
+    base_loadout = build_loadout(
+        hero_key,
+        ability_tokens=loadout_config.get("abilities", []),
+        equipment_config=loadout_config.get("equipment", {}),
+        metadata=loadout_config.get("metadata"),
+    )
+
     stage_wins = 0
     monsters_cleared: List[int] = []
 
     for _ in range(scenario.iterations):
         cleared = 0
         stage_success = True
-        # Allow repeats to account for reshuffles during a stage.
         sequence = rng.choices(scenario.monsters, k=scenario.fights_per_run)
 
         for monster in sequence:
             combat_seed = rng.randint(0, 2**32 - 1)
-            combat = simulate_warrior_vs_monster(
-                monster.name,
+            combat = simulate_combat(
+                base_loadout,
+                monster,
                 seed=combat_seed,
-                max_bouts=80,
                 dice_tables=dice_tables,
-                monsters=scenario.monsters,
+                max_bouts=80,
             )
             current_stats = stats[monster.name]
 
-            if combat.winner == "Warrior":
+            if combat.winner.lower() == hero_key:
                 stats[monster.name] = current_stats.record_win()
                 cleared += 1
             else:
@@ -250,7 +287,6 @@ def simulate_stage(scenario: StageScenario) -> StageSimulationResult:
         monsters_cleared=monsters_cleared,
         monster_stats=stats,
     )
-
 
 def run_stage_scenario(
     scenario: StageScenario,
@@ -302,3 +338,12 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
 if __name__ == "__main__":  # pragma: no cover - manual entry point
     raise SystemExit(main())
+
+
+
+
+
+
+
+
+

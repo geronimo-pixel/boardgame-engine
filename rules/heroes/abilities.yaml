@@ -1,0 +1,553 @@
+- hero: warrior
+  type: hero
+  effect: Use any attribute for your weapons
+  cooldown: 2
+  phase_limit: '3'
+- hero: warrior
+  type: class
+  effect: Gain + 1/2/3 A during duels
+  number: 1
+  cooldown: 0
+  phase_limit: 1-5
+- hero: warrior
+  type: class
+  effect: Always wins ties
+  number: 2
+  cooldown: 0
+  phase_limit: 1-5
+- hero: warrior
+  type: class
+  effect: Gain +1 A for every Health you’re missing
+  number: 3
+  cooldown: 0
+  phase_limit: 1-5
+- hero: warrior
+  type: class
+  effect: Gain a blank die for one roll
+  number: 4
+  cooldown: 1
+  phase_limit: 3-4
+- hero: warrior
+  type: class
+  effect: Duel with no CA, choose one of yours to use
+  number: 5
+  cooldown: 2
+  phase_limit: 3-4
+- hero: warrior
+  type: class
+  effect: Reroll your dice up to 3 times during a duel
+  number: 6
+  cooldown: 3
+  phase_limit: 3-4
+- hero: warrior
+  type: class
+  effect: On Victory gain + 1/1/2 G
+  number: 7
+  cooldown: 0
+  phase_limit: 3-4
+- hero: warrior
+  type: class
+  effect: On Victory gain + 1 random token
+  number: 8
+  cooldown: 2
+  phase_limit: 3-4
+- hero: warrior
+  type: class
+  effect: Gain + 1/2/3 a against Armor
+  number: 9
+  cooldown: null
+  phase_limit: null
+- hero: warrior
+  type: class
+  effect: 2 Handed weapons gain + 2 A
+  number: 10
+  cooldown: 0
+  phase_limit: 1-5
+- hero: warrior
+  type: class
+  effect: Gain + 1/2/3 Armor during a duel
+  number: 11
+  cooldown: 1
+  phase_limit: 3-4
+- hero: warrior
+  type: class
+  effect: On Armor break gain + 1/2/3 on the next attack
+  number: 12
+  cooldown: 1
+  phase_limit: 3-4
+- hero: sentinel
+  type: hero
+  effect: Cancel any detrimental effect directed to you or others
+  cooldown:
+  - 2
+  - 3
+  phase_limit: 1-5
+- hero: sentinel
+  type: class
+  effect: Gain + 1/2/3 Armor
+  number: 1
+  cooldown: 0
+  phase_limit: 1-5
+- hero: sentinel
+  type: class
+  effect: On Armor Win gain + 2/3/4 A on the next A
+  number: 2
+  cooldown: 0
+  phase_limit: 1-5
+- hero: sentinel
+  type: class
+  effect: On Armor Break and Combat Lose deal 1 damage to the winner, doesn't work
+    on bosses
+  number: 3
+  cooldown: 2
+  phase_limit: 3-4
+- hero: sentinel
+  type: class
+  effect: Regenerate your Armor
+  number: 4
+  cooldown: 3
+  phase_limit: 3-4
+- hero: sentinel
+  type: class
+  effect: If your Armor is greater than the opponent’s Gain + 1/2/3 A for the fight
+  number: 5
+  cooldown: 2
+  phase_limit: 3-4
+- hero: sentinel
+  type: class
+  effect: On Armor Break gain + 1/1/2 A
+  number: 6
+  cooldown: 2
+  phase_limit: 3-4
+- hero: sentinel
+  type: class
+  effect: On Armor Win gain + 1/2/3 G
+  number: 7
+  cooldown: 0
+  phase_limit: 3-4
+- hero: sentinel
+  type: class
+  effect: Win a fight with Armor On, gain + 2/3/4 G
+  number: 8
+  cooldown: 0
+  phase_limit: 3-4
+- hero: sentinel
+  type: class
+  effect: Shields grant you + 1/1/2 Armor
+  number: 9
+  cooldown: 0
+  phase_limit: 3-4
+- hero: sentinel
+  type: class
+  effect: On Armor Win heal 1
+  number: 10
+  cooldown: 2
+  phase_limit: 3-4
+- hero: sentinel
+  type: class
+  effect: On Armor Win gain + 1/2/3 Armor
+  number: 11
+  cooldown: 2
+  phase_limit: 3-4
+- hero: sentinel
+  type: class
+  effect: Negate the effect of a detrimental spell directed to you
+  number: 12
+  cooldown: 2
+  phase_limit: 1-5
+- hero: mage
+  type: hero
+  effect: At the start of the turn, if you have no spells, draw one
+  cooldown: null
+  phase_limit: null
+- hero: mage
+  type: class
+  effect: Discard a spell, gain + 1/2/3 A for one attack
+  number: 1
+  cooldown: 0
+  phase_limit: 3-4
+- hero: mage
+  type: class
+  effect: Discard a spell, gain + 1/2/3 Armor for one turn
+  number: 2
+  cooldown: 0
+  phase_limit: 3-4
+- hero: mage
+  type: class
+  effect: Draw 3 spells, choose one to keep, discard others
+  number: 3
+  cooldown: 3
+  phase_limit: 1-5
+- hero: mage
+  type: class
+  effect: Discard a spell, draw another
+  number: 4
+  cooldown: 1
+  phase_limit: 1-5
+- hero: mage
+  type: class
+  effect: Discard a spell, Heal 1
+  number: 5
+  cooldown: 1
+  phase_limit: 1-5
+- hero: mage
+  type: class
+  effect: Discard a spell, deal 1 damage to a player
+  number: 6
+  cooldown: 3
+  phase_limit: 3-4
+- hero: mage
+  type: class
+  effect: Every time you use a spell gain + 1/2/3 g
+  number: 7
+  cooldown: 0
+  phase_limit: 1-5
+- hero: mage
+  type: class
+  effect: Every time you discard a spell gain +1 g
+  number: 8
+  cooldown: 0
+  phase_limit: 1-5
+- hero: mage
+  type: class
+  effect: Draw a spell
+  number: 9
+  cooldown: 3
+  phase_limit: 1-5
+- hero: mage
+  type: class
+  effect: Discard a spell, gain a Blank die for the next 2 rolls
+  number: 10
+  cooldown: 1
+  phase_limit: 3-4
+- hero: mage
+  type: class
+  effect: When a player draws a spell, look what it is, you can exchange with one
+    of your own
+  number: 11
+  cooldown: 3
+  phase_limit: 1-5
+- hero: mage
+  type: class
+  effect: On combat win draw a spell
+  number: 12
+  cooldown: 0
+  phase_limit: 1-5
+- hero: shaman
+  type: hero
+  effect: Copy any CA in the game or HA , same rules apply
+  cooldown:
+  - 2
+  - 3
+  phase_limit: 1-5
+- hero: shaman
+  type: class
+  effect: Force another player to Coop with you,they get no loot
+  number: 1
+  cooldown: 3
+  phase_limit: '3'
+- hero: shaman
+  type: class
+  effect: Change your Action or someone else’s
+  number: 2
+  cooldown:
+  - 1
+  - 3
+  phase_limit: 2-3
+- hero: shaman
+  type: class
+  effect: Heal 1 self or others
+  number: 3
+  cooldown:
+  - 2
+  - 3
+  phase_limit: 1-5
+- hero: shaman
+  type: class
+  effect: When you lose 1 Health gain + 1/2/3 A for the whole next turn
+  number: 4
+  cooldown: 1
+  phase_limit: 1-5
+- hero: shaman
+  type: class
+  effect: Reroll one dice of yours
+  number: 5
+  cooldown: 1
+  phase_limit: 3-4
+- hero: shaman
+  type: class
+  effect: Reroll one dice of another player
+  number: 6
+  cooldown: 1
+  phase_limit: 3-4
+- hero: shaman
+  type: class
+  effect: Pay 1 Health gain + 4/5/6 G
+  number: 7
+  cooldown: 1
+  phase_limit: 1-5
+- hero: shaman
+  type: class
+  effect: Pay 1 Health gain double loot on next kill
+  number: 8
+  cooldown: 1
+  phase_limit: '3'
+- hero: shaman
+  type: class
+  effect: Pay 1 Health, a player or a monster of your choice loses 1 Health
+  number: 9
+  cooldown: 3
+  phase_limit: 1-5
+- hero: shaman
+  type: class
+  effect: Killing a monster or winning a duel heal you by 1
+  number: 10
+  cooldown: 2
+  phase_limit: 3-4
+- hero: shaman
+  type: class
+  effect: Pay 1 Health, gain a blank die for the next 2 rolls
+  number: 11
+  cooldown: 1
+  phase_limit: 3-4
+- hero: shaman
+  type: class
+  effect: Pay 1 Health, heal 2 on the next turn’s same phase as now
+  number: 12
+  cooldown: 2
+  phase_limit: 1-5
+- hero: thief
+  type: hero
+  effect: Duel to duel steal HoB
+  cooldown: 3
+  phase_limit: null
+- hero: thief
+  type: class
+  effect: Duel to steal 1+1/2/3 G
+  number: 1
+  cooldown: 2
+  phase_limit: 3-4
+- hero: thief
+  type: class
+  effect: Duel to steal half loot
+  number: 2
+  cooldown: null
+  phase_limit: null
+- hero: thief
+  type: class
+  effect: Duel to steal a monster loot, the monster now heals 3 when killed
+  number: 3
+  cooldown: 3
+  phase_limit: '3'
+- hero: thief
+  type: class
+  effect: After a player wins against a monster duel to deal 1 damage to them
+  number: 4
+  cooldown: 3
+  phase_limit: '3'
+- hero: thief
+  type: class
+  effect: On duel win gain 1/2/3 G
+  number: 5
+  cooldown: 0
+  phase_limit: 3-4
+- hero: thief
+  type: class
+  effect: Gain +1 Token from Loot
+  number: 6
+  cooldown: 2
+  phase_limit: '3'
+- hero: thief
+  type: class
+  effect: Steal an Equipment from shop for 1 turn
+  number: 7
+  cooldown: 3
+  phase_limit: 1-5
+- hero: thief
+  type: class
+  effect: Daggers gain +1 A
+  number: 8
+  cooldown: 0
+  phase_limit: 1-5
+- hero: thief
+  type: class
+  effect: Duel to steal a spell
+  number: 9
+  cooldown: 2
+  phase_limit: 3-4
+- hero: thief
+  type: class
+  effect: Break a player’s Armor during a duel
+  number: 10
+  cooldown: 3
+  phase_limit: 3-4
+- hero: thief
+  type: class
+  effect: Gain a blank die for a duel
+  number: 11
+  cooldown: 2
+  phase_limit: 3-4
+- hero: thief
+  type: class
+  effect: Wielding 2 of the same weapons gives you a Blank die
+  number: 12
+  cooldown: 2
+  phase_limit: 1-5
+- hero: hunter
+  type: hero
+  effect: HoBs grant + 1 A up to 4
+  cooldown: null
+  phase_limit: null
+- hero: hunter
+  type: class
+  effect: Gain + 1/2/3 A against monsters
+  number: 1
+  cooldown: null
+  phase_limit: null
+- hero: hunter
+  type: class
+  effect: Declare ur Action , u gain + 2/3/4 A against them
+  number: 2
+  cooldown: null
+  phase_limit: '2'
+- hero: hunter
+  type: class
+  effect: Pay 1 health to keep fighting a monster after you lost, the fight resumes
+    as you didn’t lose the last bout
+  number: 3
+  cooldown: null
+  phase_limit: null
+- hero: hunter
+  type: class
+  effect: Choose and declare a monster, nobody but you can fight it this turn
+  number: 4
+  cooldown: 3
+  phase_limit: '2'
+- hero: hunter
+  type: class
+  effect: Break a monster’s Armor
+  number: 5
+  cooldown: 3
+  phase_limit: '3'
+- hero: hunter
+  type: class
+  effect: Gain + 1/2/3 against monster’s Armor
+  number: 6
+  cooldown: 0
+  phase_limit: '3'
+- hero: hunter
+  type: class
+  effect: On monster kill gain + 1/2/3 G
+  number: 7
+  cooldown: 0
+  phase_limit: '3'
+- hero: hunter
+  type: class
+  effect: On Boss damage gain + 7/8/10 G
+  number: 8
+  cooldown: 0
+  phase_limit: '3'
+- hero: hunter
+  type: class
+  effect: Killing a monster heals you by 2 Health
+  number: 9
+  cooldown: 2
+  phase_limit: '3'
+- hero: hunter
+  type: class
+  effect: Treat a duel as it was a Hunt
+  number: 10
+  cooldown: 3
+  phase_limit: 3-4
+- hero: hunter
+  type: class
+  effect: Reroll up to 2 dice during a Hunt
+  number: 11
+  cooldown: 2
+  phase_limit: '3'
+- hero: hunter
+  type: class
+  effect: Gain a Blank dice for a Hunt
+  number: 12
+  cooldown: 2
+  phase_limit: '3'
+- hero: mercenary
+  type: hero
+  effect: Pay 6 G to deal 1 damage to a monster or to a player or double for a Boss
+  cooldown:
+  - 2
+  - 3
+  phase_limit: 1-5
+- hero: mercenary
+  type: class
+  effect: Pay 2 G, roll a d6, gain result minus 1/1/0 in G
+  number: 1
+  cooldown: 2
+  phase_limit: 1-5
+- hero: mercenary
+  type: class
+  effect: Pay up to 4 G, bet on the outcome of a fight, if you get it right get double
+    your money back
+  number: 2
+  cooldown: 2
+  phase_limit: 3-4
+- hero: mercenary
+  type: class
+  effect: Pay 2 G, gain + 2/2/3 A for the next or current fight
+  number: 3
+  cooldown: 0
+  phase_limit: 3-4
+- hero: mercenary
+  type: class
+  effect: Pay 2 G, gain + 2/3/4 Armor
+  number: 4
+  cooldown: 0
+  phase_limit: 3-4
+- hero: mercenary
+  type: class
+  effect: Pay 2 G, copy any Ca same rules apply
+  number: 5
+  cooldown: 2
+  phase_limit: 1-5
+- hero: mercenary
+  type: class
+  effect: Pay 2G, negate the effect of a CA for 1 turn
+  number: 6
+  cooldown: 1
+  phase_limit: 1-5
+- hero: mercenary
+  type: class
+  effect: At the end of the turn gain 1 G for every time you’ve spent money
+  number: 7
+  cooldown: 1
+  phase_limit: '5'
+- hero: mercenary
+  type: class
+  effect: You can discard spells and equipment to get half or their cost back
+  number: 8
+  cooldown: 0
+  phase_limit: 1-5
+- hero: mercenary
+  type: class
+  effect: Every 7 G you spend gain 1 Health
+  number: 9
+  cooldown: 0
+  phase_limit: 1-5
+- hero: mercenary
+  type: class
+  effect: Pay 2 G, draw a spell
+  number: 10
+  cooldown: 1
+  phase_limit: 1-5
+- hero: mercenary
+  type: class
+  effect: Pay 2 G Heal 1
+  number: 11
+  cooldown: 1
+  phase_limit: 1-5
+- hero: mercenary
+  type: class
+  effect: Every 4 G you spend gain 1 back
+  number: 12
+  cooldown: 0
+  phase_limit: 1-5

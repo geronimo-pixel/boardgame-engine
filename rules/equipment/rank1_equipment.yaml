@@ -1,0 +1,1200 @@
+weapons:
+- id: weapon_sword_sq
+  name: Sword
+  category: weapon
+  item_type: one_hand
+  dice: 2
+  attributes:
+    primary: square
+    secondary: circle
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      attack: 1
+  - mode: overcharge
+    cost:
+      primary: 1
+      secondary: 1
+    effects:
+      attack: 2
+  overcharge_effects:
+  - stat: attack
+    value: 1
+    condition: overcharge_active
+  flat_bonuses:
+  - stat: attack
+    value: 1
+  cost:
+    gold: 4
+    tokens: 1
+  state_modifiers:
+    attack:
+    - value: 1
+      condition: always
+- id: weapon_sword_tr
+  name: Sword
+  category: weapon
+  item_type: one_hand
+  dice: 2
+  attributes:
+    primary: triangle
+    secondary: square
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      attack: 1
+  - mode: overcharge
+    cost:
+      primary: 1
+      secondary: 1
+    effects:
+      attack: 2
+  overcharge_effects:
+  - stat: attack
+    value: 1
+    condition: overcharge_active
+  flat_bonuses:
+  - stat: attack
+    value: 1
+  cost:
+    gold: 4
+    tokens: 1
+  state_modifiers:
+    attack:
+    - value: 1
+      condition: always
+- id: weapon_sword_cr
+  name: Sword
+  category: weapon
+  item_type: one_hand
+  dice: 2
+  attributes:
+    primary: circle
+    secondary: triangle
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      attack: 1
+  - mode: overcharge
+    cost:
+      primary: 1
+      secondary: 1
+    effects:
+      attack: 2
+  overcharge_effects:
+  - stat: attack
+    value: 1
+    condition: overcharge_active
+  flat_bonuses:
+  - stat: attack
+    value: 1
+  cost:
+    gold: 4
+    tokens: 1
+  state_modifiers:
+    attack:
+    - value: 1
+      condition: always
+- id: weapon_spear_sq
+  name: Spear
+  category: weapon
+  item_type: two_hand
+  dice: 2
+  attributes:
+    primary: square
+    secondary: triangle
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      attack: 1
+  - mode: overcharge
+    cost:
+      primary: 1
+      secondary: 1
+    effects:
+      attack: 2
+  overcharge_effects:
+  - stat: armor_damage
+    value: 2
+    condition: target_armor_intact
+  flat_bonuses:
+  - stat: armor_damage
+    value: 1
+    condition: target_armor_intact
+  cost:
+    gold: 4
+    tokens: 1
+  state_modifiers:
+    armor_damage:
+    - value: 1
+      condition: target_armor_intact
+- id: weapon_spear_tr
+  name: Spear
+  category: weapon
+  item_type: two_hand
+  dice: 2
+  attributes:
+    primary: triangle
+    secondary: circle
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      attack: 1
+  - mode: overcharge
+    cost:
+      primary: 1
+      secondary: 1
+    effects:
+      attack: 2
+  overcharge_effects:
+  - stat: armor_damage
+    value: 2
+    condition: target_armor_intact
+  flat_bonuses:
+  - stat: armor_damage
+    value: 1
+    condition: target_armor_intact
+  cost:
+    gold: 4
+    tokens: 1
+  state_modifiers:
+    armor_damage:
+    - value: 1
+      condition: target_armor_intact
+- id: weapon_spear_cr
+  name: Spear
+  category: weapon
+  item_type: two_hand
+  dice: 2
+  attributes:
+    primary: circle
+    secondary: square
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      attack: 1
+  - mode: overcharge
+    cost:
+      primary: 1
+      secondary: 1
+    effects:
+      attack: 2
+  overcharge_effects:
+  - stat: armor_damage
+    value: 2
+    condition: target_armor_intact
+  flat_bonuses:
+  - stat: armor_damage
+    value: 1
+    condition: target_armor_intact
+  cost:
+    gold: 4
+    tokens: 1
+  state_modifiers:
+    armor_damage:
+    - value: 1
+      condition: target_armor_intact
+- id: weapon_bow_sq
+  name: Bow
+  category: weapon
+  item_type: two_hand
+  dice: 2
+  attributes:
+    primary: square
+    secondary: circle
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      attack: 2
+  - mode: overcharge
+    cost:
+      primary: 1
+      secondary: 1
+    effects:
+      attack: 3
+  overcharge_effects:
+  - stat: attack
+    value: 1
+    condition: vs_monsters
+  flat_bonuses:
+  - stat: attack
+    value: 1
+  cost:
+    gold: 4
+    tokens: 1
+  state_modifiers:
+    attack:
+    - value: 1
+      condition: always
+- id: weapon_bow_tr
+  name: Bow
+  category: weapon
+  item_type: two_hand
+  dice: 2
+  attributes:
+    primary: triangle
+    secondary: square
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      attack: 2
+  - mode: overcharge
+    cost:
+      primary: 1
+      secondary: 1
+    effects:
+      attack: 3
+  overcharge_effects:
+  - stat: attack
+    value: 1
+    condition: vs_monsters
+  flat_bonuses:
+  - stat: attack
+    value: 1
+  cost:
+    gold: 4
+    tokens: 1
+  state_modifiers:
+    attack:
+    - value: 1
+      condition: always
+- id: weapon_bow_cr
+  name: Bow
+  category: weapon
+  item_type: two_hand
+  dice: 2
+  attributes:
+    primary: circle
+    secondary: triangle
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      attack: 2
+  - mode: overcharge
+    cost:
+      primary: 1
+      secondary: 1
+    effects:
+      attack: 3
+  overcharge_effects:
+  - stat: attack
+    value: 1
+    condition: vs_monsters
+  flat_bonuses:
+  - stat: attack
+    value: 1
+  cost:
+    gold: 4
+    tokens: 1
+  state_modifiers:
+    attack:
+    - value: 1
+      condition: always
+- id: weapon_orb_sq
+  name: Orb
+  category: weapon
+  item_type: one_hand
+  dice: 2
+  attributes:
+    primary: square
+    secondary: triangle
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      attack: 2
+  - mode: overcharge
+    cost:
+      primary: 1
+      secondary: 1
+    effects:
+      attack: 3
+  overcharge_effects:
+  - stat: armor_damage
+    value: 1
+    condition: target_armor_intact
+  flat_bonuses:
+  - stat: attack
+    value: 1
+  cost:
+    gold: 4
+    tokens: 1
+  state_modifiers:
+    attack:
+    - value: 1
+      condition: always
+- id: weapon_orb_tr
+  name: Orb
+  category: weapon
+  item_type: one_hand
+  dice: 2
+  attributes:
+    primary: triangle
+    secondary: circle
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      attack: 2
+  - mode: overcharge
+    cost:
+      primary: 1
+      secondary: 1
+    effects:
+      attack: 3
+  overcharge_effects:
+  - stat: armor_damage
+    value: 1
+    condition: target_armor_intact
+  flat_bonuses:
+  - stat: attack
+    value: 1
+  cost:
+    gold: 4
+    tokens: 1
+  state_modifiers:
+    attack:
+    - value: 1
+      condition: always
+- id: weapon_orb_cr
+  name: Orb
+  category: weapon
+  item_type: one_hand
+  dice: 2
+  attributes:
+    primary: circle
+    secondary: square
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      attack: 2
+  - mode: overcharge
+    cost:
+      primary: 1
+      secondary: 1
+    effects:
+      attack: 3
+  overcharge_effects:
+  - stat: armor_damage
+    value: 1
+    condition: target_armor_intact
+  flat_bonuses:
+  - stat: attack
+    value: 1
+  cost:
+    gold: 4
+    tokens: 1
+  state_modifiers:
+    attack:
+    - value: 1
+      condition: always
+- id: weapon_grimoire_sq
+  name: Grimoire
+  category: weapon
+  item_type: two_hand
+  dice: 2
+  attributes:
+    primary: square
+    secondary: circle
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      attack: 2
+  - mode: overcharge
+    cost:
+      primary: 1
+      secondary: 1
+    effects:
+      attack: 4
+  overcharge_effects: []
+  flat_bonuses:
+  - stat: armor_damage
+    value: 1
+    condition: target_armor_intact
+  cost:
+    gold: 4
+    tokens: 1
+  state_modifiers:
+    armor_damage:
+    - value: 1
+      condition: target_armor_intact
+- id: weapon_grimoire_tr
+  name: Grimoire
+  category: weapon
+  item_type: two_hand
+  dice: 2
+  attributes:
+    primary: triangle
+    secondary: square
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      attack: 2
+  - mode: overcharge
+    cost:
+      primary: 1
+      secondary: 1
+    effects:
+      attack: 4
+  overcharge_effects: []
+  flat_bonuses:
+  - stat: armor_damage
+    value: 1
+    condition: target_armor_intact
+  cost:
+    gold: 4
+    tokens: 1
+  state_modifiers:
+    armor_damage:
+    - value: 1
+      condition: target_armor_intact
+- id: weapon_grimoire_cr
+  name: Grimoire
+  category: weapon
+  item_type: two_hand
+  dice: 2
+  attributes:
+    primary: circle
+    secondary: triangle
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      attack: 2
+  - mode: overcharge
+    cost:
+      primary: 1
+      secondary: 1
+    effects:
+      attack: 4
+  overcharge_effects: []
+  flat_bonuses:
+  - stat: armor_damage
+    value: 1
+    condition: target_armor_intact
+  cost:
+    gold: 4
+    tokens: 1
+  state_modifiers:
+    armor_damage:
+    - value: 1
+      condition: target_armor_intact
+- id: weapon_shield_sq
+  name: Shield
+  category: weapon
+  item_type: one_hand
+  dice: 2
+  attributes:
+    primary: square
+    secondary: circle
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      attack: 1
+  - mode: overcharge
+    cost:
+      primary: 1
+      secondary: 1
+    effects:
+      attack: 2
+  overcharge_effects:
+  - stat: armor
+    value: 2
+    condition: overcharge_active
+  flat_bonuses:
+  - stat: armor
+    value: 1
+  cost:
+    gold: 4
+    tokens: 1
+  state_modifiers:
+    armor:
+    - value: 1
+      condition: always
+- id: weapon_shield_tr
+  name: Shield
+  category: weapon
+  item_type: one_hand
+  dice: 2
+  attributes:
+    primary: triangle
+    secondary: square
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      attack: 1
+  - mode: overcharge
+    cost:
+      primary: 1
+      secondary: 1
+    effects:
+      attack: 2
+  overcharge_effects:
+  - stat: armor
+    value: 2
+    condition: overcharge_active
+  flat_bonuses:
+  - stat: armor
+    value: 1
+  cost:
+    gold: 4
+    tokens: 1
+  state_modifiers:
+    armor:
+    - value: 1
+      condition: always
+- id: weapon_shield_cr
+  name: Shield
+  category: weapon
+  item_type: one_hand
+  dice: 2
+  attributes:
+    primary: circle
+    secondary: triangle
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      attack: 1
+  - mode: overcharge
+    cost:
+      primary: 1
+      secondary: 1
+    effects:
+      attack: 2
+  overcharge_effects:
+  - stat: armor
+    value: 2
+    condition: overcharge_active
+  flat_bonuses:
+  - stat: armor
+    value: 1
+  cost:
+    gold: 4
+    tokens: 1
+  state_modifiers:
+    armor:
+    - value: 1
+      condition: always
+- id: weapon_knife_sq
+  name: Knife
+  category: weapon
+  item_type: one_hand
+  dice: 1
+  attributes:
+    primary: square
+    secondary: null
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      attack: 1
+  overcharge_effects:
+  - stat: attack
+    value: 1
+    condition: overcharge_active
+  flat_bonuses: []
+  cost:
+    gold: 4
+    tokens: 1
+- id: weapon_knife_tr
+  name: Knife
+  category: weapon
+  item_type: one_hand
+  dice: 1
+  attributes:
+    primary: triangle
+    secondary: null
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      attack: 1
+  overcharge_effects:
+  - stat: attack
+    value: 1
+    condition: overcharge_active
+  flat_bonuses: []
+  cost:
+    gold: 4
+    tokens: 1
+- id: weapon_knife_cr
+  name: Knife
+  category: weapon
+  item_type: one_hand
+  dice: 1
+  attributes:
+    primary: circle
+    secondary: null
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      attack: 1
+  overcharge_effects:
+  - stat: attack
+    value: 1
+    condition: overcharge_active
+  flat_bonuses: []
+  cost:
+    gold: 4
+    tokens: 1
+armors:
+- id: armor_chainmail_v21
+  name: Chainmail
+  category: armor
+  item_type: chest
+  dice: null
+  attributes:
+    primary: null
+    secondary: null
+    tertiary: null
+  activations: []
+  overcharge_effects: []
+  flat_bonuses:
+  - stat: armor
+    value: 2
+  cost:
+    gold: 4
+    tokens: 1
+  state_modifiers:
+    armor:
+    - value: 2
+      condition: always
+- id: armor_chainmail_v22
+  name: Chainmail
+  category: armor
+  item_type: chest
+  dice: null
+  attributes:
+    primary: null
+    secondary: null
+    tertiary: null
+  activations: []
+  overcharge_effects: []
+  flat_bonuses:
+  - stat: armor
+    value: 2
+  cost:
+    gold: 4
+    tokens: 1
+  state_modifiers:
+    armor:
+    - value: 2
+      condition: always
+- id: armor_chainmail_v23
+  name: Chainmail
+  category: armor
+  item_type: chest
+  dice: null
+  attributes:
+    primary: null
+    secondary: null
+    tertiary: null
+  activations: []
+  overcharge_effects: []
+  flat_bonuses:
+  - stat: armor
+    value: 2
+  cost:
+    gold: 4
+    tokens: 1
+  state_modifiers:
+    armor:
+    - value: 2
+      condition: always
+- id: armor_leathervest_sq
+  name: Leathervest
+  category: armor
+  item_type: chest
+  dice: 1
+  attributes:
+    primary: square
+    secondary: null
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      armor: 1
+  overcharge_effects:
+  - stat: armor
+    value: 1
+    condition: overcharge_active
+  flat_bonuses: []
+  cost:
+    gold: 4
+    tokens: 1
+- id: armor_leathervest_tr
+  name: Leathervest
+  category: armor
+  item_type: chest
+  dice: 1
+  attributes:
+    primary: triangle
+    secondary: null
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      armor: 1
+  overcharge_effects:
+  - stat: armor
+    value: 1
+    condition: overcharge_active
+  flat_bonuses: []
+  cost:
+    gold: 4
+    tokens: 1
+- id: armor_leathervest_cr
+  name: Leathervest
+  category: armor
+  item_type: chest
+  dice: 1
+  attributes:
+    primary: circle
+    secondary: null
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      armor: 1
+  overcharge_effects:
+  - stat: armor
+    value: 1
+    condition: overcharge_active
+  flat_bonuses: []
+  cost:
+    gold: 4
+    tokens: 1
+- id: armor_grieves_v27
+  name: Grieves
+  category: armor
+  item_type: legs
+  dice: null
+  attributes:
+    primary: null
+    secondary: null
+    tertiary: null
+  activations: []
+  overcharge_effects: []
+  flat_bonuses:
+  - stat: armor
+    value: 1
+  cost:
+    gold: 4
+    tokens: 1
+  state_modifiers:
+    armor:
+    - value: 1
+      condition: always
+- id: armor_grieves_v28
+  name: Grieves
+  category: armor
+  item_type: legs
+  dice: null
+  attributes:
+    primary: null
+    secondary: null
+    tertiary: null
+  activations: []
+  overcharge_effects: []
+  flat_bonuses:
+  - stat: armor
+    value: 1
+  cost:
+    gold: 4
+    tokens: 1
+  state_modifiers:
+    armor:
+    - value: 1
+      condition: always
+- id: armor_grieves_v29
+  name: Grieves
+  category: armor
+  item_type: legs
+  dice: null
+  attributes:
+    primary: null
+    secondary: null
+    tertiary: null
+  activations: []
+  overcharge_effects: []
+  flat_bonuses:
+  - stat: armor
+    value: 1
+  cost:
+    gold: 4
+    tokens: 1
+  state_modifiers:
+    armor:
+    - value: 1
+      condition: always
+- id: armor_gauntlet_v30
+  name: Gauntlet
+  category: armor
+  item_type: arms
+  dice: null
+  attributes:
+    primary: null
+    secondary: null
+    tertiary: null
+  activations: []
+  overcharge_effects: []
+  flat_bonuses:
+  - stat: attack
+    value: 1
+  cost:
+    gold: 4
+    tokens: 1
+  state_modifiers:
+    attack:
+    - value: 1
+      condition: always
+- id: armor_gauntlet_v31
+  name: Gauntlet
+  category: armor
+  item_type: arms
+  dice: null
+  attributes:
+    primary: null
+    secondary: null
+    tertiary: null
+  activations: []
+  overcharge_effects: []
+  flat_bonuses:
+  - stat: attack
+    value: 1
+  cost:
+    gold: 4
+    tokens: 1
+  state_modifiers:
+    attack:
+    - value: 1
+      condition: always
+- id: armor_gauntlet_v32
+  name: Gauntlet
+  category: armor
+  item_type: arms
+  dice: null
+  attributes:
+    primary: null
+    secondary: null
+    tertiary: null
+  activations: []
+  overcharge_effects: []
+  flat_bonuses:
+  - stat: attack
+    value: 1
+  cost:
+    gold: 4
+    tokens: 1
+  state_modifiers:
+    attack:
+    - value: 1
+      condition: always
+charms:
+- id: charm_onesie_sq
+  name: Onesie
+  category: charm
+  item_type: ring
+  dice: 1
+  attributes:
+    primary: square
+    secondary: null
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      attack: 1
+  overcharge_effects: []
+  flat_bonuses: []
+  cost:
+    gold: 4
+    tokens: 1
+- id: charm_onesie_cr
+  name: Onesie
+  category: charm
+  item_type: ring
+  dice: 1
+  attributes:
+    primary: circle
+    secondary: null
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      attack: 1
+  overcharge_effects: []
+  flat_bonuses: []
+  cost:
+    gold: 4
+    tokens: 1
+- id: charm_onesie_tr
+  name: Onesie
+  category: charm
+  item_type: ring
+  dice: 1
+  attributes:
+    primary: triangle
+    secondary: null
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      attack: 1
+  overcharge_effects: []
+  flat_bonuses: []
+  cost:
+    gold: 4
+    tokens: 1
+- id: charm_twott_sq
+  name: Twott
+  category: charm
+  item_type: ring
+  dice: 1
+  attributes:
+    primary: square
+    secondary: null
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      armor_damage: 1
+    condition: target_armor_intact
+  overcharge_effects: []
+  flat_bonuses: []
+  cost:
+    gold: 4
+    tokens: 1
+- id: charm_twott_cr
+  name: Twott
+  category: charm
+  item_type: ring
+  dice: 1
+  attributes:
+    primary: circle
+    secondary: null
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      armor_damage: 1
+    condition: target_armor_intact
+  overcharge_effects: []
+  flat_bonuses: []
+  cost:
+    gold: 4
+    tokens: 1
+- id: charm_twott_tr
+  name: Twott
+  category: charm
+  item_type: ring
+  dice: 1
+  attributes:
+    primary: triangle
+    secondary: null
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      armor_damage: 1
+    condition: target_armor_intact
+  overcharge_effects: []
+  flat_bonuses: []
+  cost:
+    gold: 4
+    tokens: 1
+- id: charm_dada_sq
+  name: Dada
+  category: charm
+  item_type: crown
+  dice: 1
+  attributes:
+    primary: square
+    secondary: null
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      armor: 1
+  overcharge_effects: []
+  flat_bonuses: []
+  cost:
+    gold: 4
+    tokens: 1
+- id: charm_dada_cr
+  name: Dada
+  category: charm
+  item_type: crown
+  dice: 1
+  attributes:
+    primary: circle
+    secondary: null
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      armor: 1
+  overcharge_effects: []
+  flat_bonuses: []
+  cost:
+    gold: 4
+    tokens: 1
+- id: charm_dada_tr
+  name: Dada
+  category: charm
+  item_type: crown
+  dice: 1
+  attributes:
+    primary: triangle
+    secondary: null
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      armor: 1
+  overcharge_effects: []
+  flat_bonuses: []
+  cost:
+    gold: 4
+    tokens: 1
+- id: charm_bato_sq
+  name: Bato
+  category: charm
+  item_type: crown
+  dice: 1
+  attributes:
+    primary: square
+    secondary: null
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      gold: 1
+  overcharge_effects: []
+  flat_bonuses: []
+  cost:
+    gold: 4
+    tokens: 1
+- id: charm_bato_cr
+  name: Bato
+  category: charm
+  item_type: crown
+  dice: 1
+  attributes:
+    primary: circle
+    secondary: null
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      gold: 1
+  overcharge_effects: []
+  flat_bonuses: []
+  cost:
+    gold: 4
+    tokens: 1
+- id: charm_bato_tr
+  name: Bato
+  category: charm
+  item_type: crown
+  dice: 1
+  attributes:
+    primary: triangle
+    secondary: null
+    tertiary: null
+  activations:
+  - mode: base
+    cost:
+      primary: 1
+    effects:
+      gold: 1
+  overcharge_effects: []
+  flat_bonuses: []
+  cost:
+    gold: 4
+    tokens: 1

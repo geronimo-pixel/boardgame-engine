@@ -1,0 +1,102 @@
+- name: Scorching Rebuke
+  number: 6
+  effect: Deal 1/1/2 damage to a player
+  target: Players
+  phase: '2'
+  cost: 4
+- name: Bulwark Ward
+  number: 6
+  effect: Gain 2 Armor
+  target: Self
+  phase: '2'
+  cost: 4
+- name: Diceweaver's Boon
+  number: 4
+  effect: Reroll any amount of dice once
+  target: Self
+  phase: 1-5
+  cost: 6
+- name: Arena Proclamation
+  number: 2
+  effect: Instead of a normal turn, players do a tournament. Best of 3. 10/12/15 G
+    reward for the winner.
+  target: Players
+  phase: '1'
+  cost: 8
+- name: Tracker's Insight
+  number: 4
+  effect: Choose 5 monsters to put in order as you like on top of the monster deck.
+    Shuffle the monster deck (but first 5 cards) after.
+  target: Monster deck
+  phase: '1'
+  cost: 6
+- name: Field Tonic
+  number: 8
+  effect: Heal 2
+  target: Players
+  phase: 1-5
+  cost: 4
+- name: Sanctuary Beacon
+  number: 6
+  effect: Heal 5
+  target: Players
+  phase: 1-5
+  cost: 8
+- name: Sigil Shift
+  number: 6
+  effect: Add or remove one attribute from a roll
+  target: Any
+  phase: 1-5
+  cost: 6
+- name: Merchant's Favor
+  number: 4
+  effect: Roll a d6. Get a discount, in G, on a shop item equal to that amount minus
+    2 (cannot be negative).
+  target: Shop/CA
+  phase: 2-3
+  cost: 4
+- name: Battle Focus
+  number: 4
+  effect: After you roll, change exactly one of your dice to your hero's primary attribute
+    for this bout.
+  target: Self
+  phase: 2-3
+  cost: 4
+- name: Target Pivot
+  number: 6
+  effect: Switch monster to fight after voting.
+  target: Self
+  phase: 1-2
+  cost: 4
+- name: Renewed Tactics
+  number: 6
+  effect: Reset the cooldown on one CA
+  target: Players
+  phase: 1-5
+  cost: 4
+- name: Overkill Momentum
+  number: 6
+  effect: On Armor break, against a monster, gain a bonus to Attack equal to that
+    monster Overkill value.
+  target: Self
+  phase: '2'
+  cost: 6
+- name: Spellbreaker Seal
+  number: 6
+  effect: Cancel the activation of one spell
+  target: Any spell
+  phase: 1-5
+  cost: 6
+- name: Executioner's Sigil
+  number: 4
+  effect: 'Choose a monster currently in combat: on its next attack, ignore only its
+    overcharge (OC) bonus.'
+  target: Any monster
+  phase: '2'
+  cost: 8
+- name: Wild Exodus
+  number: 4
+  effect: Discard up to 3 monsters on the table and draw new ones.
+  target: Any monster
+  phase: '1'
+  cost: 4
