@@ -1020,6 +1020,8 @@ def simulate_hunter_triangle_bow_vs_monster(
     }
 
     while hunter_health > 0 and monster_health > 0 and bout_number <= max_bouts:
+        prev_hunter_health = hunter_health
+        prev_monster_health = monster_health
         dice_context = dice_roller.roll(loadout, dice_tables, rng, context=reroll_context)
         attribute_pool = dice_context.attribute_pool.copy()
         equipment_result = equipment_pipeline.resolve(
@@ -1077,6 +1079,9 @@ def simulate_hunter_triangle_bow_vs_monster(
                 outcome=outcome,
             )
         )
+
+        if hunter_health < prev_hunter_health or monster_health < prev_monster_health:
+            break
 
         bout_number += 1
 
@@ -1359,6 +1364,8 @@ def simulate_warrior_vs_monster(
     bout_number = 1
 
     while warrior_health > 0 and monster_health > 0 and bout_number <= max_bouts:
+        prev_warrior_health = warrior_health
+        prev_monster_health = monster_health
         dice_context = dice_roller.roll(loadout, dice_tables, rng)
         attribute_pool = dice_context.attribute_pool.copy()
         equipment_result = equipment_pipeline.resolve(loadout, attribute_pool)
@@ -1433,6 +1440,9 @@ def simulate_warrior_vs_monster(
                 hero_faces_all=dice_context.hero_faces,
             )
         )
+
+        if warrior_health < prev_warrior_health or monster_health < prev_monster_health:
+            break
 
         bout_number += 1
 

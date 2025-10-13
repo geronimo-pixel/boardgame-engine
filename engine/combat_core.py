@@ -68,6 +68,8 @@ def simulate_combat(
     extra_context.update(options)
 
     while hero_health > 0 and monster_health > 0 and bout_number <= max_bouts:
+        prev_hero_health = hero_health
+        prev_monster_health = monster_health
         dice_context = dice_roller.roll(loadout, dice_tables, rng, context=extra_context)
         attribute_pool = dice_context.attribute_pool.copy()
         equipment_result = equipment_pipeline.resolve(loadout, attribute_pool, context=extra_context)
@@ -139,6 +141,9 @@ def simulate_combat(
                 hero_faces_all=dice_context.hero_faces,
             )
         )
+
+        if hero_health < prev_hero_health or monster_health < prev_monster_health:
+            break
 
         bout_number += 1
 

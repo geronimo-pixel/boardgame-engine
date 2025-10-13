@@ -13,7 +13,7 @@ from engine.combat_sim import (
     LoadoutBuilder,
 )
 from engine.loadout_helpers import build_loadout, resolve_abilities, resolve_equipment
-from engine.monster_loader import get_monster_by_name, load_monsters
+from engine.monster_loader import Monster, get_monster_by_name, load_monsters
 
 
 class EquipmentPipelineTests(unittest.TestCase):
@@ -137,7 +137,29 @@ class CombatIntegrationTests(unittest.TestCase):
         self.assertEqual(result.winner, "Hunter")
         self.assertEqual(result.final_hero_health, 5)
         self.assertEqual(result.final_monster_health, 0)
-        self.assertGreaterEqual(len(result.bouts), 1)
+        self.assertEqual(len(result.bouts), 1)
+
+    def test_simulation_stops_after_health_loss(self) -> None:
+        builder = LoadoutBuilder({"mage": HeroProfile(name="mage", max_health=4, base_armor=0)})
+        loadout = builder.build(hero_name="mage", abilities=[], equipment=[])
+
+        brute = Monster(
+            name="Test Brute",
+            rank=1,
+            health=3,
+            armor=0,
+            attack=5,
+            overkill=0,
+            dice_code="0m",
+            loot="",
+        )
+
+        result = simulate_combat(loadout, brute, seed=1, max_bouts=5)
+
+        self.assertEqual(result.winner, "Undecided")
+        self.assertEqual(result.final_hero_health, 3)
+        self.assertEqual(result.final_monster_health, 3)
+        self.assertEqual(len(result.bouts), 1)
 
 class LoadoutHelperTests(unittest.TestCase):
     def test_resolve_ability_by_number(self) -> None:
