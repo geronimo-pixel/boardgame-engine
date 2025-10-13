@@ -100,7 +100,37 @@ def resolve_abilities(hero: str, tokens: Sequence[object]) -> List[LoadoutAbilit
         effect = ability.get("effect", "")
         number = ability.get("number")
         name = f"#{number} {effect}" if number is not None else effect
-        result.append(LoadoutAbility(name=name, description=effect))
+        cooldown_raw = ability.get("cooldown")
+        if isinstance(cooldown_raw, int):
+            cooldown_value = max(0, cooldown_raw)
+        elif isinstance(cooldown_raw, str) and cooldown_raw.strip():
+            try:
+                cooldown_value = max(0, int(cooldown_raw))
+            except ValueError:
+                cooldown_value = 0
+        else:
+            cooldown_value = 0
+
+        stage_cooldown_raw = ability.get("stage_cooldown")
+        stage_cooldown_value: Optional[int]
+        if isinstance(stage_cooldown_raw, int):
+            stage_cooldown_value = max(0, stage_cooldown_raw)
+        elif isinstance(stage_cooldown_raw, str) and stage_cooldown_raw.strip():
+            try:
+                stage_cooldown_value = max(0, int(stage_cooldown_raw))
+            except ValueError:
+                stage_cooldown_value = None
+        else:
+            stage_cooldown_value = None
+
+        result.append(
+            LoadoutAbility(
+                name=name,
+                description=effect,
+                cooldown=cooldown_value,
+                stage_cooldown=stage_cooldown_value,
+            )
+        )
     return result
 
 

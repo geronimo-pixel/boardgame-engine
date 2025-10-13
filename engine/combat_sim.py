@@ -558,6 +558,14 @@ class LoadoutAbility:
 
     name: str
     description: str = ""
+    cooldown: int = 0  # how many bouts/fights before re-use; 0 means always-on
+    stage_cooldown: Optional[int] = None  # how many stages before re-use; None -> not tracked
+    cooldown_remaining: int = field(init=False)
+    stage_cooldown_remaining: Optional[int] = field(init=False)
+
+    def __post_init__(self) -> None:
+        self.cooldown_remaining = self.cooldown
+        self.stage_cooldown_remaining = self.stage_cooldown
 
 
 @dataclass
