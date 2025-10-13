@@ -4,6 +4,8 @@ import random
 from engine.combat_core import simulate_combat
 from engine.combat_sim import (
     AbilityEngine,
+    DiceRoller,
+    DiceTables,
     EquipmentPipeline,
     EquipmentItem,
     HeroProfile,
@@ -38,6 +40,43 @@ class EquipmentPipelineTests(unittest.TestCase):
         self.assertEqual(result.armor, 1, "Shield should grant base armor when no attributes remain.")
         self.assertEqual(result.weapon.description, "sword combo + overcharge")
         self.assertEqual(result.secondary.description, "shield flat")
+
+
+class DiceRollerFallbackTests(unittest.TestCase):
+    def test_roll_generic_hero(self) -> None:
+        builder = LoadoutBuilder({"mage": HeroProfile(name="mage", max_health=4, base_armor=0)})
+        loadout = builder.build(hero_name="mage", abilities=[], equipment=[])
+
+        dice_tables = DiceTables.from_loader()
+        roller = DiceRoller()
+        rng = random.Random(42)
+
+        context = {"hero_abilities": 1, "class_abilities": 6}
+        roll = roller.roll(loadout, dice_tables, rng, context=context)
+
+        self.assertGreaterEqual(roll.hero_dice_rolled, 1)
+        self.assertGreaterEqual(roll.class_dice_rolled, 1)
+        self.assertIn("square", roll.attribute_pool)
+        self.assertIsInstance(roll.hero_faces, list)
+        self.assertTrue(roll.hero_faces)
+
+
+class GenericEquipmentPipelineTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.builder = LoadoutBuilder({"mage": HeroProfile(name="mage", max_health=4, base_armor=0)})
+        self.pipeline = EquipmentPipeline()
+
+    def test_generic_equipment_resolution(self) -> None:
+        equipment = resolve_equipment({"weapon": "Spear", "armor": "Chainmail"})
+        loadout = self.builder.build(hero_name="mage", abilities=[], equipment=equipment)
+        attribute_pool = {"square": 2, "triangle": 1, "circle": 1, "blank": 0}
+
+        result = self.pipeline.resolve(loadout, attribute_pool)
+
+        self.assertGreaterEqual(result.attack, 0)
+        self.assertGreaterEqual(result.armor, 0)
+        self.assertIn("Spear", result.weapon.description)
+        self.assertIsInstance(result.remaining_attributes, dict)
 
 
 class AbilityEngineTests(unittest.TestCase):

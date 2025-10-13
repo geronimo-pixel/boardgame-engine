@@ -6,6 +6,7 @@ against a named monster, using the updated rule text from ``Original files``.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from collections import Counter
 from pathlib import Path
 import random
 import re
@@ -352,8 +353,10 @@ def parse_monster_dice_code(code: str) -> List[Tuple[int, str]]:
 class EquipmentResult:
     attack: int = 0
     armor: int = 0
-    used_attributes: Dict[str, int] = field(default_factory=lambda: {"square": 0, "circle": 0})
+    armor_damage: int = 0
+    used_attributes: Dict[str, int] = field(default_factory=lambda: {"square": 0, "triangle": 0, "circle": 0})
     description: str = ""
+    metadata: Dict[str, Any] = field(default_factory=dict)
 
 
 def _compute_square_sword_options(attribute_pool: Dict[str, int]) -> List[EquipmentResult]:
@@ -521,6 +524,11 @@ class EquipmentItem:
     slot: Optional[str] = None
     hands: int = 0  # 0 -> not a hand slot item; otherwise number of hands required
     provides_armor: int = 0  # Flat armor granted at pre-combat (e.g., chainmail)
+    attributes: Dict[str, Optional[str]] = field(default_factory=dict)
+    activations: List[Dict[str, Any]] = field(default_factory=list)
+    flat_bonuses: List[Dict[str, Any]] = field(default_factory=list)
+    overcharge_effects: List[Dict[str, Any]] = field(default_factory=list)
+    state_modifiers: List[Dict[str, Any]] = field(default_factory=list)
 
 
 @dataclass
@@ -726,8 +734,24 @@ class DiceRoller:
                 class_abilities_available=0,
                 extras={"rerolls_used": rerolls_used},
             )
-        else:
-            raise NotImplementedError(f"Dice rolling not yet implemented for hero '{loadout.hero}'.")
+        roll = _roll_generic_hero_dice(
+            hero_key,
+            dice_tables,
+            rng,
+            hero_abilities=context.get("hero_abilities"),
+            class_abilities=context.get("class_abilities"),
+            hero_dice_override=context.get("hero_dice_override"),
+            class_dice_override=context.get("class_dice_override"),
+        )
+        return DiceRollContext(
+            hero_faces=roll.hero_faces,
+            class_faces=roll.class_faces,
+            attribute_pool=roll.attribute_pool,
+            hero_dice_rolled=roll.hero_dice_rolled,
+            class_dice_rolled=roll.class_dice_rolled,
+            hero_abilities_available=roll.hero_abilities,
+            class_abilities_available=roll.class_abilities,
+        )
 
 
 class EquipmentPipeline:
@@ -777,7 +801,7 @@ class EquipmentPipeline:
                 metadata={"attack_breakdown": breakdown},
             )
 
-        raise NotImplementedError(f"Equipment resolution not yet implemented for hero '{loadout.hero}'.")
+        return _resolve_generic_equipment(loadout, working_pool)
 
 
 class AbilityEngine:
@@ -1062,6 +1086,195 @@ def simulate_hunter_triangle_bow_vs_monster(
         bouts=bouts,
         final_hunter_health=hunter_health,
         final_monster_health=monster_health,
+    )
+
+
+# --------------------------------------------------------------------------- #
+# Generic equipment helpers for other heroes
+# --------------------------------------------------------------------------- #
+
+BASE_ALLOWED_CONDITIONS = {None, "always", "vs_monsters", "vs_bosses"}
+OVERCHARGE_ALLOWED_CONDITIONS = BASE_ALLOWED_CONDITIONS | {"overcharge_active"}
+ARMOR_DAMAGE_ALLOWED_CONDITIONS = BASE_ALLOWED_CONDITIONS | {"target_armor_intact"}
+
+
+def _sum_bonus_entries(entries: Optional[Iterable[Dict[str, Any]]], stat: str, allowed_conditions: set) -> int:
+    total = 0
+    if not entries:
+        return total
+    for entry in entries:
+        if entry.get("stat") != stat:
+            continue
+        condition = entry.get("condition")
+        if condition not in allowed_conditions:
+            continue
+        total += entry.get("value", 0) or 0
+    return total
+
+
+def _translate_activation_cost(item: EquipmentItem, cost: Optional[Dict[str, int]]) -> Dict[str, int]:
+    if not cost:
+        return {}
+    requirements: Counter = Counter()
+    attribute_map = item.attributes or {}
+    for key, amount in cost.items():
+        if amount is None or amount <= 0:
+            continue
+        attr = attribute_map.get(key)
+        if attr:
+            requirements[attr] += amount
+    return {attr: int(value) for attr, value in requirements.items() if value > 0}
+
+
+def _equipment_result_key(result: EquipmentResult) -> Tuple[int, int, int, int]:
+    used_total = sum(result.used_attributes.values())
+    return (result.attack, result.armor, result.armor_damage, -used_total)
+
+
+def _empty_equipment_result(description: str) -> EquipmentResult:
+    return EquipmentResult(
+        attack=0,
+        armor=0,
+        armor_damage=0,
+        used_attributes={},
+        description=description,
+        metadata={},
+    )
+
+
+def _evaluate_generic_item(
+    item: EquipmentItem,
+    attribute_pool: Dict[str, int],
+) -> Tuple[EquipmentResult, Dict[str, int]]:
+    remaining_best = attribute_pool.copy()
+
+    base_attack = _sum_bonus_entries(item.flat_bonuses, "attack", BASE_ALLOWED_CONDITIONS)
+    base_attack += _sum_bonus_entries(item.state_modifiers, "attack", BASE_ALLOWED_CONDITIONS)
+
+    base_armor = item.provides_armor
+    base_armor += _sum_bonus_entries(item.flat_bonuses, "armor", BASE_ALLOWED_CONDITIONS)
+    base_armor += _sum_bonus_entries(item.state_modifiers, "armor", BASE_ALLOWED_CONDITIONS)
+
+    base_armor_damage = _sum_bonus_entries(item.flat_bonuses, "armor_damage", ARMOR_DAMAGE_ALLOWED_CONDITIONS)
+    base_armor_damage += _sum_bonus_entries(item.state_modifiers, "armor_damage", ARMOR_DAMAGE_ALLOWED_CONDITIONS)
+
+    base_description = item.name
+    if base_attack or base_armor or base_armor_damage:
+        base_description += " (passive)"
+    else:
+        base_description += " (no activation)"
+
+    best_result = EquipmentResult(
+        attack=base_attack,
+        armor=base_armor,
+        armor_damage=base_armor_damage,
+        used_attributes={},
+        description=base_description,
+        metadata={"item": item.name, "mode": "passive"},
+    )
+
+    for activation in item.activations or []:
+        condition = activation.get("condition")
+        if condition and condition not in BASE_ALLOWED_CONDITIONS:
+            continue
+
+        cost_map = _translate_activation_cost(item, activation.get("cost"))
+        remaining_after_cost = _deduct_attributes(attribute_pool, cost_map) if cost_map else attribute_pool.copy()
+        if remaining_after_cost is None:
+            continue
+
+        effects = activation.get("effects") or {}
+        attack = base_attack + effects.get("attack", 0)
+        armor = base_armor + effects.get("armor", 0)
+        armor_damage = base_armor_damage + effects.get("armor_damage", 0)
+
+        if activation.get("mode") == "overcharge":
+            attack += _sum_bonus_entries(item.overcharge_effects, "attack", OVERCHARGE_ALLOWED_CONDITIONS)
+            armor += _sum_bonus_entries(item.overcharge_effects, "armor", OVERCHARGE_ALLOWED_CONDITIONS)
+            armor_damage += _sum_bonus_entries(item.overcharge_effects, "armor_damage", ARMOR_DAMAGE_ALLOWED_CONDITIONS | {"overcharge_active"})
+
+        candidate = EquipmentResult(
+            attack=attack,
+            armor=armor,
+            armor_damage=armor_damage,
+            used_attributes={attr: value for attr, value in cost_map.items() if value > 0},
+            description=f"{item.name} ({activation.get('mode', 'base')})",
+            metadata={
+                "item": item.name,
+                "mode": activation.get("mode", "base"),
+                "effects": effects,
+                "cost": cost_map,
+            },
+        )
+
+        if _equipment_result_key(candidate) > _equipment_result_key(best_result):
+            best_result = candidate
+            remaining_best = remaining_after_cost
+
+    return best_result, remaining_best
+
+
+def _accumulate_used_attributes(counter: Counter, used: Dict[str, int]) -> None:
+    for attr, value in used.items():
+        if value:
+            counter[attr] += value
+
+
+def _resolve_generic_equipment(
+    loadout: CombatLoadout,
+    attribute_pool: Dict[str, int],
+) -> EquipmentResolution:
+    remaining = attribute_pool.copy()
+
+    weapon_item = next((item for item in loadout.equipment if item.category == "weapon"), None)
+    extra_items = [item for item in loadout.equipment if item is not weapon_item]
+
+    if weapon_item:
+        weapon_result, remaining = _evaluate_generic_item(weapon_item, remaining)
+    else:
+        weapon_result = _empty_equipment_result("No weapon equipped")
+
+    extra_attack = 0
+    extra_armor = 0
+    extra_armor_damage = 0
+    extra_used = Counter()
+    extra_descriptions: List[str] = []
+    extra_metadata: List[Dict[str, Any]] = []
+
+    for item in extra_items:
+        result, remaining = _evaluate_generic_item(item, remaining)
+        extra_attack += result.attack
+        extra_armor += result.armor
+        extra_armor_damage += result.armor_damage
+        _accumulate_used_attributes(extra_used, result.used_attributes)
+        if result.description:
+            extra_descriptions.append(result.description)
+        extra_metadata.append(result.metadata)
+
+    secondary_result = EquipmentResult(
+        attack=extra_attack,
+        armor=extra_armor,
+        armor_damage=extra_armor_damage,
+        used_attributes={attr: value for attr, value in extra_used.items() if value},
+        description="; ".join(extra_descriptions) if extra_descriptions else "No secondary items",
+        metadata={"items": extra_metadata},
+    )
+
+    total_attack = weapon_result.attack + secondary_result.attack
+    total_armor = weapon_result.armor + secondary_result.armor
+    total_armor_damage = weapon_result.armor_damage + secondary_result.armor_damage
+
+    return EquipmentResolution(
+        attack=total_attack,
+        armor=total_armor,
+        armor_damage=total_armor_damage,
+        weapon=weapon_result,
+        secondary=secondary_result,
+        remaining_attributes=remaining,
+        metadata={
+            "weapon": weapon_result.metadata,
+            "secondary_items": extra_metadata,
+        },
     )
 
 

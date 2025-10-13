@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
+import copy
 
 import yaml
 
@@ -118,6 +119,9 @@ def _entry_to_equipment_item(entry: dict) -> EquipmentItem:
     slot = None
     hands = 0
     provides_armor = 0
+    attributes = entry.get("attributes") or {}
+    activations = copy.deepcopy(entry.get("activations") or [])
+    overcharge_effects = copy.deepcopy(entry.get("overcharge_effects") or [])
 
     if category == "weapon":
         slot = "hand"
@@ -128,8 +132,28 @@ def _entry_to_equipment_item(entry: dict) -> EquipmentItem:
         slot = item_type
 
     for bonus in entry.get("flat_bonuses", []) or []:
-        if bonus.get("stat") == "armor":
-            provides_armor += max(0, bonus.get("value", 0))
+        stat = bonus.get("stat")
+        value = max(0, bonus.get("value", 0))
+        condition = bonus.get("condition")
+        if stat == "armor" and (condition in (None, "always")):
+            provides_armor += value
+
+    flat_bonuses: List[Dict[str, Any]] = []
+    for bonus in entry.get("flat_bonuses", []) or []:
+        stat = bonus.get("stat")
+        condition = bonus.get("condition")
+        if stat == "armor" and (condition in (None, "always")):
+            continue
+        flat_bonuses.append(copy.deepcopy(bonus))
+
+    state_modifiers_raw = entry.get("state_modifiers") or {}
+    state_modifiers: List[Dict[str, Any]] = []
+    if isinstance(state_modifiers_raw, dict):
+        for stat, modifiers in state_modifiers_raw.items():
+            for modifier in modifiers or []:
+                entry_copy = copy.deepcopy(modifier)
+                entry_copy["stat"] = stat
+                state_modifiers.append(entry_copy)
 
     return EquipmentItem(
         name=entry.get("name", "Unknown"),
@@ -137,6 +161,11 @@ def _entry_to_equipment_item(entry: dict) -> EquipmentItem:
         slot=slot,
         hands=hands,
         provides_armor=provides_armor,
+        attributes={key: value for key, value in attributes.items() if value},
+        activations=activations,
+        flat_bonuses=flat_bonuses,
+        overcharge_effects=overcharge_effects,
+        state_modifiers=state_modifiers,
     )
 
 
