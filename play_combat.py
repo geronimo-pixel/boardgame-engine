@@ -8,8 +8,9 @@ simulations and seeing visual, bout-by-bout results.
 No code shown - only game mechanics in plain language.
 """
 import sys
+import hashlib
 from pathlib import Path
-from typing import Optional
+from typing import Optional, List
 
 # Add engine to path
 sys.path.insert(0, str(Path(__file__).parent))
@@ -27,15 +28,15 @@ except ImportError:
     print("Install it with: pip install rich")
     sys.exit(1)
 
-from engine.combat_sim import (
-    simulate_warrior_vs_monster,
-    simulate_hunter_triangle_bow_vs_monster,
-    BoutLog,
-    CombatResult,
-    HunterBoutLog,
-    HunterCombatResult,
+from engine.combat_sim import BoutLog, HunterBoutLog
+from engine.combat_core import simulate_combat
+from engine.loadout_helpers import (
+    build_loadout,
+    load_ability_dataset,
+    load_equipment_dataset,
+    get_default_loadout_config,
 )
-from engine.monster_loader import load_monsters
+from engine.monster_loader import load_monsters, get_monster_by_name
 from engine.dice_loader import load_all_dice
 
 console = Console()
@@ -199,29 +200,75 @@ def display_hunter_bout(bout: HunterBoutLog, bout_index: int, total_bouts: int):
 
     console.print(f"\n  [bold green]Total Hunter Attack: {bout.hunter_attack}[/bold green]")
 
-    # Phase 3: Monster Roll
-    console.print("\n[bold yellow]💀 MONSTER ROLL PHASE[/bold yellow]")
-    console.print("─" * 60)
 
-    total_skulls = sum(bout.rat_skulls)
-    skull_icons = " ".join(["💀" * s for s in bout.rat_skulls if s > 0])
-    console.print(f"  Dice results: {bout.rat_skulls}")
-    console.print(f"  Total skulls: {total_skulls} {skull_icons}")
-    console.print(f"  Bonus: {bout.rat_bonus_breakdown}")
-    console.print(f"\n  [bold red]Total Monster Attack: {bout.rat_attack}[/bold red]")
+def display_generic_bout(hero: str, bout: BoutLog, bout_index: int, total_bouts: int):
+    """Display a combat bout for heroes that use the generic simulator."""
 
-    # Phase 4: Combat Resolution
-    console.print("\n[bold yellow]⚡ COMBAT RESOLUTION PHASE[/bold yellow]")
-    console.print("─" * 60)
+    console.print()
+    header = f"[bold cyan]BOUT {bout.bout_number}[/bold cyan] (of {total_bouts})"
+    console.print(Panel(header, box=box.DOUBLE, style="cyan"))
 
-    # Outcome
-    if "wins" in bout.outcome.lower():
-        if "hero" in bout.outcome.lower() or "hunter" in bout.outcome.lower():
-            console.print(f"  [bold green]✓ {bout.outcome}[/bold green]")
-        else:
-            console.print(f"  [bold red]✗ {bout.outcome}[/bold red]")
+    # Phase 1: Dice roll
+    console.print("\n[bold yellow]DICE ROLL PHASE[/bold yellow]")
+    console.print("-" * 60)
+    if bout.hero_faces_all:
+        hero_faces = bout.hero_faces_all
     else:
-        console.print(f"  [yellow]{bout.outcome}[/yellow]")
+        hero_faces = [bout.hero_face] if bout.hero_face else []
+
+    hero_face_text = format_dice_faces(hero_faces[:1])
+    console.print(f"  Hero Die:    {hero_face_text}")
+    if bout.class_faces:
+        for idx, class_face in enumerate(bout.class_faces, start=1):
+            console.print(f"  Class Die {idx}: {format_dice_faces([class_face])}")
+
+    console.print()
+    console.print(f"  [dim]Total symbols: {format_attribute_pool(bout.remaining_attributes)}[/dim]")
+
+    # Phase 2: Equipment / abilities
+    console.print("\n[bold yellow]HERO ACTION PHASE[/bold yellow]")
+    console.print("-" * 60)
+
+    primary_desc = bout.sword.description or "Primary action"
+    console.print(f"  Primary: {primary_desc}")
+    console.print(f"    Attack: [green]+{bout.sword.attack}[/green]")
+    if bout.sword.armor > 0:
+        console.print(f"    Armor: [blue]+{bout.sword.armor}[/blue]")
+    if bout.sword.armor_damage > 0:
+        console.print(f"    Armor Damage: [red]+{bout.sword.armor_damage}[/red]")
+    if bout.sword.used_attributes:
+        used = format_attribute_pool(bout.sword.used_attributes)
+        console.print(f"    Uses: {used}")
+
+    secondary_desc = bout.shield.description or "Secondary items"
+    console.print(f"\n  Secondary: {secondary_desc}")
+    if bout.shield.attack > 0:
+        console.print(f"    Attack: [green]+{bout.shield.attack}[/green]")
+    if bout.shield.armor > 0:
+        console.print(f"    Armor: [blue]+{bout.shield.armor}[/blue]")
+    if bout.shield.armor_damage > 0:
+        console.print(f"    Armor Damage: [red]+{bout.shield.armor_damage}[/red]")
+    if bout.shield.used_attributes:
+        used = format_attribute_pool(bout.shield.used_attributes)
+        console.print(f"    Uses: {used}")
+
+    console.print(f"\n  [dim]Remaining symbols: {format_attribute_pool(bout.remaining_attributes)}[/dim]")
+
+    # Phase 3: Monster roll
+    console.print("\n[bold yellow]MONSTER ROLL PHASE[/bold yellow]")
+    console.print("-" * 60)
+    total_skulls = sum(bout.rat_skulls)
+    console.print(f"  Dice results: {bout.rat_skulls}")
+    console.print(f"  Total skulls: {total_skulls}")
+    console.print(f"  Bonus: {bout.rat_bonus_breakdown}")
+
+    # Phase 4: Resolution
+    console.print("\n[bold yellow]COMBAT RESOLUTION[/bold yellow]")
+    console.print("-" * 60)
+    console.print(f"  {_format_hero_name(hero)} attack: [bold green]{bout.hero_attack}[/bold green]")
+    console.print(f"  Monster attack: [bold red]{bout.rat_attack}[/bold red]")
+    console.print()
+    console.print(f"  Outcome: [bold]{bout.outcome}[/bold]")
 
 
 def display_combat_summary(result, hero_name: str, monster_name: str, seed: Optional[int]):
@@ -258,15 +305,118 @@ def display_combat_summary(result, hero_name: str, monster_name: str, seed: Opti
 # Main Menu & Interaction
 # ============================================================================
 
-def show_hero_menu() -> str:
+def _format_hero_name(hero_key: str) -> str:
+    """Human-friendly hero name for menu display."""
+    return hero_key.replace("_", " ").title()
+
+
+def prompt_for_ability_tokens(hero: str, ability_dataset: dict) -> List[str]:
+    """Prompt user to select abilities for the chosen hero."""
+    entries = ability_dataset.get(hero.lower(), [])
+    if not entries:
+        console.print("[dim]No ability list found for this hero (using defaults).[/dim]")
+        return []
+
+    console.print("\n[bold cyan]SELECT ABILITIES[/bold cyan]")
+    console.print("[dim]Enter indices separated by commas. Leave blank to use defaults.[/dim]")
+
+    for idx, entry in enumerate(entries, start=1):
+        number = entry.get("number")
+        number_text = f"#{number} " if number is not None else ""
+        console.print(f"  {idx}. {number_text}{entry.get('effect', '')}")
+
+    response = Prompt.ask("Abilities", default="")
+    if not response.strip():
+        return []
+
+    tokens: List[str] = []
+    for part in response.split(","):
+        selection = part.strip()
+        if not selection:
+            continue
+        try:
+            index = int(selection)
+        except ValueError:
+            console.print(f"[yellow]Ignoring invalid ability selection '{selection}'.[/yellow]")
+            continue
+        if not 1 <= index <= len(entries):
+            console.print(f"[yellow]Ability index {index} out of range.[/yellow]")
+            continue
+        entry = entries[index - 1]
+        if entry.get("number") is not None:
+            tokens.append(str(entry["number"]))
+        else:
+            tokens.append(entry.get("effect", ""))
+    return tokens
+
+
+def prompt_for_equipment_choices(equipment_dataset: dict) -> List[str]:
+    """Prompt user to select equipment items."""
+    selections: List[str] = []
+    console.print("\n[bold cyan]SELECT EQUIPMENT[/bold cyan]")
+    console.print("[dim]Pick item indices by category. Leave blank to keep defaults.[/dim]")
+
+    category_labels = {
+        "weapons": "Weapons",
+        "armors": "Armors",
+        "charms": "Charms",
+    }
+
+    for key, label in category_labels.items():
+        entries = equipment_dataset.get(key, [])
+        if not entries:
+            continue
+        names = sorted(entry.get("name", "Unknown") for entry in entries)
+        console.print(f"\n{label}:")
+        for idx, name in enumerate(names, start=1):
+            console.print(f"  {idx}. {name}")
+        response = Prompt.ask(f"{label} (comma separated indices)", default="")
+        if not response.strip():
+            continue
+        for part in response.split(","):
+            selection = part.strip()
+            if not selection:
+                continue
+            try:
+                index = int(selection)
+            except ValueError:
+                console.print(f"[yellow]Ignoring invalid selection '{selection}'.[/yellow]")
+                continue
+            if not 1 <= index <= len(names):
+                console.print(f"[yellow]Equipment index {index} out of range.[/yellow]")
+                continue
+            selections.append(names[index - 1])
+
+    return selections
+
+
+def derive_seed_for_loadout(loadout, monster_name: str) -> int:
+    """Derive a deterministic seed from the selected hero, abilities, equipment, and monster."""
+    ability_names = sorted(ability.name for ability in loadout.abilities)
+    equipment_names = sorted(item.name for item in loadout.equipment)
+    base = "|".join(
+        [
+            loadout.hero.lower(),
+            ",".join(ability_names),
+            ",".join(equipment_names),
+            monster_name.lower(),
+        ]
+    )
+    digest = hashlib.sha256(base.encode("utf-8")).hexdigest()
+    return int(digest[:16], 16)
+
+
+def show_hero_menu(hero_names: list[str]) -> str:
     """Show hero selection menu."""
     console.print("\n[bold cyan]SELECT HERO:[/bold cyan]")
-    console.print("  1. Warrior (sword & shield)")
-    console.print("  2. Hunter (bow & reroll ability)")
-    console.print("  [dim]More heroes coming soon...[/dim]")
+    numbered_choices = []
+    for index, hero in enumerate(hero_names, start=1):
+        console.print(f"  {index}. {_format_hero_name(hero)}")
+        numbered_choices.append(str(index))
 
-    choice = Prompt.ask("Choose hero", choices=["1", "2"], default="1")
-    return "warrior" if choice == "1" else "hunter"
+    choice = Prompt.ask("Choose hero", choices=numbered_choices, default="1")
+    selected_index = max(1, min(int(choice), len(hero_names)))
+    return hero_names[selected_index - 1]
 
 
 def show_monster_menu(monsters: list) -> str:
@@ -306,41 +456,28 @@ def show_monster_menu(monsters: list) -> str:
     return monster_list[choice_num - 1]
 
 
-def get_seed_choice() -> Optional[int]:
-    """Ask if user wants to use a seed."""
-    console.print("\n[bold cyan]RANDOM SEED:[/bold cyan]")
-    console.print("  Using a seed lets you replay the exact same combat.")
-
-    use_seed = Prompt.ask("Use a seed?", choices=["y", "n"], default="n")
-
-    if use_seed.lower() == "y":
-        seed = IntPrompt.ask("Enter seed number", default=42)
-        return seed
-
-    return None
-
-
-def run_combat(hero: str, monster: str, seed: Optional[int]):
+def run_combat(loadout, monster, seed: Optional[int]):
     """Run the combat simulation and display results."""
+    hero = loadout.hero
+    monster_name = monster.name
     console.clear()
 
     # Header
     console.print()
-    title = f"[bold white on blue] {hero.upper()} vs {monster.upper()} [/bold white on blue]"
+    title = f"[bold white on blue] {hero.upper()} vs {monster_name.upper()} [/bold white on blue]"
     if seed is not None:
         title += f" [dim](seed: {seed})[/dim]"
     console.print(Panel(title, box=box.DOUBLE))
 
     # Run simulation
+    ability_list = ", ".join(ability.name for ability in loadout.abilities) or "(none)"
+    equipment_list = ", ".join(item.name for item in loadout.equipment) or "(none)"
+    console.print(f"[dim]Abilities: {ability_list}[/dim]")
+    console.print(f"[dim]Equipment: {equipment_list}[/dim]")
     console.print("\n[dim]Running combat simulation...[/dim]")
+    console.print(f"[dim]Auto seed derived from selection: {seed}[/dim]")
 
-    if hero == "warrior":
-        result = simulate_warrior_vs_monster(monster, seed=seed, max_bouts=100)
-    elif hero == "hunter":
-        result = simulate_hunter_triangle_bow_vs_monster(monster, seed=seed, stage=1, max_bouts=100)
-    else:
-        console.print(f"[red]Hero '{hero}' not yet implemented![/red]")
-        return
+    result = simulate_combat(loadout, monster, seed=seed, max_bouts=100)
 
     console.clear()
 
@@ -350,10 +487,7 @@ def run_combat(hero: str, monster: str, seed: Optional[int]):
 
     # Display bouts
     for i, bout in enumerate(result.bouts):
-        if hero == "warrior":
-            display_warrior_bout(bout, i, len(result.bouts))
-        elif hero == "hunter":
-            display_hunter_bout(bout, i, len(result.bouts))
+        display_generic_bout(hero, bout, i, len(result.bouts))
 
         # Pause after each bout (except last)
         if i < len(result.bouts) - 1:
@@ -370,7 +504,7 @@ def run_combat(hero: str, monster: str, seed: Optional[int]):
                 break
 
     # Final summary
-    display_combat_summary(result, hero, monster, seed)
+    display_combat_summary(result, hero, monster_name, seed)
 
 
 def main():
@@ -400,24 +534,50 @@ def main():
     try:
         dice = load_all_dice()
         console.print(f"[green]✓ Loaded {len(dice['hero_dice'])} hero dice[/green]")
+        hero_names = sorted({die.hero for die in dice["hero_dice"]})
     except Exception as e:
         console.print(f"[red]Error loading dice: {e}[/red]")
+        return
+
+    try:
+        ability_dataset = load_ability_dataset()
+        equipment_dataset = load_equipment_dataset()
+    except Exception as e:
+        console.print(f"[red]Error loading ability or equipment data: {e}[/red]")
         return
 
     # Main loop
     while True:
         try:
             # Select hero
-            hero = show_hero_menu()
+            hero = show_hero_menu(hero_names)
+
+            # Select abilities and equipment
+            ability_tokens = prompt_for_ability_tokens(hero, ability_dataset)
+            equipment_choices = prompt_for_equipment_choices(equipment_dataset)
+            equipment_config = equipment_choices if equipment_choices else None
+
+            try:
+                loadout = build_loadout(
+                    hero,
+                    ability_tokens=ability_tokens,
+                    equipment_config=equipment_config,
+                )
+            except Exception as exc:
+                console.print(f"[red]Unable to build loadout: {exc}[/red]")
+                continue
 
             # Select monster
-            monster = show_monster_menu(monsters)
+            monster_name = show_monster_menu(monsters)
+            try:
+                monster_obj = get_monster_by_name(monster_name, monsters)
+            except Exception as exc:
+                console.print(f"[red]Error selecting monster: {exc}[/red]")
+                continue
 
-            # Get seed
-            seed = get_seed_choice()
-
-            # Run combat
-            run_combat(hero, monster, seed)
+            # Derive seed and run combat
+            seed = derive_seed_for_loadout(loadout, monster_obj.name)
+            run_combat(loadout, monster_obj, seed)
 
             # Play again?
             console.print()

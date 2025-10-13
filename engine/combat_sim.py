@@ -89,14 +89,7 @@ HERO_DICE_CONFIGS: Dict[str, HeroDiceConfig] = {
 }
 
 
-def _class_dice_for_abilities(config: HeroDiceConfig, ability_count: int) -> int:
-    """
-    Determine the number of class dice to roll based on unlocked abilities.
-
-    The progression is ordered by the minimum ability count required. We pick the highest
-    entry that does not exceed ``ability_count``.
-    """
-
+def _class_dice_from_config(config: HeroDiceConfig, ability_count: int) -> int:
     class_dice = 0
     for threshold, dice in config.class_dice_progression:
         if ability_count >= threshold:
@@ -104,6 +97,34 @@ def _class_dice_for_abilities(config: HeroDiceConfig, ability_count: int) -> int
         else:
             break
     return class_dice
+
+
+def _dice_counts_from_ability_count(ability_count: int) -> Tuple[int, int]:
+    """
+    Determine the number of hero/class dice to roll given the number of abilities selected.
+
+    Rules:
+      - Start with 1 hero die and 1 class die.
+      - Each additional ability (level up) grants an extra class die until reaching 4 class dice.
+      - After reaching 4 class dice, further levels convert one class die into a hero die
+        (total dice remain constant). If there are no class dice left to convert, hero dice
+        increase instead.
+    """
+
+    level = max(1, ability_count)
+    hero_dice = 1
+    class_dice = 1
+
+    for _ in range(2, level + 1):
+        if class_dice < 4:
+            class_dice += 1
+        elif class_dice > 0:
+            class_dice -= 1
+            hero_dice += 1
+        else:
+            hero_dice += 1
+
+    return hero_dice, class_dice
 
 
 def _aggregate_attribute_pool(faces: Iterable[Iterable[str]]) -> Dict[str, int]:
@@ -133,6 +154,7 @@ def _roll_generic_hero_dice(
     class_abilities: Optional[int] = None,
     hero_dice_override: Optional[int] = None,
     class_dice_override: Optional[int] = None,
+    ability_count: Optional[int] = None,
 ) -> HeroRollResult:
     """
     Entry point used by the hero-specific wrappers to generate dice rolls.
@@ -148,12 +170,21 @@ def _roll_generic_hero_dice(
         config.default_class_abilities if class_abilities is None else class_abilities
     )
 
-    hero_dice_to_roll = hero_dice_override if hero_dice_override is not None else config.hero_dice
-    class_dice_to_roll = (
-        class_dice_override
-        if class_dice_override is not None
-        else _class_dice_for_abilities(config, class_ability_count)
-    )
+    ability_based_hero = ability_based_class = None
+    if ability_count is not None:
+        ability_based_hero, ability_based_class = _dice_counts_from_ability_count(ability_count)
+
+    hero_dice_to_roll = hero_dice_override
+    if hero_dice_to_roll is None:
+        hero_dice_to_roll = ability_based_hero if ability_based_hero is not None else config.hero_dice
+
+    class_dice_to_roll = class_dice_override
+    if class_dice_to_roll is None:
+        class_dice_to_roll = (
+            ability_based_class
+            if ability_based_class is not None
+            else _class_dice_from_config(config, class_ability_count)
+        )
 
     hero_faces: List[List[str]] = []
     for _ in range(hero_dice_to_roll):
@@ -185,6 +216,7 @@ def roll_warrior_dice(
     class_abilities: Optional[int] = None,
     hero_dice_override: Optional[int] = None,
     class_dice_override: Optional[int] = None,
+    ability_count: Optional[int] = None,
 ) -> HeroRollResult:
     """Roll the warrior hero + class dice."""
 
@@ -196,6 +228,7 @@ def roll_warrior_dice(
         class_abilities=class_abilities,
         hero_dice_override=hero_dice_override,
         class_dice_override=class_dice_override,
+        ability_count=ability_count,
     )
 
 
@@ -207,6 +240,7 @@ def roll_mage_dice(
     class_abilities: Optional[int] = None,
     hero_dice_override: Optional[int] = None,
     class_dice_override: Optional[int] = None,
+    ability_count: Optional[int] = None,
 ) -> HeroRollResult:
     """Roll the mage hero + class dice."""
 
@@ -218,6 +252,7 @@ def roll_mage_dice(
         class_abilities=class_abilities,
         hero_dice_override=hero_dice_override,
         class_dice_override=class_dice_override,
+        ability_count=ability_count,
     )
 
 
@@ -229,6 +264,7 @@ def roll_sentinel_dice(
     class_abilities: Optional[int] = None,
     hero_dice_override: Optional[int] = None,
     class_dice_override: Optional[int] = None,
+    ability_count: Optional[int] = None,
 ) -> HeroRollResult:
     """Roll the sentinel hero + class dice."""
 
@@ -240,6 +276,7 @@ def roll_sentinel_dice(
         class_abilities=class_abilities,
         hero_dice_override=hero_dice_override,
         class_dice_override=class_dice_override,
+        ability_count=ability_count,
     )
 
 
@@ -251,6 +288,7 @@ def roll_shaman_dice(
     class_abilities: Optional[int] = None,
     hero_dice_override: Optional[int] = None,
     class_dice_override: Optional[int] = None,
+    ability_count: Optional[int] = None,
 ) -> HeroRollResult:
     """Roll the shaman hero + class dice."""
 
@@ -262,6 +300,7 @@ def roll_shaman_dice(
         class_abilities=class_abilities,
         hero_dice_override=hero_dice_override,
         class_dice_override=class_dice_override,
+        ability_count=ability_count,
     )
 
 
@@ -273,6 +312,7 @@ def roll_thief_dice(
     class_abilities: Optional[int] = None,
     hero_dice_override: Optional[int] = None,
     class_dice_override: Optional[int] = None,
+    ability_count: Optional[int] = None,
 ) -> HeroRollResult:
     """Roll the thief hero + class dice."""
 
@@ -284,6 +324,7 @@ def roll_thief_dice(
         class_abilities=class_abilities,
         hero_dice_override=hero_dice_override,
         class_dice_override=class_dice_override,
+        ability_count=ability_count,
     )
 
 
@@ -295,6 +336,7 @@ def roll_hunter_dice(
     class_abilities: Optional[int] = None,
     hero_dice_override: Optional[int] = None,
     class_dice_override: Optional[int] = None,
+    ability_count: Optional[int] = None,
 ) -> HeroRollResult:
     """Roll the hunter hero + class dice (without rerolls)."""
 
@@ -306,6 +348,7 @@ def roll_hunter_dice(
         class_abilities=class_abilities,
         hero_dice_override=hero_dice_override,
         class_dice_override=class_dice_override,
+        ability_count=ability_count,
     )
 
 
@@ -317,6 +360,7 @@ def roll_mercenary_dice(
     class_abilities: Optional[int] = None,
     hero_dice_override: Optional[int] = None,
     class_dice_override: Optional[int] = None,
+    ability_count: Optional[int] = None,
 ) -> HeroRollResult:
     """Roll the mercenary hero + class dice."""
 
@@ -328,6 +372,7 @@ def roll_mercenary_dice(
         class_abilities=class_abilities,
         hero_dice_override=hero_dice_override,
         class_dice_override=class_dice_override,
+        ability_count=ability_count,
     )
 
 
@@ -686,8 +731,17 @@ class DiceRoller:
     ) -> DiceRollContext:
         context = context or {}
         hero_key = loadout.hero.lower()
+        ability_count = max(1, len(loadout.abilities))
+
         if hero_key == "warrior":
-            roll = roll_warrior_dice(dice_tables, rng)
+            hero_dice_count, class_dice_count = _dice_counts_from_ability_count(ability_count)
+            roll = roll_warrior_dice(
+                dice_tables,
+                rng,
+                hero_dice_override=hero_dice_count,
+                class_dice_override=class_dice_count,
+                ability_count=ability_count,
+            )
             return DiceRollContext(
                 hero_faces=roll.hero_faces,
                 class_faces=roll.class_faces,
@@ -698,11 +752,17 @@ class DiceRoller:
                 class_abilities_available=roll.class_abilities,
             )
         if hero_key == "hunter":
-            hero_face = rng.choice(dice_tables.hero_faces["hunter"])
-            class_face_a = rng.choice(dice_tables.class_faces["hunter"])
-            class_face_b = rng.choice(dice_tables.class_faces["hunter"])
-            dice_faces = [hero_face, class_face_a, class_face_b]
-            dice_sources = ["hero", "class", "class"]
+            hero_dice_count, class_dice_count = _dice_counts_from_ability_count(ability_count)
+            dice_faces: List[List[str]] = []
+            dice_sources: List[str] = []
+
+            for _ in range(hero_dice_count):
+                dice_faces.append(rng.choice(dice_tables.hero_faces["hunter"]))
+                dice_sources.append("hero")
+
+            for _ in range(class_dice_count):
+                dice_faces.append(rng.choice(dice_tables.class_faces["hunter"]))
+                dice_sources.append("class")
 
             rerolls_used = 0
             ca11_enabled = context.get("ca11_enabled", True)
@@ -725,13 +785,13 @@ class DiceRoller:
                     attribute_pool[symbol] += 1
 
             return DiceRollContext(
-                hero_faces=[dice_faces[0]],
-                class_faces=dice_faces[1:],
+                hero_faces=dice_faces[:hero_dice_count],
+                class_faces=dice_faces[hero_dice_count:],
                 attribute_pool=attribute_pool,
-                hero_dice_rolled=1,
-                class_dice_rolled=2,
-                hero_abilities_available=0,
-                class_abilities_available=0,
+                hero_dice_rolled=hero_dice_count,
+                class_dice_rolled=class_dice_count,
+                hero_abilities_available=ability_count,
+                class_abilities_available=ability_count,
                 extras={"rerolls_used": rerolls_used},
             )
         roll = _roll_generic_hero_dice(
@@ -742,6 +802,7 @@ class DiceRoller:
             class_abilities=context.get("class_abilities"),
             hero_dice_override=context.get("hero_dice_override"),
             class_dice_override=context.get("class_dice_override"),
+            ability_count=ability_count,
         )
         return DiceRollContext(
             hero_faces=roll.hero_faces,
