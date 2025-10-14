@@ -614,6 +614,9 @@ class LoadoutAbility:
     description: str = ""
     cooldown: int = 0  # how many bouts/fights before re-use; 0 means always-on
     stage_cooldown: Optional[int] = None  # how many stages before re-use; None -> not tracked
+    passive: bool = False
+    tags: Tuple[str, ...] = field(default_factory=tuple)
+    modes: Tuple[str, ...] = field(default_factory=tuple)
     cooldown_remaining: int = field(init=False)
     stage_cooldown_remaining: Optional[int] = field(init=False)
 
@@ -1499,7 +1502,7 @@ def simulate_warrior_vs_monster(
     builder = LoadoutBuilder({"warrior": HeroProfile(name="warrior", max_health=5, base_armor=0)})
     loadout = builder.build(
         hero_name="warrior",
-        abilities=[LoadoutAbility(name="Always wins ties", description="Class Ability #2")],
+        abilities=[LoadoutAbility(name="Always wins ties", description="Class Ability #2", passive=True)],
         equipment=[
             EquipmentItem(name="Square Sword", category="weapon", slot="hand", hands=1),
             EquipmentItem(name="Square Shield", category="shield", slot="hand", hands=1),

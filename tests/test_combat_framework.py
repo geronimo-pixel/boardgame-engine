@@ -84,7 +84,7 @@ class AbilityEngineTests(unittest.TestCase):
         builder = LoadoutBuilder({"warrior": HeroProfile(name="warrior", max_health=5, base_armor=0)})
         self.loadout_with_tie = builder.build(
             hero_name="warrior",
-            abilities=[LoadoutAbility(name="Always wins ties")],
+            abilities=[LoadoutAbility(name="Always wins ties", passive=True)],
             equipment=[],
         )
         self.loadout_without_tie = builder.build(

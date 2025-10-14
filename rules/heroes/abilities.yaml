@@ -6,6 +6,8 @@
 - hero: warrior
   type: class
   effect: Gain + 1/2/3 A during duels
+  tags: [passive]
+  modes: [duel, clash]
   number: 1
   cooldown: 0
   phase_limit: 1-5
@@ -15,12 +17,14 @@
   number: 2
   cooldown: 0
   phase_limit: 1-5
+  tags: [passive]
 - hero: warrior
   type: class
   effect: Gain +1 A for every Health you’re missing
   number: 3
   cooldown: 0
   phase_limit: 1-5
+  tags: [passive]
 - hero: warrior
   type: class
   effect: Gain a blank die for one roll

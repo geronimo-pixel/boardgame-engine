@@ -10,7 +10,7 @@ No code shown - only game mechanics in plain language.
 import sys
 import hashlib
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 # Add engine to path
 sys.path.insert(0, str(Path(__file__).parent))
@@ -31,7 +31,12 @@ except ImportError:
 from engine.combat_sim import (
     BoutLog,
     HunterBoutLog,
-    enumerate_warrior_equipment_resolutions,
+    EquipmentResult,
+    EquipmentResolution,
+    LoadoutAbility,
+    _compute_square_sword_options,
+    _compute_square_shield_options,
+    _deduct_attributes,
 )
 from engine.combat_core import simulate_combat
 from engine.loadout_helpers import (
@@ -52,6 +57,181 @@ def build_equipment_allocator(console: Console):
     resolution. Currently supports Warrior loadouts (sword + shield).
     """
 
+    ATTRIBUTE_LABELS = {
+        "square": "Squares",
+        "triangle": "Triangles",
+        "circle": "Circles",
+        "blank": "Wild",
+    }
+
+    def _format_cost(used_attributes: Dict[str, int]) -> str:
+        if not used_attributes or all(value == 0 for value in used_attributes.values()):
+            return "No attributes needed"
+        parts: List[str] = []
+        for attr, amount in used_attributes.items():
+            if amount <= 0:
+                continue
+            label = ATTRIBUTE_LABELS.get(attr, attr.title())
+            parts.append(f"{label} x{amount}")
+        return ", ".join(parts) if parts else "No attributes needed"
+
+    def _format_effects(result: EquipmentResult) -> str:
+        effects: List[str] = []
+        if result.attack:
+            effects.append(f"Attack +{result.attack}")
+        if result.armor:
+            effects.append(f"Armor +{result.armor}")
+        if result.armor_damage:
+            effects.append(f"Armor Damage +{result.armor_damage}")
+        if not effects:
+            effects.append("No effect")
+        return ", ".join(effects)
+
+    def _normalize_used_attributes(used: Optional[Dict[str, int]]) -> Dict[str, int]:
+        if not used:
+            return {}
+        return {key: int(value) for key, value in used.items() if value}
+
+    def _allocation_key(used: Optional[Dict[str, int]]) -> Tuple[Tuple[str, int], ...]:
+        normalized = _normalize_used_attributes(used)
+        return tuple(sorted(normalized.items()))
+
+    def _format_allocation_label(used: Optional[Dict[str, int]]) -> str:
+        normalized = _normalize_used_attributes(used)
+        if not normalized:
+            return "None"
+        parts = []
+        for attr, amount in normalized.items():
+            label = ATTRIBUTE_LABELS.get(attr, attr.title())
+            parts.append(f"{label} x{amount}")
+        return ", ".join(parts)
+
+    def _parse_allocation_input(text: str) -> Dict[str, int]:
+        cleaned = text.strip().lower()
+        if not cleaned or cleaned in {"none", "skip", "0"}:
+            return {}
+
+        alias_map = {
+            "square": "square",
+            "squares": "square",
+            "triangle": "triangle",
+            "triangles": "triangle",
+            "circle": "circle",
+            "circles": "circle",
+            "wild": "blank",
+            "blank": "blank",
+            "blanks": "blank",
+        }
+
+        tokens = cleaned.replace(",", " ").replace(";", " ").split()
+        allocation: Dict[str, int] = {}
+        idx = 0
+        while idx < len(tokens):
+            token = tokens[idx]
+            if "=" in token or ":" in token:
+                key, value = token.replace(":", "=").split("=", 1)
+                idx += 1
+            else:
+                if idx + 1 >= len(tokens):
+                    raise ValueError("Incomplete attribute specification.")
+                key = token
+                value = tokens[idx + 1]
+                idx += 2
+            key = key.strip()
+            value = value.strip()
+            attr = alias_map.get(key)
+            if not attr:
+                raise ValueError(f"Unknown attribute '{key}'. Use square/triangle/circle/wild.")
+            try:
+                amount = int(value)
+            except ValueError as exc:
+                raise ValueError(f"Invalid amount '{value}' for {attr}.") from exc
+            if amount < 0:
+                raise ValueError("Attribute amounts must be zero or positive.")
+            allocation[attr] = allocation.get(attr, 0) + amount
+        return {k: v for k, v in allocation.items() if v > 0}
+
+    def _prompt_item_choice(
+        item_name: str,
+        item_attributes: Dict[str, Optional[str]],
+        options: List[EquipmentResult],
+        remaining_pool: Dict[str, int],
+    ) -> Tuple[EquipmentResult, Dict[str, int], str]:
+        console.print(f"\n[bold cyan]{item_name.upper()} OPTIONS[/bold cyan]")
+        alignment_parts: List[str] = []
+        for slot in ("primary", "secondary", "tertiary"):
+            face = item_attributes.get(slot) if item_attributes else None
+            face_display = face.title() if isinstance(face, str) and face.lower() != "null" else "None"
+            alignment_parts.append(f"{slot.title()}: {face_display}")
+        console.print(f"  Attribute alignment: {' | '.join(alignment_parts)}")
+        console.print(f"  Available symbols right now: {format_attribute_pool(remaining_pool)}")
+        console.print("  Tell me how many symbols you want to spend (e.g., 'square=1 circle=1').")
+        console.print("  Type 'none' if you want to keep everything for later.")
+
+        console.print("  Enter attributes to spend (e.g., 'square=1 circle=1'). Type 'none' to skip.")
+
+        allocation_map: Dict[Tuple[Tuple[str, int], ...], EquipmentResult] = {}
+        for option in options:
+            key = _allocation_key(option.used_attributes)
+            if key not in allocation_map:
+                allocation_map[key] = option
+            else:
+                existing = allocation_map[key]
+                if option.attack > existing.attack:
+                    allocation_map[key] = option
+
+        unique_options = list(allocation_map.values())
+        for option in unique_options:
+            cost_text = _format_cost(option.used_attributes)
+            console.print(
+                f"  - Cost {cost_text:>18} -> {option.description or 'Custom'} ({_format_effects(option)})"
+            )
+        console.print("  - Cost None -> No activation")
+
+        while True:
+            user_input = Prompt.ask(
+                f"  Spend attributes on {item_name}",
+                default="none",
+            ).strip()
+            try:
+                allocation = _parse_allocation_input(user_input)
+            except ValueError as exc:
+                console.print(f"[yellow]{exc}[/yellow]")
+                continue
+
+            if not allocation:
+                chosen = EquipmentResult(description=f"{item_name} (no activation)")
+                console.print(f"    -> {item_name} stays idle (no symbols spent).")
+                return chosen, remaining_pool.copy(), "None"
+
+            key = tuple(sorted(allocation.items()))
+            prototype = allocation_map.get(key)
+            if not prototype:
+                console.print(
+                    "[yellow]Those symbols do not match any activation. Use the costs listed above.[/yellow]"
+                )
+                continue
+
+            chosen = EquipmentResult(
+                attack=prototype.attack,
+                armor=prototype.armor,
+                armor_damage=prototype.armor_damage,
+                used_attributes=dict(prototype.used_attributes),
+                description=prototype.description,
+                metadata=dict(prototype.metadata),
+            )
+            updated_pool = _deduct_attributes(remaining_pool, allocation)
+            if updated_pool is None:
+                console.print(
+                    "[red]Not enough symbols for that activation.[/red] "
+                    f"Needed: {_format_cost(chosen.used_attributes)} | "
+                    f"Available: {format_attribute_pool(remaining_pool)}"
+                )
+                continue
+            detail_label = _format_allocation_label(allocation)
+            console.print(f"    -> {item_name} uses: {detail_label}")
+            return chosen, updated_pool, detail_label
+
     def allocator(
         *,
         loadout,
@@ -62,53 +242,189 @@ def build_equipment_allocator(console: Console):
         pipeline,
         context: Dict[str, Any],
     ):
+        fight_type_value = (context or {}).get("fight_type") or loadout.metadata.get("fight_type")
+        fight_type_key = fight_type_value.lower() if isinstance(fight_type_value, str) else ""
+        fight_type_display = fight_type_key.title() if fight_type_key else "this mode"
+
+        def _ability_suffix(ability: LoadoutAbility) -> str:
+            statuses: List[str] = []
+            modes = getattr(ability, "modes", ())
+            if getattr(ability, "passive", False):
+                status = "passive"
+                if fight_type_key and modes and fight_type_key not in modes:
+                    status += f" - inactive in {fight_type_display}"
+                statuses.append(status)
+            else:
+                if modes:
+                    modes_display = ", ".join(mode.title() for mode in modes)
+                    if fight_type_key and fight_type_key not in modes:
+                        statuses.append(f"inactive now (needs {modes_display})")
+                    else:
+                        statuses.append(f"only {modes_display}")
+            if not statuses:
+                return ""
+            return " [" + "; ".join(statuses) + "]"
+
+        console.print("\n[bold magenta]ABILITY WINDOW[/bold magenta]")
+        active_abilities = [ab for ab in loadout.abilities if not getattr(ab, "passive", False)]
+        activatable_abilities = [
+            ab
+            for ab in active_abilities
+            if not getattr(ab, "modes", ()) or not fight_type_key or fight_type_key in getattr(ab, "modes", ())
+        ]
+        locked_active_abilities = [
+            ab for ab in active_abilities if ab not in activatable_abilities
+        ]
+        if loadout.abilities:
+            console.print("  Abilities ready this bout:")
+            for idx, ability in enumerate(loadout.abilities, start=1):
+                ability_name = ability.name or f"Ability {idx}"
+                effect_text = ability.description or ability_name
+                passive_note = _ability_suffix(ability)
+                if effect_text.lower() == ability_name.lower():
+                    console.print(f"    {idx}. {ability_name}{passive_note}")
+                else:
+                    console.print(f"    {idx}. {ability_name}{passive_note}: {effect_text}")
+        else:
+            console.print("  [dim]No abilities equipped (passive bonuses only).[/dim]")
+
+        if activatable_abilities:
+            console.print("\n  You can trigger these abilities now:")
+            for index, ability in enumerate(activatable_abilities, start=1):
+                effect_text = ability.description or ability.name
+                suffix = _ability_suffix(ability)
+                console.print(f"    {index}. {ability.name}{suffix}: {effect_text}")
+            console.print("  Enter numbers separated by commas to fire multiple abilities, or leave blank to skip.")
+
+            selected_indices: List[int] = []
+            while True:
+                response = Prompt.ask("  Activate abilities (numbers)", default="").strip()
+                if not response:
+                    break
+                parts = [part.strip() for part in response.replace(";", ",").split(",") if part.strip()]
+                invalid = False
+                chosen: List[int] = []
+                for part in parts:
+                    if not part.isdigit():
+                        console.print(f"[yellow]'{part}' is not a number. Try again.[/yellow]")
+                        invalid = True
+                        break
+                    value = int(part)
+                    if not 1 <= value <= len(activatable_abilities):
+                        console.print(f"[yellow]Ability {value} is out of range. Try again.[/yellow]")
+                        invalid = True
+                        break
+                    chosen.append(value)
+                if invalid:
+                    continue
+                selected_indices = sorted(set(chosen))
+                break
+
+            if selected_indices:
+                activated_labels: List[str] = []
+                for idx in selected_indices:
+                    ability = activatable_abilities[idx - 1]
+                    activated_labels.append(ability.name)
+                ability_note = "Activated: " + ", ".join(activated_labels)
+            else:
+                ability_note = "Activated: (none)"
+        else:
+            if locked_active_abilities:
+                locked_names = ", ".join(ab.name for ab in locked_active_abilities)
+                console.print(
+                    f"  [dim]Active abilities ({locked_names}) are not available in {fight_type_display}.[/dim]"
+                    if fight_type_key
+                    else f"  [dim]Active abilities ({locked_names}) are not available right now.[/dim]"
+                )
+                ability_note = (
+                    f"Activated: (none); active inactive ({fight_type_display}): {locked_names}"
+                    if fight_type_key
+                    else f"Activated: (none); active inactive: {locked_names}"
+                )
+            else:
+                console.print("  [dim]Only passive abilities available; they stay active automatically.[/dim]")
+                ability_note = "Passive (auto)"
+
+        inactive_passives = [
+            ability.name
+            for ability in loadout.abilities
+            if getattr(ability, "passive", False)
+            and fight_type_key
+            and getattr(ability, "modes", ())
+            and fight_type_key not in ability.modes
+        ]
+        if inactive_passives:
+            ability_note += (
+                f"; passive inactive ({fight_type_display}): {', '.join(inactive_passives)}"
+                if fight_type_key
+                else f"; passive inactive: {', '.join(inactive_passives)}"
+            )
+
         hero_key = loadout.hero.lower()
         if hero_key != "warrior":
-            return None
+            console.print("[dim]Manual equipment assignment only available for the Warrior. Using defaults.[/dim]")
+            fallback = pipeline.resolve(loadout, attribute_pool.copy(), context=context)
+            return fallback, {"ability_choice": ability_note, "selected_equipment_label": "Automatic resolution"}
 
-        console.print("\n[bold magenta]PLAYER CHOICE: Spend Symbols[/bold magenta]")
+        console.print("\n[bold magenta]EQUIPMENT ASSIGNMENT[/bold magenta]")
         console.print(f"  Rolled symbols: {format_attribute_pool(attribute_pool)}")
         console.print(
             f"  Monster skulls: {monster_roll['skulls']} -> "
             f"{monster_roll['total_attack']} attack ({monster_roll['bonus_text']})"
         )
 
-        ability_toggle = Prompt.ask(
-            "  Activate hero abilities?",
-            choices=["y", "n"],
-            default="y",
-        )
-        ability_note = "Activated" if ability_toggle.lower() == "y" else "Skipped"
-
-        options = enumerate_warrior_equipment_resolutions(attribute_pool)
-        if not options:
-            console.print("  [yellow]No sword/shield activations available. Using automatic result.[/yellow]")
+        weapon_item = next((item for item in loadout.equipment if item.category == "weapon"), None)
+        shield_item = next((item for item in loadout.equipment if item.category == "shield"), None)
+        if not weapon_item or not shield_item:
+            console.print("[yellow]Warrior loadout missing sword or shield. Falling back to automatic resolution.[/yellow]")
             fallback = pipeline.resolve(loadout, attribute_pool.copy(), context=context)
             return fallback, {"ability_choice": ability_note, "selected_equipment_label": "Automatic resolution"}
 
-        console.print("\n  Available equipment options:")
-        option_labels: List[str] = []
-        for idx, option in enumerate(options, start=1):
-            weapon_uses = format_attribute_pool(option.weapon.used_attributes)
-            shield_uses = format_attribute_pool(option.secondary.used_attributes)
-            label = option.metadata.get("manual_label", f"Option {idx}")
-            console.print(
-                f"    {idx}. {label}\n"
-                f"       Attack +{option.attack} | Armor +{option.armor}\n"
-                f"       Weapon uses: {weapon_uses or '(none)'} | Shield uses: {shield_uses or '(none)'}"
-            )
-            option_labels.append(str(idx))
+        weapon_options = _compute_square_sword_options(attribute_pool)
+        shield_options = _compute_square_shield_options(attribute_pool)
 
-        choice_index = IntPrompt.ask(
-            "\n  Choose equipment option",
-            choices=option_labels,
-            default="1",
+        remaining_pool = attribute_pool.copy()
+        weapon_choice, remaining_pool, weapon_label = _prompt_item_choice(
+            weapon_item.name,
+            weapon_item.attributes,
+            weapon_options,
+            remaining_pool,
         )
-        selected = options[int(choice_index) - 1]
-        label = selected.metadata.get("manual_label", f"Option {choice_index}")
+        console.print(f"    Remaining after weapon: {format_attribute_pool(remaining_pool)}")
 
-        console.print(f"  [green]Selected:[/green] {label}")
-        return selected, {"ability_choice": ability_note, "selected_equipment_label": label}
+        shield_choice, remaining_pool, shield_label = _prompt_item_choice(
+            shield_item.name,
+            shield_item.attributes,
+            shield_options,
+            remaining_pool,
+        )
+        console.print(f"    Remaining after shield: {format_attribute_pool(remaining_pool)}")
+
+        def _display_label(raw: str) -> str:
+            if not raw or raw.lower() == "none":
+                return "None"
+            return raw
+
+        combined_label = f"{_display_label(weapon_label)} + {_display_label(shield_label)}"
+
+        final_resolution = EquipmentResolution(
+            attack=weapon_choice.attack + shield_choice.attack,
+            armor=shield_choice.armor,
+            armor_damage=weapon_choice.armor_damage + shield_choice.armor_damage,
+            weapon=weapon_choice,
+            secondary=shield_choice,
+            remaining_attributes=remaining_pool,
+            metadata={
+                "weapon_description": weapon_choice.description or weapon_item.name,
+                "shield_description": shield_choice.description or shield_item.name,
+                "manual_label": combined_label,
+            },
+        )
+
+        return final_resolution, {
+            "ability_choice": ability_note,
+            "selected_equipment_label": combined_label,
+        }
 
     return allocator
 
@@ -419,20 +735,36 @@ def _format_hero_name(hero_key: str) -> str:
     return hero_key.replace("_", " ").title()
 
 
-def prompt_for_ability_tokens(hero: str, ability_dataset: dict) -> List[str]:
+def prompt_for_ability_tokens(hero: str, ability_dataset: dict, fight_type: Optional[str] = None) -> List[str]:
     """Prompt user to select abilities for the chosen hero."""
-    entries = ability_dataset.get(hero.lower(), [])
-    if not entries:
+    hero_key = hero.lower()
+    all_entries = ability_dataset.get(hero_key, [])
+    if not all_entries:
         console.print("[dim]No ability list found for this hero (using defaults).[/dim]")
         return []
 
+    fight_type_key = (fight_type or "").lower()
     console.print("\n[bold cyan]SELECT ABILITIES[/bold cyan]")
-    console.print("[dim]Enter indices separated by commas. Leave blank to use defaults.[/dim]")
+    console.print(
+        "[dim]Pick the abilities you want to bring. Passive cards must be selected to stay active. "
+        "Enter numbers separated by commas; leave blank to use defaults.[/dim]"
+    )
 
-    for idx, entry in enumerate(entries, start=1):
+    for idx, entry in enumerate(all_entries, start=1):
         number = entry.get("number")
         number_text = f"#{number} " if number is not None else ""
-        console.print(f"  {idx}. {number_text}{entry.get('effect', '')}")
+        labels: List[str] = []
+        if entry.get("passive"):
+            labels.append("passive")
+        modes = entry.get("modes") or []
+        if modes:
+            modes_display = ", ".join(mode.title() for mode in modes)
+            if fight_type_key and fight_type_key not in modes:
+                labels.append(f"only {modes_display} (inactive now)")
+            else:
+                labels.append(f"only {modes_display}")
+        suffix = f" [{' ; '.join(labels)}]" if labels else ""
+        console.print(f"  {idx}. {number_text}{entry.get('effect', '')}{suffix}")
 
     response = Prompt.ask("Abilities", default="")
     if not response.strip():
@@ -470,18 +802,29 @@ def prompt_for_equipment_choices(equipment_dataset: dict) -> List[str]:
         "armors": "Armors",
         "charms": "Charms",
     }
+    attribute_titles = {"primary": "Primary", "secondary": "Secondary", "tertiary": "Tertiary"}
 
     for key, label in category_labels.items():
         entries = equipment_dataset.get(key, [])
         if not entries:
             continue
-        names = sorted(entry.get("name", "Unknown") for entry in entries)
+
         console.print(f"\n{label}:")
-        for idx, name in enumerate(names, start=1):
-            console.print(f"  {idx}. {name}")
+        for idx, entry in enumerate(entries, start=1):
+            base_name = entry.get("name", "Unknown")
+            attributes = entry.get("attributes") or {}
+            parts: List[str] = []
+            for attr_key in ("primary", "secondary", "tertiary"):
+                face = attributes.get(attr_key)
+                face_display = face.title() if isinstance(face, str) and face.lower() != "null" else "None"
+                parts.append(f"{attribute_titles[attr_key]}: {face_display}")
+            attribute_summary = " | ".join(parts)
+            console.print(f"  {idx}. {base_name} ({attribute_summary})")
+
         response = Prompt.ask(f"{label} (comma separated indices)", default="")
         if not response.strip():
             continue
+
         for part in response.split(","):
             selection = part.strip()
             if not selection:
@@ -491,10 +834,12 @@ def prompt_for_equipment_choices(equipment_dataset: dict) -> List[str]:
             except ValueError:
                 console.print(f"[yellow]Ignoring invalid selection '{selection}'.[/yellow]")
                 continue
-            if not 1 <= index <= len(names):
+            if not 1 <= index <= len(entries):
                 console.print(f"[yellow]Equipment index {index} out of range.[/yellow]")
                 continue
-            selections.append(names[index - 1])
+            chosen_entry = entries[index - 1]
+            token = chosen_entry.get("id") or chosen_entry.get("name", "Unknown")
+            selections.append(token)
 
     return selections
 
@@ -604,7 +949,7 @@ def show_monster_menu(monsters: list) -> str:
     return monster_list[choice_num - 1]
 
 
-def run_combat(loadout, monster, seed: Optional[int]):
+def run_combat(loadout, monster, seed: Optional[int], fight_type: Optional[str] = None):
     """Run the combat simulation and display results."""
     hero = loadout.hero
     monster_name = monster.name
@@ -628,12 +973,20 @@ def run_combat(loadout, monster, seed: Optional[int]):
     console.print(f"[dim]Auto seed derived from selection: {seed}[/dim]")
 
     equipment_allocator = build_equipment_allocator(console)
+    sim_options = {
+        "equipment_allocator": equipment_allocator,
+    }
+    if fight_type:
+        sim_options["fight_type"] = fight_type.lower()
+    else:
+        sim_options["fight_type"] = loadout.metadata.get("fight_type")
+
     result = simulate_combat(
         loadout,
         monster,
         seed=seed,
         max_bouts=100,
-        options={"equipment_allocator": equipment_allocator},
+        options=sim_options,
     )
 
     # Show combat header again
@@ -714,7 +1067,7 @@ def main():
             hero = show_hero_menu(hero_names)
 
             # Select abilities and equipment
-            ability_tokens = prompt_for_ability_tokens(hero, ability_dataset)
+            ability_tokens = prompt_for_ability_tokens(hero, ability_dataset, fight_type=fight_type)
             equipment_choices = prompt_for_equipment_choices(equipment_dataset)
             equipment_config = equipment_choices if equipment_choices else None
 
@@ -722,6 +1075,7 @@ def main():
                 default_config = get_default_loadout_config(hero)
                 metadata = dict(default_config.get("metadata", {}))
                 metadata["stage"] = stage
+                metadata["fight_type"] = fight_type
                 loadout = build_loadout(
                     hero,
                     ability_tokens=ability_tokens,
@@ -742,7 +1096,7 @@ def main():
 
             # Derive seed and run combat
             seed = derive_seed_for_loadout(loadout, monster_obj.name)
-            run_combat(loadout, monster_obj, seed)
+            run_combat(loadout, monster_obj, seed, fight_type=fight_type)
 
             # Play again?
             console.print()

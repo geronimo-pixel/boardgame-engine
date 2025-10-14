@@ -45,7 +45,28 @@ def load_ability_dataset() -> Dict[str, List[dict]]:
         for entry in data:
             hero = entry.get("hero")
             if hero:
-                mapping.setdefault(hero.lower(), []).append(entry)
+                entry_copy = copy.deepcopy(entry)
+                tags_raw = entry_copy.get("tags")
+                if tags_raw is None:
+                    tags: List[str] = []
+                elif isinstance(tags_raw, str):
+                    tags = [tags_raw]
+                else:
+                    tags = list(tags_raw)
+                tags_lower = [str(tag).lower() for tag in tags]
+                if entry_copy.get("passive"):
+                    tags_lower.append("passive")
+                entry_copy["tags"] = tags_lower
+                entry_copy["passive"] = "passive" in tags_lower
+                modes_raw = entry_copy.get("modes")
+                if modes_raw is None:
+                    modes = []
+                elif isinstance(modes_raw, str):
+                    modes = [modes_raw]
+                else:
+                    modes = list(modes_raw)
+                entry_copy["modes"] = [str(mode).lower() for mode in modes]
+                mapping.setdefault(hero.lower(), []).append(entry_copy)
         _ABILITIES_CACHE = mapping
     return _ABILITIES_CACHE
 
@@ -96,7 +117,9 @@ def resolve_abilities(hero: str, tokens: Sequence[object]) -> List[LoadoutAbilit
             chosen.append(ability_entry)
 
     result: List[LoadoutAbility] = []
-    for ability in chosen:
+    processed_names: set[str] = set()
+
+    def _entry_to_loadout_ability(ability: dict) -> LoadoutAbility:
         effect = ability.get("effect", "")
         number = ability.get("number")
         name = f"#{number} {effect}" if number is not None else effect
@@ -123,14 +146,23 @@ def resolve_abilities(hero: str, tokens: Sequence[object]) -> List[LoadoutAbilit
         else:
             stage_cooldown_value = None
 
-        result.append(
-            LoadoutAbility(
-                name=name,
-                description=effect,
-                cooldown=cooldown_value,
-                stage_cooldown=stage_cooldown_value,
-            )
+        tags_tuple = tuple(ability.get("tags", []))
+        modes_tuple = tuple(ability.get("modes", []))
+        loadout_ability = LoadoutAbility(
+            name=name,
+            description=effect,
+            cooldown=cooldown_value,
+            stage_cooldown=stage_cooldown_value,
+            passive=bool(ability.get("passive")),
+            tags=tags_tuple,
+            modes=modes_tuple,
         )
+        processed_names.add(name)
+        return loadout_ability
+
+    for ability in chosen:
+        result.append(_entry_to_loadout_ability(ability))
+
     return result
 
 
