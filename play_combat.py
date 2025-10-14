@@ -10,7 +10,7 @@ No code shown - only game mechanics in plain language.
 import sys
 import hashlib
 from pathlib import Path
-from typing import Optional, List
+from typing import Any, Dict, List, Optional
 
 # Add engine to path
 sys.path.insert(0, str(Path(__file__).parent))
@@ -28,7 +28,11 @@ except ImportError:
     print("Install it with: pip install rich")
     sys.exit(1)
 
-from engine.combat_sim import BoutLog, HunterBoutLog
+from engine.combat_sim import (
+    BoutLog,
+    HunterBoutLog,
+    enumerate_warrior_equipment_resolutions,
+)
 from engine.combat_core import simulate_combat
 from engine.loadout_helpers import (
     build_loadout,
@@ -40,6 +44,73 @@ from engine.monster_loader import load_monsters, get_monster_by_name
 from engine.dice_loader import load_all_dice
 
 console = Console()
+
+
+def build_equipment_allocator(console: Console):
+    """
+    Return a callback that asks the player how to spend their symbols on equipment before combat
+    resolution. Currently supports Warrior loadouts (sword + shield).
+    """
+
+    def allocator(
+        *,
+        loadout,
+        attribute_pool: Dict[str, int],
+        dice_context,
+        monster,
+        monster_roll: Dict[str, Any],
+        pipeline,
+        context: Dict[str, Any],
+    ):
+        hero_key = loadout.hero.lower()
+        if hero_key != "warrior":
+            return None
+
+        console.print("\n[bold magenta]PLAYER CHOICE: Spend Symbols[/bold magenta]")
+        console.print(f"  Rolled symbols: {format_attribute_pool(attribute_pool)}")
+        console.print(
+            f"  Monster skulls: {monster_roll['skulls']} -> "
+            f"{monster_roll['total_attack']} attack ({monster_roll['bonus_text']})"
+        )
+
+        ability_toggle = Prompt.ask(
+            "  Activate hero abilities?",
+            choices=["y", "n"],
+            default="y",
+        )
+        ability_note = "Activated" if ability_toggle.lower() == "y" else "Skipped"
+
+        options = enumerate_warrior_equipment_resolutions(attribute_pool)
+        if not options:
+            console.print("  [yellow]No sword/shield activations available. Using automatic result.[/yellow]")
+            fallback = pipeline.resolve(loadout, attribute_pool.copy(), context=context)
+            return fallback, {"ability_choice": ability_note, "selected_equipment_label": "Automatic resolution"}
+
+        console.print("\n  Available equipment options:")
+        option_labels: List[str] = []
+        for idx, option in enumerate(options, start=1):
+            weapon_uses = format_attribute_pool(option.weapon.used_attributes)
+            shield_uses = format_attribute_pool(option.secondary.used_attributes)
+            label = option.metadata.get("manual_label", f"Option {idx}")
+            console.print(
+                f"    {idx}. {label}\n"
+                f"       Attack +{option.attack} | Armor +{option.armor}\n"
+                f"       Weapon uses: {weapon_uses or '(none)'} | Shield uses: {shield_uses or '(none)'}"
+            )
+            option_labels.append(str(idx))
+
+        choice_index = IntPrompt.ask(
+            "\n  Choose equipment option",
+            choices=option_labels,
+            default="1",
+        )
+        selected = options[int(choice_index) - 1]
+        label = selected.metadata.get("manual_label", f"Option {choice_index}")
+
+        console.print(f"  [green]Selected:[/green] {label}")
+        return selected, {"ability_choice": ability_note, "selected_equipment_label": label}
+
+    return allocator
 
 
 # ============================================================================
@@ -74,16 +145,19 @@ def format_dice_faces(faces: list) -> str:
 
 
 def format_attribute_pool(pool: dict) -> str:
-    """Format attribute pool (square/triangle/circle counts)."""
-    parts = []
-    if pool.get("square", 0) > 0:
-        parts.append(f"■ x{pool['square']}")
-    if pool.get("triangle", 0) > 0:
-        parts.append(f"▲ x{pool['triangle']}")
-    if pool.get("circle", 0) > 0:
-        parts.append(f"● x{pool['circle']}")
-
-    return ", ".join(parts) if parts else "(none)"
+    """Format attribute pools using simple words."""
+    labels = [
+        ("square", "Squares"),
+        ("triangle", "Triangles"),
+        ("circle", "Circles"),
+        ("blank", "Wild"),
+    ]
+    segments: List[str] = []
+    for key, label in labels:
+        amount = pool.get(key, 0)
+        if amount > 0:
+            segments.append(f"{label} x{amount}")
+    return ", ".join(segments) if segments else "(none)"
 
 
 def health_bar(current: int, maximum: int) -> str:
@@ -223,7 +297,16 @@ def display_generic_bout(hero: str, bout: BoutLog, bout_index: int, total_bouts:
             console.print(f"  Class Die {idx}: {format_dice_faces([class_face])}")
 
     console.print()
-    console.print(f"  [dim]Total symbols: {format_attribute_pool(bout.remaining_attributes)}[/dim]")
+    console.print(f"  Rolled symbols: {format_attribute_pool(bout.hero_attribute_pool)}")
+    spent_pool: Dict[str, int] = {}
+    for key, value in bout.hero_attribute_pool.items():
+        remaining = bout.remaining_attributes.get(key, 0)
+        spent = max(0, value - remaining)
+        if spent > 0:
+            spent_pool[key] = spent
+    if spent_pool:
+        console.print(f"  Spent this bout: {format_attribute_pool(spent_pool)}")
+    console.print(f"  Remaining symbols: {format_attribute_pool(bout.remaining_attributes)}")
 
     # Phase 2: Equipment / abilities
     console.print("\n[bold yellow]HERO ACTION PHASE[/bold yellow]")
@@ -252,7 +335,12 @@ def display_generic_bout(hero: str, bout: BoutLog, bout_index: int, total_bouts:
         used = format_attribute_pool(bout.shield.used_attributes)
         console.print(f"    Uses: {used}")
 
-    console.print(f"\n  [dim]Remaining symbols: {format_attribute_pool(bout.remaining_attributes)}[/dim]")
+    if bout.hero_attack_breakdown:
+        console.print("\n  Ability bonuses triggered automatically:")
+        for source, amount in bout.hero_attack_breakdown:
+            console.print(f"    [green]+{amount} attack from {source}[/green]")
+    else:
+        console.print("\n  [dim]No hero abilities added attack this bout.[/dim]")
 
     # Phase 3: Monster roll
     console.print("\n[bold yellow]MONSTER ROLL PHASE[/bold yellow]")
@@ -261,12 +349,33 @@ def display_generic_bout(hero: str, bout: BoutLog, bout_index: int, total_bouts:
     console.print(f"  Dice results: {bout.rat_skulls}")
     console.print(f"  Total skulls: {total_skulls}")
     console.print(f"  Bonus: {bout.rat_bonus_breakdown}")
+    console.print(f"  Base attack: {bout.monster_base_attack}  |  Bonus attack: {bout.monster_bonus_attack}")
 
     # Phase 4: Resolution
     console.print("\n[bold yellow]COMBAT RESOLUTION[/bold yellow]")
     console.print("-" * 60)
+    if bout.selected_equipment_label:
+        console.print(f"  Selected combo: {bout.selected_equipment_label}")
+    if bout.ability_choice:
+        console.print(f"  Ability choice: {bout.ability_choice} abilities")
     console.print(f"  {_format_hero_name(hero)} attack: [bold green]{bout.hero_attack}[/bold green]")
+    hero_components: List[str] = []
+    if bout.sword.attack:
+        hero_components.append(f"{bout.sword.description or 'Weapon'} +{bout.sword.attack}")
+    if bout.shield.attack:
+        hero_components.append(f"{bout.shield.description or 'Secondary'} +{bout.shield.attack}")
+    for source, amount in bout.hero_attack_breakdown:
+        hero_components.append(f"{source} +{amount}")
+    if not hero_components:
+        hero_components.append("Base roll only")
+    console.print(f"    Breakdown: {', '.join(hero_components)}")
+
     console.print(f"  Monster attack: [bold red]{bout.rat_attack}[/bold red]")
+    monster_components = [
+        f"Base {bout.monster_base_attack}",
+        f"Bonus +{bout.monster_bonus_attack}",
+    ]
+    console.print(f"    Breakdown: {', '.join(monster_components)}")
     console.print()
     console.print(f"  Outcome: [bold]{bout.outcome}[/bold]")
 
@@ -518,9 +627,14 @@ def run_combat(loadout, monster, seed: Optional[int]):
     console.print("\n[dim]Running combat simulation...[/dim]")
     console.print(f"[dim]Auto seed derived from selection: {seed}[/dim]")
 
-    result = simulate_combat(loadout, monster, seed=seed, max_bouts=100)
-
-    console.clear()
+    equipment_allocator = build_equipment_allocator(console)
+    result = simulate_combat(
+        loadout,
+        monster,
+        seed=seed,
+        max_bouts=100,
+        options={"equipment_allocator": equipment_allocator},
+    )
 
     # Show combat header again
     console.print()

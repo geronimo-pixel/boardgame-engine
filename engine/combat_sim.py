@@ -471,6 +471,60 @@ def _compute_square_shield_options(attribute_pool: Dict[str, int]) -> List[Equip
     return options
 
 
+def enumerate_warrior_equipment_resolutions(attribute_pool: Dict[str, int]) -> List[EquipmentResolution]:
+    """
+    Enumerate every valid sword and shield configuration for the Warrior so the caller can let the
+    player pick how to spend their symbols.
+    """
+    candidates: List[EquipmentResolution] = []
+
+    for weapon_option in _compute_square_sword_options(attribute_pool):
+        remaining_after_weapon = _deduct_attributes(attribute_pool, weapon_option.used_attributes)
+        if remaining_after_weapon is None:
+            continue
+
+        for shield_option in _compute_square_shield_options(remaining_after_weapon):
+            remaining_after_shield = _deduct_attributes(remaining_after_weapon, shield_option.used_attributes)
+            if remaining_after_shield is None:
+                continue
+
+            weapon_entry = EquipmentResult(
+                attack=weapon_option.attack,
+                armor=weapon_option.armor,
+                armor_damage=weapon_option.armor_damage,
+                used_attributes=dict(weapon_option.used_attributes),
+                description=weapon_option.description,
+                metadata=dict(weapon_option.metadata),
+            )
+            shield_entry = EquipmentResult(
+                attack=shield_option.attack,
+                armor=shield_option.armor,
+                armor_damage=shield_option.armor_damage,
+                used_attributes=dict(shield_option.used_attributes),
+                description=shield_option.description,
+                metadata=dict(shield_option.metadata),
+            )
+
+            manual_label = f"{weapon_entry.description} + {shield_entry.description}"
+            candidates.append(
+                EquipmentResolution(
+                    attack=weapon_entry.attack + shield_entry.attack,
+                    armor=shield_entry.armor,
+                    armor_damage=weapon_entry.armor_damage + shield_entry.armor_damage,
+                    weapon=weapon_entry,
+                    secondary=shield_entry,
+                    remaining_attributes=remaining_after_shield.copy(),
+                    metadata={
+                        "weapon_description": weapon_entry.description,
+                        "shield_description": shield_entry.description,
+                        "manual_label": manual_label,
+                    },
+                )
+            )
+
+    return candidates
+
+
 def _deduct_attributes(pool: Dict[str, int], requirements: Dict[str, int]) -> Optional[Dict[str, int]]:
     """
     Return a copy of ``pool`` with the requested attributes consumed. Blank results act as wildcards
@@ -887,6 +941,7 @@ class AbilityEngine:
         self.auto_win_ties = False
         self._attack_bonus_static = 0
         self._attack_bonus_sources: List[str] = []
+        self._attack_bonus_breakdown: List[Tuple[str, int]] = []
 
         max_health = loadout.hero_profile.max_health
         starting_health = pre_combat_state.health if pre_combat_state else max_health
@@ -903,6 +958,9 @@ class AbilityEngine:
                 if normalized_missing_health > 0:
                     self._attack_bonus_static += normalized_missing_health
                     self._attack_bonus_sources.append(ability.name or "Missing health bonus")
+                    self._attack_bonus_breakdown.append(
+                        (ability.name or "Missing health bonus", normalized_missing_health)
+                    )
 
     def hero_wins_bout(self, hero_attack: int, monster_attack: int) -> bool:
         if hero_attack > monster_attack:
@@ -916,13 +974,12 @@ class AbilityEngine:
             return " (tie-breaker: CA#2)"
         return None
 
-    def attack_bonus_after_roll(self) -> Tuple[int, List[str]]:
+    def attack_bonus_after_roll(self) -> Tuple[int, List[Tuple[str, int]]]:
         if self._attack_bonus_static:
-            if self._attack_bonus_sources:
-                source = ", ".join(self._attack_bonus_sources)
-            else:
-                source = "abilities"
-            return self._attack_bonus_static, [f"+{self._attack_bonus_static} attack from {source}"]
+            if self._attack_bonus_breakdown:
+                return self._attack_bonus_static, self._attack_bonus_breakdown[:]
+            source = ", ".join(self._attack_bonus_sources) if self._attack_bonus_sources else "abilities"
+            return self._attack_bonus_static, [(source, self._attack_bonus_static)]
         return 0, []
 
 
@@ -937,13 +994,19 @@ class BoutLog:
     class_faces: List[List[str]]
     sword: EquipmentResult
     shield: EquipmentResult
+    hero_attribute_pool: Dict[str, int]
     remaining_attributes: Dict[str, int]
     rat_skulls: List[int]
     rat_attack: int
     rat_bonus_breakdown: str
+    monster_base_attack: int
+    monster_bonus_attack: int
     hero_attack: int
     hero_armor: int
     outcome: str
+    hero_attack_breakdown: List[Tuple[str, int]] = field(default_factory=list)
+    ability_choice: Optional[str] = None
+    selected_equipment_label: Optional[str] = None
     hero_dice_rolled: int = 1
     class_dice_rolled: int = 0
     hero_abilities: int = 0
@@ -1522,13 +1585,17 @@ def simulate_warrior_vs_monster(
                 class_faces=class_faces,
                 sword=equipment_result.weapon,
                 shield=equipment_result.secondary,
+                hero_attribute_pool=dice_context.attribute_pool,
                 remaining_attributes=equipment_result.remaining_attributes,
                 rat_skulls=skulls,
                 rat_attack=monster_attack,
                 rat_bonus_breakdown=bonus_text,
+                monster_base_attack=monster.attack,
+                monster_bonus_attack=monster_attack - monster.attack,
                 hero_attack=hero_attack,
                 hero_armor=hero_armor,
                 outcome=outcome,
+                hero_attack_breakdown=[],
                 hero_dice_rolled=dice_context.hero_dice_rolled,
                 class_dice_rolled=dice_context.class_dice_rolled,
                 hero_abilities=dice_context.hero_abilities_available,
