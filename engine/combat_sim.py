@@ -876,15 +876,33 @@ class EquipmentPipeline:
 class AbilityEngine:
     """Evaluate loadout abilities and provide combat-time helpers (e.g. tie-breakers)."""
 
-    def __init__(self, loadout: CombatLoadout) -> None:
-        tokens: List[str] = []
-        for ability in loadout.abilities:
-            if ability.name:
-                tokens.append(ability.name.lower())
-            if ability.description:
-                tokens.append(ability.description.lower())
+    def __init__(
+        self,
+        loadout: CombatLoadout,
+        *,
+        stage: Optional[int] = None,
+        pre_combat_state: Optional[PreCombatState] = None,
+    ) -> None:
+        self.stage = stage or 1
+        self.auto_win_ties = False
+        self._attack_bonus_static = 0
+        self._attack_bonus_sources: List[str] = []
 
-        self.auto_win_ties = any("always wins ties" in token for token in tokens)
+        max_health = loadout.hero_profile.max_health
+        starting_health = pre_combat_state.health if pre_combat_state else max_health
+        normalized_missing_health = max(0, max_health - starting_health)
+
+        for ability in loadout.abilities:
+            name_norm = (ability.name or "").lower().replace("’", "'")
+            desc_norm = (ability.description or "").lower().replace("’", "'")
+
+            if "always wins ties" in name_norm or "always wins ties" in desc_norm:
+                self.auto_win_ties = True
+
+            if "every health you're missing" in name_norm or "every health you're missing" in desc_norm:
+                if normalized_missing_health > 0:
+                    self._attack_bonus_static += normalized_missing_health
+                    self._attack_bonus_sources.append(ability.name or "Missing health bonus")
 
     def hero_wins_bout(self, hero_attack: int, monster_attack: int) -> bool:
         if hero_attack > monster_attack:
@@ -897,6 +915,15 @@ class AbilityEngine:
         if hero_attack == monster_attack and self.auto_win_ties:
             return " (tie-breaker: CA#2)"
         return None
+
+    def attack_bonus_after_roll(self) -> Tuple[int, List[str]]:
+        if self._attack_bonus_static:
+            if self._attack_bonus_sources:
+                source = ", ".join(self._attack_bonus_sources)
+            else:
+                source = "abilities"
+            return self._attack_bonus_static, [f"+{self._attack_bonus_static} attack from {source}"]
+        return 0, []
 
 
 # --------------------------------------------------------------------------- #

@@ -394,16 +394,55 @@ def derive_seed_for_loadout(loadout, monster_name: str) -> int:
     """Derive a deterministic seed from the selected hero, abilities, equipment, and monster."""
     ability_names = sorted(ability.name for ability in loadout.abilities)
     equipment_names = sorted(item.name for item in loadout.equipment)
+    stage_value = str(loadout.metadata.get("stage", "")) if hasattr(loadout, "metadata") else ""
     base = "|".join(
         [
             loadout.hero.lower(),
             ",".join(ability_names),
             ",".join(equipment_names),
             monster_name.lower(),
+            stage_value,
         ]
     )
     digest = hashlib.sha256(base.encode("utf-8")).hexdigest()
     return int(digest[:16], 16)
+
+
+def choose_fight_type() -> str:
+    """Prompt the user for the fight type they want to simulate."""
+    console.print("\n[bold cyan]SELECT FIGHT TYPE:[/bold cyan]")
+    options = [
+        ("hunt", "Hunt (hero vs monster)"),
+        ("duel", "Duel (1 player vs 1 player)"),
+        ("coop", "Co-op (2 players vs 1 monster)"),
+        ("clash", "Clash (party vs party)"),
+    ]
+
+    for index, (_, label) in enumerate(options, start=1):
+        console.print(f"  {index}. {label}")
+
+    choices = [str(index) for index in range(1, len(options) + 1)]
+    selection = Prompt.ask("Choose fight type", choices=choices, default="1")
+    fight_key = options[int(selection) - 1][0]
+
+    if fight_key != "hunt":
+        console.print(
+            "[yellow]That fight mode is not implemented yet. "
+            "Available modes: Hunt (hero vs monster).[/yellow]"
+        )
+        return "hunt"
+
+    return fight_key
+
+
+def choose_stage() -> int:
+    """Ask the player which stage to simulate (currently only stage 1 is supported)."""
+    console.print("\n[bold cyan]SELECT STAGE:[/bold cyan]")
+    stage = IntPrompt.ask("Stage", default=1)
+    if stage != 1:
+        console.print("[yellow]Only stage 1 is implemented right now. Defaulting to stage 1.[/yellow]")
+        stage = 1
+    return stage
 
 
 def show_hero_menu(hero_names: list[str]) -> str:
@@ -474,6 +513,8 @@ def run_combat(loadout, monster, seed: Optional[int]):
     equipment_list = ", ".join(item.name for item in loadout.equipment) or "(none)"
     console.print(f"[dim]Abilities: {ability_list}[/dim]")
     console.print(f"[dim]Equipment: {equipment_list}[/dim]")
+    stage_value = loadout.metadata.get("stage") if hasattr(loadout, "metadata") else None
+    console.print(f"[dim]Stage: {stage_value or 1}[/dim]")
     console.print("\n[dim]Running combat simulation...[/dim]")
     console.print(f"[dim]Auto seed derived from selection: {seed}[/dim]")
 
@@ -534,7 +575,7 @@ def main():
     try:
         dice = load_all_dice()
         console.print(f"[green]✓ Loaded {len(dice['hero_dice'])} hero dice[/green]")
-        hero_names = sorted({die.hero for die in dice["hero_dice"]})
+        hero_names = list(dict.fromkeys(die.hero for die in dice["hero_dice"]))
     except Exception as e:
         console.print(f"[red]Error loading dice: {e}[/red]")
         return
@@ -549,6 +590,12 @@ def main():
     # Main loop
     while True:
         try:
+            fight_type = choose_fight_type()
+            if fight_type != "hunt":
+                continue
+
+            stage = choose_stage()
+
             # Select hero
             hero = show_hero_menu(hero_names)
 
@@ -558,10 +605,14 @@ def main():
             equipment_config = equipment_choices if equipment_choices else None
 
             try:
+                default_config = get_default_loadout_config(hero)
+                metadata = dict(default_config.get("metadata", {}))
+                metadata["stage"] = stage
                 loadout = build_loadout(
                     hero,
                     ability_tokens=ability_tokens,
                     equipment_config=equipment_config,
+                    metadata=metadata,
                 )
             except Exception as exc:
                 console.print(f"[red]Unable to build loadout: {exc}[/red]")
